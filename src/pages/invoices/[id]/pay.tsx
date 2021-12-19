@@ -1,0 +1,134 @@
+import { useRouter } from 'next/router';
+import { useToggle } from 'react-use';
+import { useInvoicePay } from '@/api/invoices';
+import { useCreateInvoiceCheckoutSession } from '@/api/payments';
+import { InvoiceStatus, PaymentTypes } from '@/types';
+import InvoicePageShell from '@/components/invoices/InvoicePageShell';
+import InvoicePayHeader from '@/components/invoices/InvoicePayHeader';
+import LoadingLoader from '@/components/shared/LoadingLoader';
+import { Box, Col, Container, Grid, Paper, Title, Text } from '@mantine/core';
+import InvoicePreview from '@/components/invoices/InvoicePreview';
+import Button from '@/components/shared/Button';
+import Link from '@/components/shared/Link';
+import InvoiceZellePayModal from '@/components/invoices/InvoiceZellePayModal';
+
+export default function InvoicePayPage() {
+  const { query } = useRouter();
+  const [openZelleDialog, toggleOpenZelleDialog] = useToggle(false);
+  const { data: invoice, isLoading } = useInvoicePay(query.id as string);
+  const { initiateCheckoutSession, isLoading: isStripeLoading } = useCreateInvoiceCheckoutSession();
+
+  const createCheckoutSession = async () => {
+    await initiateCheckoutSession({
+      invoiceId: invoice?._id,
+      lineItems: invoice?.items,
+      stripeAccountId: invoice?.paymentMethods.stripe.accountId,
+    });
+  };
+
+  const isInvoicePaid = invoice?.status === InvoiceStatus.PAID;
+
+  const getInvoicePaymentMethod = (paymentMethod: PaymentTypes) => {
+    switch (paymentMethod) {
+      case 'stripe':
+        return 'Debit/Credit via Stripe';
+      case 'manual':
+        return 'Payment was manually marked as paid';
+      default:
+        return '';
+    }
+  };
+
+  return (
+    <InvoicePageShell header={!isLoading && <InvoicePayHeader invoice={invoice} />}>
+      {isLoading && <LoadingLoader height="100vh" />}
+      {!isLoading && (
+        <Container className="pt-[80px]" size="lg">
+          <Grid gutter="lg">
+            <Col span={8}>
+              <InvoicePreview invoice={invoice} />
+            </Col>
+            <Col span={4}>
+              <Box className="space-y-4">
+                {!isInvoicePaid && (
+                  <>
+                    <Title order={2}>Pay now with</Title>
+                    {invoice?.paymentMethods?.stripe?.connected && (
+                      <Paper padding="lg" shadow="sm">
+                        <Box className="space-y-3">
+                          <Text>Credit & Debit cards</Text>
+                          <Box className="flex justify-between items-center">
+                            <img
+                              alt="Visa Logo"
+                              src="/assets/logos/visa-logo.svg"
+                              style={{ width: '50px', height: '20px' }}
+                            />
+                            <img
+                              alt="Mastercard Logo"
+                              src="/assets/logos/mastercard-logo.svg"
+                              style={{ width: '50px', height: '30px' }}
+                            />
+                            <img
+                              alt="American Express Logo"
+                              src="/assets/logos/aexpress-logo.svg"
+                              style={{ width: '50px', height: '30px' }}
+                            />
+                            <img
+                              alt="Apple Pay Logo"
+                              src="/assets/logos/applepay-logo.svg"
+                              style={{ width: '50px', height: '40px' }}
+                            />
+                            <img
+                              alt="Google Pay Logo"
+                              src="/assets/logos/gpay-logo.svg"
+                              style={{ width: '50px', height: '40px' }}
+                            />
+                          </Box>
+                          <Button
+                            className="w-full"
+                            onClick={createCheckoutSession}
+                            loading={isStripeLoading}
+                          >
+                            Pay now
+                          </Button>
+                        </Box>
+                      </Paper>
+                    )}
+                    {invoice?.paymentMethods?.zelle?.connected && (
+                      <Paper padding="lg" shadow="sm">
+                        <Box className="space-y-3">
+                          <img
+                            src="/assets/logos/zelle-logo.svg"
+                            alt="Zelle Logo"
+                            style={{
+                              width: '80px',
+                              height: '35px',
+                              marginLeft: '-13px',
+                            }}
+                          />
+                          <Text>
+                            Zelle payments are processed outside of Relance.{' '}
+                            <Link>Learn what this means</Link>
+                          </Text>
+                          <Button className="w-full" onClick={toggleOpenZelleDialog}>
+                            Pay now
+                          </Button>
+                        </Box>
+                      </Paper>
+                    )}
+                  </>
+                )}
+              </Box>
+            </Col>
+          </Grid>
+        </Container>
+      )}
+
+      <InvoiceZellePayModal
+        opened={openZelleDialog}
+        onClose={toggleOpenZelleDialog}
+        accountId={invoice?.paymentMethods?.zelle?.accountId || ''}
+      />
+    </InvoicePageShell>
+  );
+}
