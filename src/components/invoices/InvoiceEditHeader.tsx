@@ -4,9 +4,8 @@ import { useToggle } from 'react-use';
 import { useRecoilValue } from 'recoil';
 import { isEqual } from 'lodash';
 import { ActionIcon, Box, Group, Header, Title } from '@mantine/core';
-import { useNotifications } from '@mantine/notifications';
-import { FiArrowLeft, FiSave, FiSend, FiEye, FiEyeOff, FiCheck } from 'react-icons/fi';
-import { useIsDarkMode } from '@/hooks/useIsDarkMode';
+import { FiArrowLeft, FiSave, FiSend, FiEye, FiEyeOff } from 'react-icons/fi';
+import { useIsDarkMode, useToasts } from '@/hooks';
 import { useUser } from '@/api/auth';
 import { useInvoiceSend, useInvoiceSendTest, useInvoiceUpdateMutation } from '@/api/invoices';
 import { CreateInvoice, Invoice } from '@/types';
@@ -29,7 +28,7 @@ export default function InvoiceEditHeader({ openPreview, toggleOpenPreview, invo
   const router = useRouter();
   const isDarkMode = useIsDarkMode();
   const invoice = useRecoilValue(createInvoiceState);
-  const notifications = useNotifications();
+  const toasts = useToasts();
   const [openSendDialog, toggleOpenSendDialog] = useToggle(false);
   const [unsavedModal, openUnsavedModal, closeUnsavedModal] = useDialog();
   const [sendUserCopy, setSendUserCopy] = useState(false);
@@ -74,12 +73,7 @@ export default function InvoiceEditHeader({ openPreview, toggleOpenPreview, invo
         subtotal: getInvoiceSubtotal(invoice?.items),
         total: getInvoiceTotal({ ...invoice }),
       } as CreateInvoice);
-      notifications.showNotification({
-        title: 'Success',
-        message: 'Invoice Updated',
-        color: 'green',
-        icon: <FiCheck />,
-      });
+      toasts.success('Invoice Updated');
     } catch (error) {
       console.log(error);
     }

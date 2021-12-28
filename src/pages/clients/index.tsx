@@ -4,29 +4,20 @@ import {
   useClientDeleteMutation,
   useClients,
 } from '@/api/clients';
+import { Box, Container, Group, Paper, Title, Text, ActionIcon } from '@mantine/core';
+import { useMemo, useState } from 'react';
+import { FiPlus, FiTrash2, FiEye } from 'react-icons/fi';
+import { useToggle } from 'react-use';
+import { formatClients } from '@/utils/formatters/formatClients';
 import PageLayout from '@/components/layouts/PageLayout';
 import Button from '@/components/shared/Button';
 import Search from '@/components/shared/Search';
 import DataTable from '@/components/shared/DataTable';
-import {
-  Box,
-  Container,
-  Group,
-  Loader,
-  Paper,
-  Title,
-  Text,
-  ActionIcon,
-  Tooltip,
-} from '@mantine/core';
-import { useMemo, useState } from 'react';
-import { FiPlus, FiTrash2, FiEdit, FiEye } from 'react-icons/fi';
-import { useToggle } from 'react-use';
-import { formatClients } from '@/utils/formatters/formatClients';
 import Avatar from '@/components/shared/Avatar';
 import ClientCreateModal from '@/components/clients/ClientCreateModal';
 import Link from '@/components/shared/Link';
 import DeleteModal from '@/components/shared/DeleteModal';
+import LoadingLoader from '@/components/shared/LoadingLoader';
 
 export default function ClientsPage() {
   const [openDeleteDialog, toggleOpenDeleteDialog] = useToggle(false);
@@ -121,11 +112,7 @@ export default function ClientsPage() {
 
   return (
     <PageLayout>
-      {isLoading && (
-        <Box className="flex justify-center items-center h-[80vh]">
-          <Loader />
-        </Box>
-      )}
+      {isLoading && <LoadingLoader height="90vh" />}
 
       {!isLoading && (
         <Container size="xl">
@@ -148,7 +135,7 @@ export default function ClientsPage() {
                   </Button>
                 </Box>
               )}
-              <Paper shadow="sm">
+              <Paper shadow="sm" className="p-0" withBorder>
                 <DataTable columns={columns} data={data} setSelectedIds={setSelectedIds} />
               </Paper>
             </Box>

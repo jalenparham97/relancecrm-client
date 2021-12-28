@@ -15,7 +15,7 @@ export default function InvoiceDetailsPage() {
 
   return (
     <InvoicePageShell header={!isLoading && <InvoiceDetailsHeader invoice={invoice} />}>
-      {isLoading && <LoadingLoader height="100vh" />}
+      {isLoading && <LoadingLoader height="90vh" />}
       {!isLoading && (
         <Container className="pt-[80px]" size="xl">
           <Grid>
@@ -23,7 +23,7 @@ export default function InvoiceDetailsPage() {
               <InvoicePreview invoice={invoice} />
             </Col>
             <Col span={4}>
-              <Paper padding="lg" shadow="sm">
+              <Paper padding="lg" shadow="sm" withBorder>
                 <Box className="space-y-3">
                   <Group position="apart">
                     <Title order={3}>Details</Title>

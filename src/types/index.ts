@@ -24,3 +24,9 @@ export type ServiceResponse<T> = {
   skip?: number;
   total: number;
 };
+
+export type PaginationParams = {
+  startId?: string;
+  skip?: number;
+  limit?: number;
+};

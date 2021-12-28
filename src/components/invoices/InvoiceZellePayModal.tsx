@@ -1,5 +1,5 @@
 import { Modal, Button, Group, ModalProps, Box, Text, ActionIcon, Tooltip } from '@mantine/core';
-import { useNotifications } from '@mantine/notifications';
+import { useToasts } from '@/hooks';
 import { FiCheck, FiCopy } from 'react-icons/fi';
 import { useCopyToClipboard } from 'react-use';
 
@@ -10,16 +10,11 @@ interface Props extends ModalProps {
 
 export default function InvoiceZellePayModal({ opened, onClose, size, accountId }: Props) {
   const [_, copyToClipboard] = useCopyToClipboard();
-  const notifications = useNotifications();
+  const toasts = useToasts();
 
   const copyAccountId = () => {
     copyToClipboard(accountId);
-    notifications.showNotification({
-      title: 'Success',
-      message: 'Zelle account info copied!',
-      color: 'green',
-      icon: <FiCheck />,
-    });
+    toasts.success('Zelle account info copied!');
   };
 
   return (

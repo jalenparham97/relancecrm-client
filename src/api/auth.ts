@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useQueryClient } from 'react-query';
 import { userState, useRecoilState, useRecoilValue, useSetRecoilState } from '@/store/store';
 import { authService } from '@/services/auth.service';
-import { firebaseAuth } from 'libs/firebase';
+import { firebaseAuth } from '@/libs/firebase';
 import { User, FirebaseUser, UserSignupData, UserLoginData } from '@/types';
 import { isEmpty } from 'lodash';
 import { getFullName, getInitials } from '@/utils';

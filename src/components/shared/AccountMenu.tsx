@@ -37,7 +37,7 @@ export default function AccountMenu({ ...otherProps }: Props) {
         icon={<FiUser />}
         className="hover:bg-gray-500 hover:bg-opacity-20"
       >
-        My account
+        Account
       </Menu.Item>
       <Menu.Item
         component={Link}

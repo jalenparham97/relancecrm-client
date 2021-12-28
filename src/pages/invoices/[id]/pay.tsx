@@ -41,7 +41,7 @@ export default function InvoicePayPage() {
 
   return (
     <InvoicePageShell header={!isLoading && <InvoicePayHeader invoice={invoice} />}>
-      {isLoading && <LoadingLoader height="100vh" />}
+      {isLoading && <LoadingLoader height="90vh" />}
       {!isLoading && (
         <Container className="pt-[80px]" size="lg">
           <Grid gutter="lg">
@@ -54,7 +54,7 @@ export default function InvoicePayPage() {
                   <>
                     <Title order={2}>Pay now with</Title>
                     {invoice?.paymentMethods?.stripe?.connected && (
-                      <Paper padding="lg" shadow="sm">
+                      <Paper padding="lg" shadow="sm" withBorder>
                         <Box className="space-y-3">
                           <Text>Credit & Debit cards</Text>
                           <Box className="flex justify-between items-center">
@@ -95,7 +95,7 @@ export default function InvoicePayPage() {
                       </Paper>
                     )}
                     {invoice?.paymentMethods?.zelle?.connected && (
-                      <Paper padding="lg" shadow="sm">
+                      <Paper padding="lg" shadow="sm" withBorder>
                         <Box className="space-y-3">
                           <img
                             src="/assets/logos/zelle-logo.svg"

@@ -14,13 +14,13 @@ import DataTable from '@/components/shared/DataTable';
 import InvoiceCreateModal from '@/components/invoices/InvoiceCreateModal';
 import InvoiceActionsMenu from '@/components/invoices/InvoiceActionsMenu';
 import InvoiceStatusBadge from '@/components/invoices/InvoiceStatusBadge';
+import LoadingLoader from '@/components/shared/LoadingLoader';
 
 export default function InvoicesPage() {
   const [openModal, toggleOpenModal, closeModal] = useDialog();
   const [openDeleteManyModal, toggleOpenDeleteManyModal, closeDeleteManyModal] = useDialog();
   const { data: invoices, isLoading } = useInvoices();
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
-  const [selectedId, setSelectedId] = useState('');
 
   const handleInvoiceSubmit = useInvoiceAddMutation();
   const handelDeleteInvoices = useInvoiceDeleteManyMutation(selectedIds);
@@ -97,11 +97,7 @@ export default function InvoicesPage() {
 
   return (
     <PageLayout>
-      {isLoading && (
-        <Box className="flex justify-center items-center h-[80vh]">
-          <Loader />
-        </Box>
-      )}
+      {isLoading && <LoadingLoader height="90vh" />}
 
       {!isLoading && (
         <Container size="xl">
@@ -124,7 +120,7 @@ export default function InvoicesPage() {
                   </Button>
                 </Box>
               )}
-              <Paper shadow="sm">
+              <Paper shadow="sm" withBorder>
                 <DataTable columns={columns} data={data} setSelectedIds={setSelectedIds} />
               </Paper>
             </Box>

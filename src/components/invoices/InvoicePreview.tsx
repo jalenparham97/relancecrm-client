@@ -9,7 +9,7 @@ interface Props {
 
 export default function InvoicePreview({ invoice }: Props) {
   return (
-    <Paper shadow="sm" padding="xl">
+    <Paper shadow="sm" padding="xl" withBorder>
       <Group direction="column">
         <Title order={2}>INVOICE</Title>
         <Box>

@@ -51,15 +51,15 @@ const PageLayout = ({ children, ...otherProps }) => {
             <Box className="w-full grid gap-1">
               <NavListItem href="/" icon={<FiHome />} text="Dashboard" />
               <NavListItem href="/clients" icon={<FiUsers />} text="Clients" />
-              <NavListItem href="/tasks" icon={<FiCheckSquare />} text="Tasks" />
               <NavListItemCustom href="/invoices" icon="invoices" text="Invoices" />
+              <NavListItem href="/tasks" icon={<FiCheckSquare />} text="Tasks" />
             </Box>
           </Navbar>
         }
         styles={(theme) => ({
           main: {
             backgroundColor:
-              theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[1],
+              theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[1],
             paddingRight: '16px',
             paddingBottom: '30px',
           },

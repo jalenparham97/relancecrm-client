@@ -12,6 +12,7 @@ import InvoiceEditHeader from '@/components/invoices/InvoiceEditHeader';
 import InvoiceEditForm from '@/components/invoices/InvoiceEditForm';
 import InvoicePreview from '@/components/invoices/InvoicePreview';
 import InvoiceEditSideDrawer from '@/components/invoices/InvoiceEditSideDrawer';
+import LoadingLoader from '@/components/shared/LoadingLoader';
 
 const drawerWidth = 350;
 
@@ -59,11 +60,7 @@ export default function InvoiceEditPage() {
         )
       }
     >
-      {isLoading && (
-        <Box className="flex justify-center items-center h-[100vh]">
-          <Loader />
-        </Box>
-      )}
+      {isLoading && <LoadingLoader height="90vh" />}
       {!isLoading && (
         <Box className="flex">
           <Box sx={{ width: `calc(100% - ${drawerWidth}px)` }}>

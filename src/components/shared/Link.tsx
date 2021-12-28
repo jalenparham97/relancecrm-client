@@ -30,7 +30,13 @@ export default function Link({
   }
 
   return (
-    <Anchor href={href} className={className} {...otherProps}>
+    <Anchor
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={className}
+      {...otherProps}
+    >
       {children}
     </Anchor>
   );

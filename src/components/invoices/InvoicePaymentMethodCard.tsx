@@ -36,7 +36,13 @@ export default function InvoicePaymentMethodCard({
   };
 
   return (
-    <Paper padding={5} withBorder sx={{ borderColor: isConnected ? colors.indigo[5] : '' }}>
+    <Paper
+      padding={5}
+      withBorder
+      className={`border-gray-600 ${!isConnected && 'border-opacity-30'} ${
+        isConnected && 'border-indigo-500 border-opacity-60'
+      }`}
+    >
       <Group position="apart" align="center">
         <Group spacing="xs">
           <img src={logo} alt="" style={{ width: '90px', height: '50px' }} />

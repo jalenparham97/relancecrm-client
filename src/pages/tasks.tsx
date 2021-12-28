@@ -1,18 +1,5 @@
-import { useCallback, useState } from 'react';
-import {
-  Box,
-  Container,
-  Loader,
-  Paper,
-  Group,
-  Title,
-  Text,
-  Menu,
-  Divider,
-  Grid,
-  Col,
-  Tabs as MantineTabs,
-} from '@mantine/core';
+import { useCallback, useState, useRef, useEffect } from 'react';
+import { Box, Container, Paper, Group, Title, Tabs as MantineTabs, Text } from '@mantine/core';
 import {
   useTasks,
   useTaskAddMutation,
@@ -20,24 +7,33 @@ import {
   useTaskUpdateMutation,
 } from '@/api/tasks';
 import { FiPlus } from 'react-icons/fi';
-import { formatDate } from '@/utils';
 import { debounce, isEmpty } from 'lodash';
+import { useIntersectionObserver, useDialog } from '@/hooks';
 import PageLayout from '@/components/layouts/PageLayout';
 import Button from '@/components/shared/Button';
 import TabPanel from '@/components/shared/TabPanel';
-import DeleteModal from '@/components/shared/DeleteModal';
 import Search from '@/components/shared/Search';
 import TaskCreateModal from '@/components/tasks/TaskCreateModal';
-import { useToggle } from 'react-use';
 import TaskItem from '@/components/tasks/TaskItem';
-import { useDialog } from '@/hooks/useDialog';
 import Tabs from '@/components/shared/Tabs';
+import LoadingLoader from '@/components/shared/LoadingLoader';
+import { Task } from '@/types';
+import { getPageItemsCount } from '@/utils';
+import { useIntersection } from '@mantine/hooks';
 
 export default function TasksPage() {
   const [openTaskCreateModal, toggleTaskCreateModal, closeTaskCreateDialog] = useDialog();
   const [searchInput, setSearchInput] = useState('');
   const [activeTab, setActiveTab] = useState(0);
-  const { isLoading, data: tasks } = useTasks();
+  const { isLoading, data: tasks, hasNextPage, fetchNextPage, isFetchingNextPage } = useTasks();
+
+  // const [ref, observer] = useIntersection({ threshold: 1 });
+
+  // useEffect(() => {
+  //   if (observer?.isIntersecting && hasNextPage) {
+  //     fetchNextPage();
+  //   }
+  // }, [observer?.isIntersecting]);
 
   const handleSearchChange = (e: React.ChangeEvent<{ value: string }>) => {
     setSearchInput(e.target.value);
@@ -63,14 +59,10 @@ export default function TasksPage() {
 
   return (
     <PageLayout>
-      {isLoading && (
-        <Box className="flex justify-center items-center h-[80vh]">
-          <Loader />
-        </Box>
-      )}
-      {!isLoading && (
-        <Container size="xl">
-          <Box>
+      <Box>
+        {isLoading && <LoadingLoader height="90vh" />}
+        {!isLoading && (
+          <Container size="xl">
             <Box className="flex justify-between items-center">
               <Title order={1}>Tasks</Title>
               <Group spacing="xs">
@@ -85,7 +77,7 @@ export default function TasksPage() {
               </Group>
             </Box>
 
-            <Paper className="mt-4" shadow="sm">
+            <Paper className="mt-4" shadow="sm" withBorder>
               <Tabs
                 active={activeTab}
                 onTabChange={setActiveTab}
@@ -111,7 +103,7 @@ export default function TasksPage() {
                     ))}
                 </TabPanel>
                 <TabPanel index={1} activeIndex={activeTab}>
-                  {!isEmpty(tasks?.data.filter(filterCompletedTasks)) &&
+                  {/* {!isEmpty(tasks?.data.filter(filterCompletedTasks)) &&
                     tasks?.data.filter(filterCompletedTasks).map((task, index) => (
                       <Box key={task._id}>
                         <TaskItem
@@ -122,19 +114,26 @@ export default function TasksPage() {
                           loading={handelDeleteTask.isLoading}
                         />
                       </Box>
-                    ))}
+                    ))} */}
                 </TabPanel>
               </Box>
             </Paper>
-          </Box>
-        </Container>
-      )}
+            <div className="pb-6 pt-6">
+              {isFetchingNextPage && (
+                <Box>
+                  <LoadingLoader height="100%" />
+                </Box>
+              )}
+            </div>
+          </Container>
+        )}
 
-      <TaskCreateModal
-        opened={openTaskCreateModal}
-        onClose={closeTaskCreateDialog}
-        submit={handleTaskSubmit.mutateAsync}
-      />
+        <TaskCreateModal
+          opened={openTaskCreateModal}
+          onClose={closeTaskCreateDialog}
+          submit={handleTaskSubmit.mutateAsync}
+        />
+      </Box>
     </PageLayout>
   );
 }

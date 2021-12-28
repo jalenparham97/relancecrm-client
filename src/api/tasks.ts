@@ -1,16 +1,49 @@
-import { useMutation, useQueryClient, useQuery } from 'react-query';
+import { useMutation, useQueryClient, useQuery, useInfiniteQuery, InfiniteData } from 'react-query';
 import { tasksService } from '@/services/tasks.service';
-import { ServiceResponse, Task, TaskResponse, UpdateParams } from '@/types';
+import { PaginationParams, ServiceResponse, Task, TaskResponse, UpdateParams } from '@/types';
 
 const queryKey = 'tasks';
 const service = tasksService;
 
-export const useTasks = (filter?: Partial<Task>) => {
-  const fetchData = async () => {
-    const data = await service.find<Task>(filter);
+export const useTasks = (filter?: Partial<Task>, paginationParams?: PaginationParams) => {
+  const queryClient = useQueryClient();
+
+  const fetchData = async (pageParam?: string) => {
+    const data = await service.find<Task>(filter, { startId: pageParam });
     return data;
   };
-  return useQuery(queryKey, fetchData);
+  const {
+    isLoading,
+    data: tasks,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery(queryKey, async ({ pageParam }) => await fetchData(pageParam), {
+    getNextPageParam: (lastPage) => {
+      if (lastPage.data.length > 0) {
+        return lastPage.data[lastPage.data.length - 1]?._id;
+      }
+      return false;
+    },
+  });
+
+  let allItems = [];
+
+  console.log({ tasks });
+
+  if (tasks) {
+    // allItems = tasks?.pages
+    //   .map((page) => page.data.map((item) => item))
+    //   .reduce((items, item) => items.concat(item));
+  }
+
+  const data: ServiceResponse<Task> = { total: 0, data: allItems };
+
+  console.log({ data });
+
+  queryClient.setQueryData(queryKey, data);
+
+  return { isLoading, data, hasNextPage, fetchNextPage, isFetchingNextPage };
 };
 
 export const useTasksClient = (id: string) => {
@@ -40,7 +73,7 @@ export const useTaskAddMutation = () => {
     },
     onSuccess: async (newEntity: Task, _, { previousQueryData }) => {
       queryClient.setQueryData<ServiceResponse<TaskResponse>>(queryKey, {
-        total: previousQueryData.total + 1,
+        total: previousQueryData.total,
         data: [newEntity, ...previousQueryData.data],
       });
     },
