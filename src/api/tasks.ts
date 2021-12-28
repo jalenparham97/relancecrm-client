@@ -6,44 +6,11 @@ const queryKey = 'tasks';
 const service = tasksService;
 
 export const useTasks = (filter?: Partial<Task>, paginationParams?: PaginationParams) => {
-  const queryClient = useQueryClient();
-
-  const fetchData = async (pageParam?: string) => {
-    const data = await service.find<Task>(filter, { startId: pageParam });
+  const fetchData = async () => {
+    const data = await service.find<Task>(filter);
     return data;
   };
-  const {
-    isLoading,
-    data: tasks,
-    hasNextPage,
-    fetchNextPage,
-    isFetchingNextPage,
-  } = useInfiniteQuery(queryKey, async ({ pageParam }) => await fetchData(pageParam), {
-    getNextPageParam: (lastPage) => {
-      if (lastPage.data.length > 0) {
-        return lastPage.data[lastPage.data.length - 1]?._id;
-      }
-      return false;
-    },
-  });
-
-  let allItems = [];
-
-  console.log({ tasks });
-
-  if (tasks) {
-    // allItems = tasks?.pages
-    //   .map((page) => page.data.map((item) => item))
-    //   .reduce((items, item) => items.concat(item));
-  }
-
-  const data: ServiceResponse<Task> = { total: 0, data: allItems };
-
-  console.log({ data });
-
-  queryClient.setQueryData(queryKey, data);
-
-  return { isLoading, data, hasNextPage, fetchNextPage, isFetchingNextPage };
+  return useQuery(queryKey, fetchData);
 };
 
 export const useTasksClient = (id: string) => {

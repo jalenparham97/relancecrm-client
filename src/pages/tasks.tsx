@@ -25,7 +25,9 @@ export default function TasksPage() {
   const [openTaskCreateModal, toggleTaskCreateModal, closeTaskCreateDialog] = useDialog();
   const [searchInput, setSearchInput] = useState('');
   const [activeTab, setActiveTab] = useState(0);
-  const { isLoading, data: tasks, hasNextPage, fetchNextPage, isFetchingNextPage } = useTasks();
+  const { isLoading, data: tasks } = useTasks();
+
+  console.log({ tasks });
 
   // const [ref, observer] = useIntersection({ threshold: 1 });
 
@@ -119,11 +121,11 @@ export default function TasksPage() {
               </Box>
             </Paper>
             <div className="pb-6 pt-6">
-              {isFetchingNextPage && (
+              {/* {isFetchingNextPage && (
                 <Box>
                   <LoadingLoader height="100%" />
                 </Box>
-              )}
+              )} */}
             </div>
           </Container>
         )}
