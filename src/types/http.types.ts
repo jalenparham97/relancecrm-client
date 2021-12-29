@@ -3,6 +3,7 @@ export type ServiceResponse<T> = {
   limit?: number;
   skip?: number;
   total: number;
+  nextId?: string;
 };
 
 export enum HttpStatus {

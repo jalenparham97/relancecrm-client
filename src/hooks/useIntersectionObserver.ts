@@ -10,7 +10,6 @@ interface IntersectionObserverHookProps {
 }
 
 export function useIntersectionObserver({
-  root,
   target,
   onIntersect,
   threshold = 1.0,
@@ -18,20 +17,13 @@ export function useIntersectionObserver({
   enabled = true,
 }: IntersectionObserverHookProps) {
   useEffect(() => {
-    // if (!enabled) {
-    //   return;
-    // }
+    if (!enabled) {
+      return;
+    }
 
     const observer = new IntersectionObserver(
-      (entries) => {
-        console.log({ entries });
-        // return entries.forEach((entry) => entry.isIntersecting && onIntersect())
-      },
-      {
-        root: root && root.current,
-        rootMargin,
-        threshold,
-      }
+      (entries) => entries.forEach((entry) => entry.isIntersecting && onIntersect()),
+      { rootMargin, threshold }
     );
 
     const el = target && target.current;

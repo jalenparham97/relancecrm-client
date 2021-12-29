@@ -1,8 +1,9 @@
 import { useCallback, useState, useRef, useEffect } from 'react';
 import { Box, Container, Paper, Group, Title, Tabs as MantineTabs, Text } from '@mantine/core';
 import {
-  useTasks,
+  usePaginatedTasks,
   useTaskAddMutation,
+  useTaskAddPaginatedMutation,
   useTaskDeleteMutation,
   useTaskUpdateMutation,
 } from '@/api/tasks';
@@ -18,22 +19,35 @@ import TaskItem from '@/components/tasks/TaskItem';
 import Tabs from '@/components/shared/Tabs';
 import LoadingLoader from '@/components/shared/LoadingLoader';
 import { Task } from '@/types';
-import { getPageItemsCount } from '@/utils';
+import { getPageItemsCount, mergePaginatedResults } from '@/utils';
 import { useIntersection } from '@mantine/hooks';
 
 export default function TasksPage() {
+  const loadMoreRef = useRef();
   const [openTaskCreateModal, toggleTaskCreateModal, closeTaskCreateDialog] = useDialog();
   const [searchInput, setSearchInput] = useState('');
   const [activeTab, setActiveTab] = useState(0);
-  const { isLoading, data: tasks, hasNextPage, fetchNextPage, isFetchingNextPage } = useTasks();
+  const {
+    isLoading,
+    data: tasks,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = usePaginatedTasks();
 
-  // const [ref, observer] = useIntersection({ threshold: 1 });
+  const [ref, observer] = useIntersection({ threshold: 1 });
 
-  // useEffect(() => {
-  //   if (observer?.isIntersecting && hasNextPage) {
-  //     fetchNextPage();
-  //   }
-  // }, [observer?.isIntersecting]);
+  useEffect(() => {
+    if (observer?.isIntersecting && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [observer?.isIntersecting]);
+
+  // useIntersectionObserver({
+  //   target: loadMoreRef,
+  //   onIntersect: fetchNextPage,
+  //   enabled: hasNextPage,
+  // });
 
   const handleSearchChange = (e: React.ChangeEvent<{ value: string }>) => {
     setSearchInput(e.target.value);
@@ -53,7 +67,7 @@ export default function TasksPage() {
 
   const onChange = useCallback(debounce(handleSearchChange, 3000), []);
 
-  const handleTaskSubmit = useTaskAddMutation();
+  const handleTaskSubmit = useTaskAddPaginatedMutation();
   const handleUpdateTask = useTaskUpdateMutation();
   const handelDeleteTask = useTaskDeleteMutation();
 
@@ -89,7 +103,18 @@ export default function TasksPage() {
 
               <Box sx={{ padding: '10px 20px' }}>
                 <TabPanel index={0} activeIndex={activeTab}>
-                  {!isEmpty(tasks?.data?.filter(filterActiveTasks)) &&
+                  {mergePaginatedResults(tasks).map((task, index) => (
+                    <Box key={task?._id}>
+                      <TaskItem
+                        task={task}
+                        index={index}
+                        onUpdate={handleUpdateTask.mutateAsync}
+                        onDelete={handelDeleteTask.mutateAsync}
+                        loading={handelDeleteTask.isLoading}
+                      />
+                    </Box>
+                  ))}
+                  {/* {!isEmpty(tasks?.data?.filter(filterActiveTasks)) &&
                     tasks?.data?.filter(filterActiveTasks).map((task, index) => (
                       <Box key={task?._id}>
                         <TaskItem
@@ -100,7 +125,7 @@ export default function TasksPage() {
                           loading={handelDeleteTask.isLoading}
                         />
                       </Box>
-                    ))}
+                    ))} */}
                 </TabPanel>
                 <TabPanel index={1} activeIndex={activeTab}>
                   {/* {!isEmpty(tasks?.data.filter(filterCompletedTasks)) &&
@@ -118,7 +143,7 @@ export default function TasksPage() {
                 </TabPanel>
               </Box>
             </Paper>
-            <div className="pb-6 pt-6">
+            <div ref={ref} className="pb-6 pt-6">
               {isFetchingNextPage && (
                 <Box>
                   <LoadingLoader height="100%" />

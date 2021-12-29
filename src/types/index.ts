@@ -18,13 +18,6 @@ export type FormProps<T> = {
   loading?: boolean;
 };
 
-export type ServiceResponse<T> = {
-  data: T[];
-  limit?: number;
-  skip?: number;
-  total: number;
-};
-
 export type PaginationParams = {
   startId?: string;
   skip?: number;

@@ -5,45 +5,19 @@ import { PaginationParams, ServiceResponse, Task, TaskResponse, UpdateParams } f
 const queryKey = 'tasks';
 const service = tasksService;
 
-export const useTasks = (filter?: Partial<Task>, paginationParams?: PaginationParams) => {
-  const queryClient = useQueryClient();
-
+export const usePaginatedTasks = (filter?: Partial<Task>, paginationParams?: PaginationParams) => {
   const fetchData = async (pageParam?: string) => {
     const data = await service.find<Task>(filter, { startId: pageParam });
     return data;
   };
-  const {
-    isLoading,
-    data: tasks,
-    hasNextPage,
-    fetchNextPage,
-    isFetchingNextPage,
-  } = useInfiniteQuery(queryKey, async ({ pageParam }) => await fetchData(pageParam), {
+  return useInfiniteQuery(queryKey, async ({ pageParam }) => await fetchData(pageParam), {
     getNextPageParam: (lastPage) => {
-      if (lastPage.data.length > 0) {
-        return lastPage.data[lastPage.data.length - 1]?._id;
+      if (lastPage.nextId) {
+        return lastPage.nextId;
       }
       return false;
     },
   });
-
-  let allItems = [];
-
-  console.log({ tasks });
-
-  if (tasks) {
-    // allItems = tasks?.pages
-    //   .map((page) => page.data.map((item) => item))
-    //   .reduce((items, item) => items.concat(item));
-  }
-
-  const data: ServiceResponse<Task> = { total: 0, data: allItems };
-
-  console.log({ data });
-
-  queryClient.setQueryData(queryKey, data);
-
-  return { isLoading, data, hasNextPage, fetchNextPage, isFetchingNextPage };
 };
 
 export const useTasksClient = (id: string) => {
@@ -60,6 +34,40 @@ export const useTasksProject = (id: string) => {
     return data;
   };
   return useQuery(`${queryKey}/${id}`, fetchData);
+};
+
+export const useTaskAddPaginatedMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation(async (newEntity: Task) => await service.create<TaskResponse>(newEntity), {
+    onMutate: async (newEntity: Task) => {
+      await queryClient.cancelQueries(queryKey);
+      const previousQueryData =
+        queryClient.getQueryData<InfiniteData<ServiceResponse<Task>>>(queryKey);
+      return { previousQueryData };
+    },
+    onSuccess: async (newEntity: Task, _, { previousQueryData }) => {
+      const otherPages = previousQueryData.pages.filter((page, index) => index !== 0);
+
+      const firstPage = previousQueryData.pages[0] || { data: [], total: 0 };
+
+      firstPage.data?.unshift(newEntity);
+
+      queryClient.setQueryData<InfiniteData<ServiceResponse<Task>>>(queryKey, {
+        pageParams: previousQueryData.pageParams,
+        pages: [firstPage, ...otherPages],
+      });
+    },
+    onError: (error, _, context) => {
+      console.log(error);
+      if (context?.previousQueryData) {
+        queryClient.setQueryData<InfiniteData<ServiceResponse<Task>>>(
+          queryKey,
+          context.previousQueryData
+        );
+      }
+    },
+  });
 };
 
 export const useTaskAddMutation = () => {

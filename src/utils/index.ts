@@ -7,6 +7,7 @@ export * from './getInvoicePaymentMethod';
 export * from './getPageItemsCount';
 export * from './getInvoicePaymentMethod';
 export * from './hasNextPage';
+export * from './mergePaginatedResults';
 export * from './formatters/formatDate';
 export * from './formatters/formatPhoneNumber';
 export * from './formatters/formatCurrency';
