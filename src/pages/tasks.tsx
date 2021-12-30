@@ -35,13 +35,17 @@ export default function TasksPage() {
     isFetchingNextPage,
   } = usePaginatedTasks();
 
-  const [ref, observer] = useIntersection({ threshold: 1 });
+  const [ref] = useIntersectionObserver({
+    threshold: 1,
+    onIntersect: fetchNextPage,
+    enabled: hasNextPage,
+  });
 
-  useEffect(() => {
-    if (observer?.isIntersecting && hasNextPage) {
-      fetchNextPage();
-    }
-  }, [observer?.isIntersecting]);
+  // useEffect(() => {
+  //   if (observer?.isIntersecting && hasNextPage) {
+  //     fetchNextPage();
+  //   }
+  // }, [observer?.isIntersecting]);
 
   // useIntersectionObserver({
   //   target: loadMoreRef,
@@ -103,7 +107,22 @@ export default function TasksPage() {
 
               <Box sx={{ padding: '10px 20px' }}>
                 <TabPanel index={0} activeIndex={activeTab}>
-                  {mergePaginatedResults(tasks).map((task, index) => (
+                  {tasks?.pages.map((page, pageIndex) => (
+                    <Box key={pageIndex} onClick={() => console.log({ pageIndex })}>
+                      {page.data.map((task, index) => (
+                        <Box key={task?._id}>
+                          <TaskItem
+                            task={task}
+                            index={index}
+                            onUpdate={handleUpdateTask.mutateAsync}
+                            onDelete={handelDeleteTask.mutateAsync}
+                            loading={handelDeleteTask.isLoading}
+                          />
+                        </Box>
+                      ))}
+                    </Box>
+                  ))}
+                  {/* {mergePaginatedResults(tasks).map((task, index) => (
                     <Box key={task?._id}>
                       <TaskItem
                         task={task}
@@ -113,7 +132,7 @@ export default function TasksPage() {
                         loading={handelDeleteTask.isLoading}
                       />
                     </Box>
-                  ))}
+                  ))} */}
                   {/* {!isEmpty(tasks?.data?.filter(filterActiveTasks)) &&
                     tasks?.data?.filter(filterActiveTasks).map((task, index) => (
                       <Box key={task?._id}>

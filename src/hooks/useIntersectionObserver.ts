@@ -1,41 +1,45 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
-interface IntersectionObserverHookProps {
-  root?: any;
-  target?: any;
+type IntersectionObserverHookProps = {
   onIntersect?: any;
-  threshold?: number;
-  rootMargin?: string;
   enabled?: boolean;
-}
+} & ConstructorParameters<typeof IntersectionObserver>[1];
 
-export function useIntersectionObserver({
-  target,
-  onIntersect,
-  threshold = 1.0,
-  rootMargin = '0px',
-  enabled = true,
-}: IntersectionObserverHookProps) {
+export function useIntersectionObserver<T extends HTMLElement = any>(
+  options?: IntersectionObserverHookProps
+): readonly [(element: T | null) => void, IntersectionObserverEntry | null] {
+  const [entry, setEntry] = useState<IntersectionObserverEntry>(null);
+
+  const observer = useRef<IntersectionObserver>();
+
+  const ref = useCallback(
+    (element: T | null) => {
+      if (observer.current) {
+        observer.current.disconnect();
+        observer.current = null;
+      }
+
+      if (element === null) {
+        setEntry(null);
+        return;
+      }
+
+      observer.current = new IntersectionObserver(([_entry]) => {
+        setEntry(_entry);
+      }, options);
+
+      observer.current.observe(element);
+    },
+    [options?.rootMargin, options?.root, options?.threshold]
+  );
+
   useEffect(() => {
-    if (!enabled) {
-      return;
+    if (!options.enabled) return;
+
+    if (entry?.isIntersecting) {
+      options.onIntersect();
     }
+  }, [entry?.isIntersecting]);
 
-    const observer = new IntersectionObserver(
-      (entries) => entries.forEach((entry) => entry.isIntersecting && onIntersect()),
-      { rootMargin, threshold }
-    );
-
-    const el = target && target.current;
-
-    if (!el) {
-      return;
-    }
-
-    observer.observe(el);
-
-    return () => {
-      observer.unobserve(el);
-    };
-  }, [target.current, enabled]);
+  return [ref, entry] as const;
 }

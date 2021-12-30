@@ -12,7 +12,7 @@ export const usePaginatedTasks = (filter?: Partial<Task>, paginationParams?: Pag
   };
   return useInfiniteQuery(queryKey, async ({ pageParam }) => await fetchData(pageParam), {
     getNextPageParam: (lastPage) => {
-      if (lastPage.nextId) {
+      if (lastPage.nextId || lastPage.total > 13) {
         return lastPage.nextId;
       }
       return false;
