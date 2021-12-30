@@ -1,49 +1,45 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
-interface IntersectionObserverHookProps {
-  root?: any;
-  target?: any;
+type IntersectionObserverHookProps = {
   onIntersect?: any;
-  threshold?: number;
-  rootMargin?: string;
   enabled?: boolean;
-}
+} & ConstructorParameters<typeof IntersectionObserver>[1];
 
-export function useIntersectionObserver({
-  root,
-  target,
-  onIntersect,
-  threshold = 1.0,
-  rootMargin = '0px',
-  enabled = true,
-}: IntersectionObserverHookProps) {
-  useEffect(() => {
-    // if (!enabled) {
-    //   return;
-    // }
+export function useIntersectionObserver<T extends HTMLElement = any>(
+  options?: IntersectionObserverHookProps
+): readonly [(element: T | null) => void, IntersectionObserverEntry | null] {
+  const [entry, setEntry] = useState<IntersectionObserverEntry>(null);
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        console.log({ entries });
-        // return entries.forEach((entry) => entry.isIntersecting && onIntersect())
-      },
-      {
-        root: root && root.current,
-        rootMargin,
-        threshold,
+  const observer = useRef<IntersectionObserver>();
+
+  const ref = useCallback(
+    (element: T | null) => {
+      if (observer.current) {
+        observer.current.disconnect();
+        observer.current = null;
       }
-    );
 
-    const el = target && target.current;
+      if (element === null) {
+        setEntry(null);
+        return;
+      }
 
-    if (!el) {
-      return;
+      observer.current = new IntersectionObserver(([_entry]) => {
+        setEntry(_entry);
+      }, options);
+
+      observer.current.observe(element);
+    },
+    [options?.rootMargin, options?.root, options?.threshold]
+  );
+
+  useEffect(() => {
+    if (!options.enabled) return;
+
+    if (entry?.isIntersecting) {
+      options.onIntersect();
     }
+  }, [entry?.isIntersecting]);
 
-    observer.observe(el);
-
-    return () => {
-      observer.unobserve(el);
-    };
-  }, [target.current, enabled]);
+  return [ref, entry] as const;
 }

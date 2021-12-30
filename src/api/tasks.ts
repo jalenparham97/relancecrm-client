@@ -1,16 +1,41 @@
-import { useMutation, useQueryClient, useQuery, useInfiniteQuery, InfiniteData } from 'react-query';
+import { useMutation, useQueryClient, useQuery } from 'react-query';
 import { tasksService } from '@/services/tasks.service';
 import { PaginationParams, ServiceResponse, Task, TaskResponse, UpdateParams } from '@/types';
+import { isEmpty } from 'lodash';
 
 const queryKey = 'tasks';
 const service = tasksService;
 
 export const useTasks = (filter?: Partial<Task>, paginationParams?: PaginationParams) => {
+  const queryClient = useQueryClient();
+
+  const previousQueryData = queryClient.getQueryData<ServiceResponse<TaskResponse>>(queryKey);
+
+  console.log({ previousQueryData });
+
+  const fetchNextPage = async () => {
+    const data = await queryClient.fetchQuery(queryKey, () =>
+      service.find<Task>(filter, { startId: previousQueryData?.nextId })
+    );
+    // const data = await service.find<Task>(filter, { startId: previousQueryData?.nextId });
+
+    queryClient.setQueryData<ServiceResponse<TaskResponse>>(queryKey, {
+      total: previousQueryData.total,
+      data: [...previousQueryData.data, ...data.data],
+      nextId: data.nextId,
+    });
+  };
+
   const fetchData = async () => {
     const data = await service.find<Task>(filter);
     return data;
   };
-  return useQuery(queryKey, fetchData);
+
+  const queryResult = useQuery(queryKey, fetchData, { keepPreviousData: true });
+
+  const hasMore = !isEmpty(previousQueryData?.nextId);
+
+  return { fetchNextPage, hasMore, ...queryResult };
 };
 
 export const useTasksClient = (id: string) => {

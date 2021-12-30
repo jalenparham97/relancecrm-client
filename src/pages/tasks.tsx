@@ -1,4 +1,4 @@
-import { useCallback, useState, useRef, useEffect } from 'react';
+import { useCallback, useState } from 'react';
 import { Box, Container, Paper, Group, Title, Tabs as MantineTabs, Text } from '@mantine/core';
 import {
   useTasks,
@@ -17,25 +17,20 @@ import TaskCreateModal from '@/components/tasks/TaskCreateModal';
 import TaskItem from '@/components/tasks/TaskItem';
 import Tabs from '@/components/shared/Tabs';
 import LoadingLoader from '@/components/shared/LoadingLoader';
-import { Task } from '@/types';
-import { getPageItemsCount } from '@/utils';
-import { useIntersection } from '@mantine/hooks';
 
 export default function TasksPage() {
   const [openTaskCreateModal, toggleTaskCreateModal, closeTaskCreateDialog] = useDialog();
   const [searchInput, setSearchInput] = useState('');
   const [activeTab, setActiveTab] = useState(0);
-  const { isLoading, data: tasks } = useTasks();
+  const { isLoading, data: tasks, fetchNextPage, hasMore, isFetching, isPreviousData } = useTasks();
 
-  console.log({ tasks });
+  console.log({ isPreviousData });
 
-  // const [ref, observer] = useIntersection({ threshold: 1 });
-
-  // useEffect(() => {
-  //   if (observer?.isIntersecting && hasNextPage) {
-  //     fetchNextPage();
-  //   }
-  // }, [observer?.isIntersecting]);
+  const [moreRef] = useIntersectionObserver({
+    threshold: 1,
+    onIntersect: fetchNextPage,
+    enabled: hasMore,
+  });
 
   const handleSearchChange = (e: React.ChangeEvent<{ value: string }>) => {
     setSearchInput(e.target.value);
@@ -120,12 +115,12 @@ export default function TasksPage() {
                 </TabPanel>
               </Box>
             </Paper>
-            <div className="pb-6 pt-6">
-              {/* {isFetchingNextPage && (
+            <div ref={moreRef} className="pb-6 pt-6">
+              {isFetching && (
                 <Box>
                   <LoadingLoader height="100%" />
                 </Box>
-              )} */}
+              )}
             </div>
           </Container>
         )}
