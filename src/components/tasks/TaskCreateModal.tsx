@@ -2,11 +2,13 @@ import { Modal, Button, Group, ModalProps, Box, TextInput } from '@mantine/core'
 import { useForm } from 'react-hook-form';
 import { FiCalendar } from 'react-icons/fi';
 import * as yup from 'yup';
-import { Task } from '@/types';
+import { useProjects } from '@/api/projects';
+import { Task, Project } from '@/types';
 import { useIsDarkMode, useColors, useYupResolver } from '@/hooks';
 import { useState, useCallback } from 'react';
 import { DatePicker } from '@mantine/dates';
 import { debounce } from 'lodash';
+import ProjectPicker from '@/components/projects/ProjectPicker';
 
 const schema = yup.object().shape({
   content: yup.string().trim().required('Task name is a required field'),
@@ -15,12 +17,20 @@ const schema = yup.object().shape({
 interface Props extends ModalProps {
   isLoading?: boolean;
   submit?: (data: Task) => Promise<Task>;
+  hideProjectPicker?: boolean;
 }
 
-export default function TaskCreateModal({ opened, onClose, submit }: Props) {
+export default function TaskCreateModal({
+  opened,
+  onClose,
+  submit,
+  hideProjectPicker = false,
+}: Props) {
   const isDarkMode = useIsDarkMode();
   const colors = useColors();
   const [dueDate, setDueDate] = useState<Date>(null);
+  const [project, setProject] = useState<Project>({});
+  const { data: projects } = useProjects();
   const resolver = useYupResolver(schema);
   const {
     register,
@@ -37,7 +47,11 @@ export default function TaskCreateModal({ opened, onClose, submit }: Props) {
 
   const handleFormSubmit = async (data: Task) => {
     try {
-      await submit({ ...data, dueDate: dueDate?.toISOString() });
+      if (hideProjectPicker) {
+        await submit({ ...data, dueDate: dueDate?.toISOString() });
+      } else {
+        await submit({ ...data, dueDate: dueDate?.toISOString(), project: project?._id || null });
+      }
       if (!isSubmitting) {
         handleFormClose();
       }
@@ -75,6 +89,10 @@ export default function TaskCreateModal({ opened, onClose, submit }: Props) {
             value={dueDate}
             onChange={handleEndDateChange}
           />
+
+          {!hideProjectPicker && (
+            <ProjectPicker projects={projects?.data} setProject={setProject} />
+          )}
 
           <Box mt={20}>
             <Group spacing="sm" position="right">

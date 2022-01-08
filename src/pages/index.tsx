@@ -1,9 +1,12 @@
-import { Box, Container, Divider, Group, SimpleGrid, Title } from '@mantine/core';
-import { FiUsers, FiDollarSign } from 'react-icons/fi';
+import { Box, Container, SimpleGrid, Title } from '@mantine/core';
+import { FiDollarSign } from 'react-icons/fi';
+import { formatCurrency } from '@/utils';
 import PageLayout from '@/components/layouts/PageLayout';
 import StatCard from '@/components/shared/StatCard';
-import { formatCurrency } from '@/utils';
-import TasksDashboardWidget from '@/components/tasks/TasksDashboardWidget';
+import DashboardTasksWidget from '@/components/dashboard/DashboardTasksWidget';
+import DashboardProjectsWidget from '@/components/dashboard/DashboardProjectsWidget';
+import ReceiptIcon2 from '@/components/shared/icons/ReceiptIcon2';
+import DashboardIncomeStatCard from '@/components/dashboard/DashboardIncomeStatCard';
 
 const IndexPage = () => (
   <PageLayout>
@@ -12,33 +15,21 @@ const IndexPage = () => (
         <Box className="flex justify-between items-center">
           <Title order={1}>Dashboard</Title>
         </Box>
-        <SimpleGrid cols={4}>
-          <StatCard
-            icon={<FiUsers size={20} />}
-            title="Total clients"
-            content={8}
-            link="/clients"
+        <SimpleGrid cols={2}>
+          <DashboardIncomeStatCard
+            icon={<FiDollarSign size={20} />}
+            title="Total income"
+            content={formatCurrency(2000)}
           />
           <StatCard
-            icon={<FiDollarSign size={20} />}
-            title="Total paid invoices"
-            content={formatCurrency(8000)}
-            link="/invoices"
-          />
-          <StatCard
-            icon={<FiDollarSign size={20} />}
-            title="Total paid invoices"
-            content={formatCurrency(8000)}
-            link="/invoices"
-          />
-          <StatCard
-            icon={<FiDollarSign size={20} />}
-            title="Total paid invoices"
-            content={formatCurrency(8000)}
+            icon={<ReceiptIcon2 size={23} />}
+            title="Outstanding invoices"
+            content={formatCurrency(250)}
             link="/invoices"
           />
         </SimpleGrid>
-        <TasksDashboardWidget />
+        <DashboardTasksWidget />
+        <DashboardProjectsWidget />
       </Box>
     </Container>
   </PageLayout>

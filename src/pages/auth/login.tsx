@@ -10,7 +10,7 @@ export default function login() {
 
   return (
     <PageShellBasic>
-      <Box sx={{ marginTop: '1`00px' }}>
+      <Box sx={{ marginTop: '100px' }}>
         <Container size="xs">
           <Box>
             <Title order={1} align="center">
@@ -23,7 +23,7 @@ export default function login() {
               </Link>
             </Text>
           </Box>
-          <Paper className="p-8" shadow="sm" mt="lg" withBorder>
+          <Paper className="p-8" shadow="xs" mt="lg" withBorder>
             {error && (
               <Alert
                 className="mb-2"

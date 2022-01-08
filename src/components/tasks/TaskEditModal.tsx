@@ -2,11 +2,12 @@ import { Modal, Button, Group, ModalProps, Box, TextInput } from '@mantine/core'
 import { useForm } from 'react-hook-form';
 import { FiCalendar } from 'react-icons/fi';
 import * as yup from 'yup';
-import { Task } from '@/types';
+import { Project, Task } from '@/types';
 import { useIsDarkMode, useColors, useYupResolver } from '@/hooks';
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { DatePicker } from '@mantine/dates';
-import { debounce } from 'lodash';
+import { useProjects } from '@/api/projects';
+import ProjectPicker from '@/components/projects/ProjectPicker';
 
 const schema = yup.object().shape({
   content: yup.string().trim().required(),
@@ -22,12 +23,13 @@ export default function TaskEditModal({ task, opened, onClose, submit }: Props) 
   const isDarkMode = useIsDarkMode();
   const colors = useColors();
   const [dueDate, setDueDate] = useState<Date>(task?.dueDate ? new Date(task?.dueDate) : null);
+  const [project, setProject] = useState<Project>(task?.project as Project);
+  const { data: projects } = useProjects();
   const resolver = useYupResolver(schema);
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    reset,
   } = useForm<Task>({ resolver });
 
   const handleFormClose = () => {
@@ -41,6 +43,7 @@ export default function TaskEditModal({ task, opened, onClose, submit }: Props) 
         data: {
           ...data,
           dueDate: (dueDate && dueDate?.toISOString()) || '',
+          project: project?._id || null,
         },
       });
       if (!isSubmitting) {
@@ -54,12 +57,6 @@ export default function TaskEditModal({ task, opened, onClose, submit }: Props) 
   const handleEndDateChange = (dateValue: Date) => {
     setDueDate(dateValue);
   };
-
-  const changeHandler = (query: string) => {
-    console.log(query);
-  };
-
-  const onSelectChange = useCallback(debounce(changeHandler, 3000), []);
 
   return (
     <Modal opened={opened} onClose={handleFormClose} title="Edit task" size="lg">
@@ -79,6 +76,13 @@ export default function TaskEditModal({ task, opened, onClose, submit }: Props) 
             icon={<FiCalendar />}
             defaultValue={task?.dueDate ? new Date(task?.dueDate) : null}
             onChange={handleEndDateChange}
+          />
+
+          <ProjectPicker
+            label="Project"
+            projects={projects?.data}
+            setProject={setProject}
+            project={task?.project as Project}
           />
 
           <Box mt={15}>

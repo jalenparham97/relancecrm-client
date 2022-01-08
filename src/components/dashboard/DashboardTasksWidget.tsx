@@ -1,4 +1,4 @@
-import { Box, Divider, Paper, Title, Group, ActionIcon, Card } from '@mantine/core';
+import { Box, Paper, Title, Group } from '@mantine/core';
 import {
   useTaskAddMutation,
   useTaskDeleteMutation,
@@ -16,12 +16,7 @@ import Button from '@/components/shared/Button';
 import EmptyState from '@/components/shared/EmptyState';
 import TaskCreateModal from '../tasks/TaskCreateModal';
 
-// interface Props {
-//   id?: string;
-//   [x: string]: any;
-// }
-
-export default function TasksDashboardWidget() {
+export default function DashboardTasksWidget() {
   const { isLoading, data: tasks } = useTasks();
   const [taskCreateModal, openTaskCreateModal, closeTaskCreateModal] = useDialog();
 
@@ -40,15 +35,15 @@ export default function TasksDashboardWidget() {
   const activeTasks = tasks?.data.filter(filterActiveTasks).slice(0, 5);
 
   return (
-    <Paper padding="lg" shadow="sm" withBorder>
+    <Paper padding="lg" shadow="xs" withBorder>
       {isLoading && <LoadingLoader height="100%" />}
       {!isLoading && (
         <Box>
           {!isEmpty(activeTasks) && (
             <Box>
               <Group position="apart">
-                <Title order={2}>Tasks</Title>
-                <Button leftIcon={<FiPlus />} onClick={openTaskCreateModal}>
+                <Title order={2}>Recent tasks</Title>
+                <Button variant="default" leftIcon={<FiPlus />} onClick={openTaskCreateModal}>
                   Add task
                 </Button>
               </Group>

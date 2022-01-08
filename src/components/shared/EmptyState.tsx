@@ -1,4 +1,4 @@
-import { Box, Group, Text } from '@mantine/core';
+import { Box, Group, Text, Paper } from '@mantine/core';
 
 interface Props {
   title?: string;
@@ -9,13 +9,15 @@ interface Props {
 
 export default function EmptyState({ title, subtitle, icon, actionButton }: Props) {
   return (
-    <Group direction="column" align="center" grow>
-      {icon}
-      <Box className="text-center">
-        <Text size="lg">{title}</Text>
-        <Text size="lg">{subtitle}</Text>
-      </Box>
-      {actionButton}
-    </Group>
+    <Paper className="bg-transparent">
+      <Group direction="column" align="center" grow>
+        {icon}
+        <Box className="text-center">
+          <Text size="lg">{title}</Text>
+          <Text size="lg">{subtitle}</Text>
+        </Box>
+        {actionButton}
+      </Group>
+    </Paper>
   );
 }

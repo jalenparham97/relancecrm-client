@@ -22,7 +22,7 @@ export default function login() {
               </Link>
             </Text>
           </Box>
-          <Paper className="p-8" shadow="sm" mt="lg" withBorder>
+          <Paper className="p-8" shadow="xs" mt="lg" withBorder>
             <SignupForm onFormSubmit={signup} />
           </Paper>
         </Container>

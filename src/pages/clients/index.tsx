@@ -6,18 +6,19 @@ import {
 } from '@/api/clients';
 import { Box, Container, Group, Paper, Title, Text, ActionIcon } from '@mantine/core';
 import { useMemo, useState } from 'react';
-import { FiPlus, FiTrash2, FiEye } from 'react-icons/fi';
+import { FiPlus, FiTrash2, FiEye, FiUsers } from 'react-icons/fi';
 import { useToggle } from 'react-use';
 import { formatClients } from '@/utils/formatters/formatClients';
+import { isEmpty } from 'lodash';
 import PageLayout from '@/components/layouts/PageLayout';
 import Button from '@/components/shared/Button';
-import Search from '@/components/shared/Search';
 import DataTable from '@/components/shared/DataTable';
 import Avatar from '@/components/shared/Avatar';
 import ClientCreateModal from '@/components/clients/ClientCreateModal';
 import Link from '@/components/shared/Link';
 import DeleteModal from '@/components/shared/DeleteModal';
 import LoadingLoader from '@/components/shared/LoadingLoader';
+import EmptyState from '@/components/shared/EmptyState';
 
 export default function ClientsPage() {
   const [openDeleteDialog, toggleOpenDeleteDialog] = useToggle(false);
@@ -49,8 +50,6 @@ export default function ClientsPage() {
     await handleDeleteClients.mutateAsync();
     setSelectedIds([]);
   }
-
-  console.log({ clients: clients?.data });
 
   const data = useMemo(() => formatClients(clients?.data), [clients?.data]);
 
@@ -120,7 +119,6 @@ export default function ClientsPage() {
             <Box className="flex justify-between items-center">
               <Title order={1}>Clients</Title>
               <Group spacing="xs">
-                <Search placeholder="Search clients" />
                 <Button leftIcon={<FiPlus fontSize="16px" />} onClick={toggleOpen}>
                   Add Client
                 </Button>
@@ -128,15 +126,29 @@ export default function ClientsPage() {
             </Box>
 
             <Box className="mt-4">
-              {selectedIds.length > 0 && (
-                <Box className="mb-3 flex items-center space-x-2">
-                  <Button leftIcon={<FiTrash2 />} color="red" onClick={toggleOpenDeleteManyDialog}>
-                    Delete
-                  </Button>
-                </Box>
-              )}
-              <Paper shadow="sm" className="p-0" withBorder>
-                <DataTable columns={columns} data={data} setSelectedIds={setSelectedIds} />
+              <Paper shadow="xs" className="p-0" withBorder>
+                {!isEmpty(clients?.data) && (
+                  <DataTable
+                    columns={columns}
+                    data={data}
+                    setSelectedIds={setSelectedIds}
+                    searchPlaceholder="Search clients"
+                    onDeleteClick={toggleOpenDeleteManyDialog}
+                  />
+                )}
+                {isEmpty(clients?.data) && (
+                  <Box className="py-7">
+                    <EmptyState
+                      title="There are no clients yet"
+                      icon={<FiUsers size="50px" />}
+                      actionButton={
+                        <Button leftIcon={<FiPlus fontSize="16px" />} onClick={toggleOpen}>
+                          Add Client
+                        </Button>
+                      }
+                    />
+                  </Box>
+                )}
               </Paper>
             </Box>
           </Box>

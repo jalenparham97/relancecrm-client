@@ -13,12 +13,12 @@ export const useProjects = () => {
   return useQuery(queryKey, fetchData);
 };
 
-export const useProjectsClient = (clientId: string) => {
+export const useProjectsClient = (id: string) => {
   const fetchData = async () => {
-    const data = await service.findAllClientProjects(clientId);
+    const data = await service.findAllClientProjects(id);
     return data;
   };
-  return useQuery(`${queryKey}/${clientId}`, fetchData);
+  return useQuery(`${queryKey}/${id}`, fetchData);
 };
 
 export const useProject = (id: string) => {
@@ -142,6 +142,85 @@ export const useProjectDeleteMutation = () => {
     },
     onSettled: () => {
       queryClient.invalidateQueries(queryKey);
+    },
+  });
+};
+
+export const useProjectIdAddMutation = (id: string) => {
+  const queryClient = useQueryClient();
+  const projectsQueryKey = `${queryKey}/${id}`;
+
+  return useMutation(async (data: CreateProject) => await projectsService.createProject(data), {
+    onMutate: async () => {
+      await queryClient.cancelQueries(projectsQueryKey);
+      const previousQueryData =
+        queryClient.getQueryData<ServiceResponse<Project>>(projectsQueryKey);
+      return { previousQueryData };
+    },
+    onSuccess: async (newEntity: Project, _, { previousQueryData }: { previousQueryData }) => {
+      queryClient.setQueryData<ServiceResponse<Project>>(projectsQueryKey, {
+        total: previousQueryData.total + 1,
+        data: [newEntity, ...previousQueryData.data],
+      });
+    },
+    onError: (error, _, context) => {
+      console.log(error);
+      if (context?.previousQueryData) {
+        queryClient.setQueryData<ServiceResponse<Project>>(
+          projectsQueryKey,
+          context.previousQueryData
+        );
+      }
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(projectsQueryKey);
+    },
+  });
+};
+
+export const useProjectIdUpdateMutation = (id: string) => {
+  const queryClient = useQueryClient();
+  const projectsQueryKey = `${queryKey}/${id}`;
+
+  return useMutation(
+    async (data: CreateProject) => await service.patch<Project>(id, data as Project),
+    {
+      onMutate: async () => {
+        await queryClient.cancelQueries(projectsQueryKey);
+        const previousQueryData = queryClient.getQueryData<Project>(projectsQueryKey);
+        return { previousQueryData };
+      },
+      onError: (error, _, context) => {
+        console.log(error);
+        if (context?.previousQueryData) {
+          queryClient.setQueryData<Project>(projectsQueryKey, context.previousQueryData);
+        }
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries(projectsQueryKey);
+      },
+    }
+  );
+};
+
+export const useProjectIdDeleteMutation = (id: string) => {
+  const queryClient = useQueryClient();
+  const projectsQueryKey = `${queryKey}/${id}`;
+
+  return useMutation(async (id: string) => await projectsService.remove(id), {
+    onMutate: async () => {
+      await queryClient.cancelQueries(projectsQueryKey);
+      const previousQueryData = queryClient.getQueryData<Project[]>(projectsQueryKey);
+      return { previousQueryData };
+    },
+    onError: (error, _, context) => {
+      console.log(error);
+      if (context?.previousQueryData) {
+        queryClient.setQueryData<Project[]>(projectsQueryKey, context.previousQueryData);
+      }
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(projectsQueryKey);
     },
   });
 };

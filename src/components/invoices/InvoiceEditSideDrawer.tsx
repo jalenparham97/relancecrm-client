@@ -6,7 +6,7 @@ import Button from '@/components/shared/Button';
 import { useInvoiceRemoveProjectMutation, useInvoiceUpdateMutation } from '@/api/invoices';
 import { useDialog } from '@/hooks';
 import { Client, Project } from '@/types';
-// import InvoiceProjectPickerModal from './InvoiceProjectPickerModal';
+import InvoiceProjectPickerModal from './InvoiceProjectPickerModal';
 import { useRecoilValue } from 'recoil';
 import { createInvoiceState } from '@/store';
 import Avatar from '@/components/shared/Avatar';
@@ -27,10 +27,10 @@ export default function InvoiceEditSideDrawer({
 }: Props) {
   const { query } = useRouter();
   const invoice = useRecoilValue(createInvoiceState);
-  // const [projectPicker, openProjectPicker, closeProjectPicker] = useDialog();
+  const [projectPicker, openProjectPicker, closeProjectPicker] = useDialog();
   const [recipientModal, openRecipientModal, closeRecipientModal] = useDialog();
   const [paymentsModal, openPaymentsModal, closePaymentsModal] = useDialog();
-  // const [project, setProject] = useState<Project>({});
+  const [project, setProject] = useState<Project>({});
 
   const handleUpdateInvoiceSubmit = useInvoiceUpdateMutation(query.id as string);
   const handleRemoveInvoiceProjectSubmit = useInvoiceRemoveProjectMutation(query.id as string);
@@ -43,14 +43,14 @@ export default function InvoiceEditSideDrawer({
     }
   };
 
-  // const saveProjectToInvoice = async () => {
-  //   try {
-  //     await handleUpdateInvoiceSubmit.mutateAsync({ project: project._id });
-  //     closeProjectPicker();
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const saveProjectToInvoice = async () => {
+    try {
+      await handleUpdateInvoiceSubmit.mutateAsync({ project: project._id });
+      closeProjectPicker();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const deleteProjectFromInvoice = async () => {
     try {
@@ -80,7 +80,7 @@ export default function InvoiceEditSideDrawer({
       <Box className="pt-[75px]">
         <Group direction="column" spacing="lg" grow>
           <Title order={2}>Settings</Title>
-          {/* <Box className="space-y-3">
+          <Box className="space-y-3">
             <Title order={4}>Connected Project</Title>
             {invoice?.project && (
               <Group position="apart">
@@ -108,7 +108,7 @@ export default function InvoiceEditSideDrawer({
                 Add invoice to a project
               </Button>
             )}
-          </Box> */}
+          </Box>
           <Box className="space-y-3">
             <Title order={4}>Recipients</Title>
             {invoice?.recipients?.map((recipient) => (
@@ -155,13 +155,13 @@ export default function InvoiceEditSideDrawer({
         </Group>
       </Box>
 
-      {/* <InvoiceProjectPickerModal
+      <InvoiceProjectPickerModal
         opened={projectPicker}
         onClose={closeProjectPicker}
         setProject={setProject}
         submit={saveProjectToInvoice}
         isLoading={handleUpdateInvoiceSubmit.isLoading}
-      /> */}
+      />
 
       <InvoiceRecipientModal
         opened={recipientModal}

@@ -1,12 +1,12 @@
 import { axios } from '@/libs/axios';
-import { ServiceResponse, PaginationParams } from '@/types';
+import { ServiceResponse } from '@/types';
 
 export class Service<S> {
   constructor(protected service: string) {}
 
-  async find<T>(filter: Partial<T> | {} = {}, paginationParams?: PaginationParams) {
+  async find<T>(filter: Partial<T> | {} = {}) {
     const { data } = await axios.get<ServiceResponse<T>>(`/${this.service}`, {
-      params: { filter, ...paginationParams },
+      params: { filter },
     });
     return data;
   }

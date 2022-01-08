@@ -27,7 +27,7 @@ export default function App(props: AppProps) {
             </NotificationsProvider>
           </ThemeProvider>
         </RecoilRoot>
-        <ReactQueryDevtools />
+        {/* <ReactQueryDevtools /> */}
       </QueryClientProvider>
     </>
   );

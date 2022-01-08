@@ -1,6 +1,6 @@
 import { Paper, Title, Box, Text, Group, Grid, Col, Table, Divider } from '@mantine/core';
 import { Invoice } from '@/types';
-import { formatCurrency, formatDate } from '@/utils';
+import { formatCurrency, formatDate, getInvoiceSubtotal, getInvoiceTotal } from '@/utils';
 
 interface Props {
   invoice: Invoice;
@@ -9,7 +9,7 @@ interface Props {
 
 export default function InvoicePreview({ invoice }: Props) {
   return (
-    <Paper shadow="sm" padding="xl" withBorder>
+    <Paper shadow="xs" padding="xl" withBorder>
       <Group direction="column">
         <Title order={2}>INVOICE</Title>
         <Box>
@@ -69,7 +69,7 @@ export default function InvoicePreview({ invoice }: Props) {
           <Col span={4} className="space-y-2">
             <Group position="apart">
               <Text className="font-semibold">Subtotal:</Text>
-              <Text>{formatCurrency(invoice?.subtotal)}</Text>
+              <Text>{formatCurrency(getInvoiceSubtotal(invoice?.items))}</Text>
             </Group>
             {invoice?.tax !== 0 && (
               <Group position="apart">
@@ -86,7 +86,7 @@ export default function InvoicePreview({ invoice }: Props) {
             <Divider className="opacity-60" />
             <Group position="apart">
               <Text className="font-semibold">Total:</Text>
-              <Text>{formatCurrency(invoice?.total)}</Text>
+              <Text>{formatCurrency(getInvoiceTotal(invoice))}</Text>
             </Group>
           </Col>
         </Grid>

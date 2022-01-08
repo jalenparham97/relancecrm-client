@@ -50,7 +50,7 @@ export default function ClientPageContainer({ client, isLoading, children }: Pro
             <Button variant="outline" leftIcon={<FiArrowLeft />} compact to="/clients">
               Back to clients
             </Button>
-            <Paper mt={15} padding="xl" shadow="sm" withBorder>
+            <Paper mt={15} padding="xl" shadow="xs" withBorder>
               <Group position="apart">
                 <Group>
                   <Avatar radius="xl" size="lg" backgroundColor={client?.backgroundColor}>
@@ -122,9 +122,10 @@ export default function ClientPageContainer({ client, isLoading, children }: Pro
               </Box>
             </Paper>
 
-            <Paper mt={20} shadow="sm" withBorder>
+            <Paper mt={20} shadow="xs" withBorder>
               <NavTabs className="ml-[12px] px-2">
                 <NavTab to={`/clients/${query.id}`} label="Tasks" />
+                <NavTab to={`/clients/${query.id}/projects`} label="Projects" />
                 <NavTab to={`/clients/${query.id}/invoices`} label="Invoices" />
               </NavTabs>
 

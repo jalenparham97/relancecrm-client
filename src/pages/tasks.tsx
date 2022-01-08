@@ -1,14 +1,15 @@
-import { useCallback, useState, useRef, useEffect } from 'react';
-import { Box, Container, Paper, Group, Title, Tabs as MantineTabs, Text } from '@mantine/core';
+import { useState } from 'react';
+import { Box, Container, Paper, Group, Title, Tabs as MantineTabs } from '@mantine/core';
 import {
   useTasks,
   useTaskAddMutation,
   useTaskDeleteMutation,
   useTaskUpdateMutation,
 } from '@/api/tasks';
-import { FiPlus } from 'react-icons/fi';
-import { debounce, isEmpty } from 'lodash';
-import { useIntersectionObserver, useDialog } from '@/hooks';
+import { FiCheckCircle, FiPlus } from 'react-icons/fi';
+import { BsListCheck } from 'react-icons/bs';
+import { isEmpty } from 'lodash';
+import { useDialog } from '@/hooks';
 import PageLayout from '@/components/layouts/PageLayout';
 import Button from '@/components/shared/Button';
 import TabPanel from '@/components/shared/TabPanel';
@@ -17,25 +18,15 @@ import TaskCreateModal from '@/components/tasks/TaskCreateModal';
 import TaskItem from '@/components/tasks/TaskItem';
 import Tabs from '@/components/shared/Tabs';
 import LoadingLoader from '@/components/shared/LoadingLoader';
-import { Task } from '@/types';
-import { getPageItemsCount } from '@/utils';
-import { useIntersection } from '@mantine/hooks';
+import EmptyState from '@/components/shared/EmptyState';
 
 export default function TasksPage() {
   const [openTaskCreateModal, toggleTaskCreateModal, closeTaskCreateDialog] = useDialog();
   const [searchInput, setSearchInput] = useState('');
   const [activeTab, setActiveTab] = useState(0);
-  const { isLoading, data: tasks, hasNextPage, fetchNextPage, isFetchingNextPage } = useTasks();
+  const { isLoading, data: tasks } = useTasks();
 
-  // const [ref, observer] = useIntersection({ threshold: 1 });
-
-  // useEffect(() => {
-  //   if (observer?.isIntersecting && hasNextPage) {
-  //     fetchNextPage();
-  //   }
-  // }, [observer?.isIntersecting]);
-
-  const handleSearchChange = (e: React.ChangeEvent<{ value: string }>) => {
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
   };
 
@@ -46,12 +37,6 @@ export default function TasksPage() {
   const filterCompletedTasks = ({ completed, content }) => {
     return completed === true && content.toLowerCase().match(searchInput.toLowerCase());
   };
-
-  const changeHandler = (query: string) => {
-    console.log(query);
-  };
-
-  const onChange = useCallback(debounce(handleSearchChange, 3000), []);
 
   const handleTaskSubmit = useTaskAddMutation();
   const handleUpdateTask = useTaskUpdateMutation();
@@ -77,7 +62,7 @@ export default function TasksPage() {
               </Group>
             </Box>
 
-            <Paper className="mt-4" shadow="sm" withBorder>
+            <Paper className="mt-4" shadow="xs" withBorder>
               <Tabs
                 active={activeTab}
                 onTabChange={setActiveTab}
@@ -101,9 +86,25 @@ export default function TasksPage() {
                         />
                       </Box>
                     ))}
+                  {isEmpty(tasks?.data?.filter(filterActiveTasks)) && (
+                    <Box className="py-4">
+                      <EmptyState
+                        title="There are no active tasks yet"
+                        icon={<BsListCheck size="50px" />}
+                        actionButton={
+                          <Button
+                            leftIcon={<FiPlus fontSize="16px" />}
+                            onClick={toggleTaskCreateModal}
+                          >
+                            Add Task
+                          </Button>
+                        }
+                      />
+                    </Box>
+                  )}
                 </TabPanel>
                 <TabPanel index={1} activeIndex={activeTab}>
-                  {/* {!isEmpty(tasks?.data.filter(filterCompletedTasks)) &&
+                  {!isEmpty(tasks?.data.filter(filterCompletedTasks)) &&
                     tasks?.data.filter(filterCompletedTasks).map((task, index) => (
                       <Box key={task._id}>
                         <TaskItem
@@ -114,17 +115,18 @@ export default function TasksPage() {
                           loading={handelDeleteTask.isLoading}
                         />
                       </Box>
-                    ))} */}
+                    ))}
+                  {isEmpty(tasks?.data.filter(filterCompletedTasks)) && (
+                    <Box className="py-4">
+                      <EmptyState
+                        title="There are no completed tasks yet"
+                        icon={<FiCheckCircle size="50px" />}
+                      />
+                    </Box>
+                  )}
                 </TabPanel>
               </Box>
             </Paper>
-            <div className="pb-6 pt-6">
-              {isFetchingNextPage && (
-                <Box>
-                  <LoadingLoader height="100%" />
-                </Box>
-              )}
-            </div>
           </Container>
         )}
 

@@ -1,15 +1,6 @@
-import { Modal, Button, Group, ModalProps, Box, TextInput, SimpleGrid } from '@mantine/core';
-import { useForm } from 'react-hook-form';
-import { useUser } from '@/api/auth';
-import * as yup from 'yup';
-import { useYupResolver } from '@/hooks/useYupResolver';
+import { Modal, Button, Group, ModalProps, Box } from '@mantine/core';
 import { Project } from '@/types';
-import { useIsDarkMode, useColors } from '@/hooks';
-import { useToggle } from 'react-use';
-import { nanoid } from 'nanoid';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
-// import ProjectPicker from '@/components/projects/ProjectPicker';
+import ProjectPicker from '@/components/projects/ProjectPicker';
 import { useProjects } from '@/api/projects';
 
 interface Props extends ModalProps {
@@ -29,7 +20,7 @@ export default function InvoiceProjectPickerModal({
 
   return (
     <Modal opened={opened} onClose={onClose} title="Add to project" size="lg">
-      {/* <ProjectPicker projects={projects?.data} setProject={setProject} /> */}
+      <ProjectPicker projects={projects?.data} setProject={setProject} />
 
       <Box mt={20}>
         <Group spacing="sm" position="right">

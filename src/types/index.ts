@@ -30,3 +30,7 @@ export type PaginationParams = {
   skip?: number;
   limit?: number;
 };
+
+export type SelectedFlatRow<T> = {
+  original: T;
+};

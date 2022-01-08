@@ -17,6 +17,7 @@ import NavListItemCustom from '@/components/shared/NavListItemCustom';
 import Button from '@/components/shared/Button';
 import { useLogout } from '@/api/auth';
 import AccountMenu from '@/components/shared/AccountMenu';
+import ReceiptIcon2 from '../shared/icons/ReceiptIcon2';
 
 const PageLayout = ({ children, ...otherProps }) => {
   const theme = useMantineTheme();
@@ -32,7 +33,7 @@ const PageLayout = ({ children, ...otherProps }) => {
           <Header height={60} padding="md" className="bg-dark-700">
             <Box className="flex justify-between items-center h-full">
               <Box>
-                <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
+                <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
                   <Burger opened={opened} onClick={() => setOpened((o) => !o)} size="sm" mr="xl" />
                 </MediaQuery>
 
@@ -51,6 +52,7 @@ const PageLayout = ({ children, ...otherProps }) => {
             <Box className="w-full grid gap-1">
               <NavListItem href="/" icon={<FiHome />} text="Dashboard" />
               <NavListItem href="/clients" icon={<FiUsers />} text="Clients" />
+              <NavListItem href="/projects" icon={<FiBriefcase />} text="Projects" />
               <NavListItemCustom href="/invoices" icon="invoices" text="Invoices" />
               <NavListItem href="/tasks" icon={<FiCheckSquare />} text="Tasks" />
             </Box>

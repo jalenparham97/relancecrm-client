@@ -1,7 +1,9 @@
 import { useMemo, useState } from 'react';
-import { Box, Container, Group, Loader, Paper, Title, Text, ActionIcon } from '@mantine/core';
-import { FiPlus, FiTrash2, FiEdit, FiEye } from 'react-icons/fi';
+import { Box, Container, Group, Title, Paper, Text, ActionIcon } from '@mantine/core';
+import { FiPlus, FiEdit, FiEye } from 'react-icons/fi';
+import { IoReceiptOutline } from 'react-icons/io5';
 import { useInvoiceAddMutation, useInvoiceDeleteManyMutation, useInvoices } from '@/api/invoices';
+import { isEmpty } from 'lodash';
 import { formatInvoices } from '@/utils';
 import { useDialog } from '@/hooks';
 import { InvoiceStatus } from '@/types';
@@ -9,12 +11,12 @@ import Link from '@/components/shared/Link';
 import DeleteModal from '@/components/shared/DeleteModal';
 import PageLayout from '@/components/layouts/PageLayout';
 import Button from '@/components/shared/Button';
-import Search from '@/components/shared/Search';
 import DataTable from '@/components/shared/DataTable';
 import InvoiceCreateModal from '@/components/invoices/InvoiceCreateModal';
 import InvoiceActionsMenu from '@/components/invoices/InvoiceActionsMenu';
 import InvoiceStatusBadge from '@/components/invoices/InvoiceStatusBadge';
 import LoadingLoader from '@/components/shared/LoadingLoader';
+import EmptyState from '@/components/shared/EmptyState';
 
 export default function InvoicesPage() {
   const [openModal, toggleOpenModal, closeModal] = useDialog();
@@ -105,7 +107,6 @@ export default function InvoicesPage() {
             <Box className="flex justify-between items-center">
               <Title order={1}>Invoices</Title>
               <Group spacing="xs">
-                <Search placeholder="Search invoices" />
                 <Button leftIcon={<FiPlus fontSize="16px" />} onClick={toggleOpenModal}>
                   Add invoice
                 </Button>
@@ -113,15 +114,29 @@ export default function InvoicesPage() {
             </Box>
 
             <Box className="mt-4">
-              {selectedIds.length > 0 && (
-                <Box className="mb-3 flex items-center space-x-2">
-                  <Button leftIcon={<FiTrash2 />} color="red" onClick={toggleOpenDeleteManyModal}>
-                    Delete
-                  </Button>
-                </Box>
-              )}
-              <Paper shadow="sm" withBorder>
-                <DataTable columns={columns} data={data} setSelectedIds={setSelectedIds} />
+              <Paper shadow="xs" withBorder>
+                {!isEmpty(invoices?.data) && (
+                  <DataTable
+                    columns={columns}
+                    data={data}
+                    setSelectedIds={setSelectedIds}
+                    searchPlaceholder="Search invoices"
+                    onDeleteClick={toggleOpenDeleteManyModal}
+                  />
+                )}
+                {isEmpty(invoices?.data) && (
+                  <Box className="py-7">
+                    <EmptyState
+                      title="There are no invoices yet"
+                      icon={<IoReceiptOutline size="50px" />}
+                      actionButton={
+                        <Button leftIcon={<FiPlus fontSize="16px" />} onClick={toggleOpenModal}>
+                          Add invoice
+                        </Button>
+                      }
+                    />
+                  </Box>
+                )}
               </Paper>
             </Box>
           </Box>

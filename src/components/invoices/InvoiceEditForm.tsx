@@ -78,10 +78,10 @@ export default function InvoiceEditForm({ invoice }: Props) {
     }));
   };
 
-  const handleDueDateChange = (dateValue: string) => {
+  const handleDueDateChange = (dateValue: Date) => {
     setInvoice((prevState) => ({
       ...prevState,
-      dueOn: dateValue,
+      dueOn: dateValue?.toISOString() || '',
     }));
   };
 
@@ -169,7 +169,7 @@ export default function InvoiceEditForm({ invoice }: Props) {
                 label="Due date"
                 clearable={false}
                 value={new Date(invoice?.dueOn)}
-                onChange={handleIssuedDateChange}
+                onChange={handleDueDateChange}
               />
             </Group>
           </Paper>

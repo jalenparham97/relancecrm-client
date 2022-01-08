@@ -6,6 +6,7 @@ import { useColors } from '@/hooks/useColors';
 import TasksIcon from '@/components/shared/icons/TasksIcon';
 import RecieptIcon from '@/components/shared/icons/RecieptIcon';
 import DocumentIcon from '@/components/shared/icons/DocumentIcon';
+import ReceiptIcon2 from './icons/ReceiptIcon2';
 
 interface Props {
   text: string;

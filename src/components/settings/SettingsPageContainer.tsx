@@ -1,6 +1,5 @@
 import { useUser } from '@/api/auth';
 import { Box, Container, Grid, Col, Paper, Title } from '@mantine/core';
-import { isSupportedCountry } from 'libphonenumber-js';
 import { isEmpty } from 'lodash';
 import { FiCreditCard, FiDollarSign, FiLock, FiUser } from 'react-icons/fi';
 import LoadingLoader from '../shared/LoadingLoader';
@@ -23,7 +22,7 @@ export default function SettingsPageContainer({ children }: Props) {
 
           <Grid gutter="lg">
             <Col span={3}>
-              <Paper padding="lg" shadow="sm" withBorder>
+              <Paper padding="lg" shadow="xs" withBorder>
                 <Box className="flex flex-col space-y-1">
                   <SettingsNavListItem text="Account" href="/settings/account" icon={<FiUser />} />
                   <SettingsNavListItem

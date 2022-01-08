@@ -46,6 +46,11 @@ export default function TaskItem({ task, index, onUpdate, onDelete, loading = fa
           <Text>{task.content}</Text>
         </Group>
         <Group align="center" spacing="xs">
+          {task.project && (
+            <Badge sx={{ backgroundColor: task.project.backgroundColor, color: 'white' }}>
+              {task.project.projectName}
+            </Badge>
+          )}
           {task.dueDate && <Badge variant="dot">{formatDate(task.dueDate, 'MMM, DD')}</Badge>}
           {!task.completed && (
             <ActionIcon title="edit" color="green" onClick={toggleOpenEditModal}>

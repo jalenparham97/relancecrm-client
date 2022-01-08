@@ -1,14 +1,26 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Table as MantineTable, Checkbox, Box } from '@mantine/core';
-import { useTable, useRowSelect } from 'react-table';
+import { useTable, useRowSelect, useGlobalFilter } from 'react-table';
+import { isEmpty } from 'lodash';
+import { FiTrash2 } from 'react-icons/fi';
+import DataTableGlobalFilter from './DataTableGlobalFilter';
+import Button from './Button';
 
 interface Props {
   columns?: any;
   data?: any;
   setSelectedIds: (ids: string[]) => void;
+  searchPlaceholder?: string;
+  onDeleteClick?: () => void;
 }
 
-export default function DataTable({ columns, data, setSelectedIds }: Props) {
+export default function DataTable({
+  columns,
+  data,
+  setSelectedIds,
+  searchPlaceholder = 'Search',
+  onDeleteClick,
+}: Props) {
   const {
     getTableProps,
     getTableBodyProps,
@@ -16,13 +28,16 @@ export default function DataTable({ columns, data, setSelectedIds }: Props) {
     rows,
     prepareRow,
     selectedFlatRows,
-    state: { selectedRowIds },
+    setGlobalFilter,
+    preGlobalFilteredRows,
+    state,
   } = useTable(
     {
       columns,
       data,
     },
     useRowSelect,
+    useGlobalFilter,
     (hooks) => {
       hooks.visibleColumns.push((columns) => [
         // Let's make a column for selection
@@ -54,6 +69,20 @@ export default function DataTable({ columns, data, setSelectedIds }: Props) {
 
   return (
     <>
+      <Box className="px-4 pt-4">
+        {isEmpty(selectedFlatRows) && (
+          <DataTableGlobalFilter
+            placeholder={searchPlaceholder}
+            globalFilter={state.globalFilter}
+            setGlobalFilter={setGlobalFilter}
+          />
+        )}
+        {!isEmpty(selectedFlatRows) && (
+          <Button leftIcon={<FiTrash2 />} color="red" onClick={onDeleteClick}>
+            Delete
+          </Button>
+        )}
+      </Box>
       <MantineTable highlightOnHover {...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup) => (
