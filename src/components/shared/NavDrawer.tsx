@@ -7,9 +7,9 @@ export default function NavDrawer() {
     <div className="w-[240px] border-r pt-[85px] fixed top-0 left-0 min-h-screen">
       <div className="w-full">
         <div className="w-full grid gap-1 px-2">
-          <NavListItem to="/" icon={<FiHome size="20px" />} text="Dashboard" />
-          <NavListItem to="/jobs" icon={<FiBriefcase size="20px" />} text="Jobs" />
-          <NavListItem to="/candidates" icon={<FiUsers size="20px" />} text="Candidates" />
+          {/* <NavListItem href="/" icon={<FiHome size="20px" />} text="Dashboard" />
+          <NavListItem href="/jobs" icon={<FiBriefcase size="20px" />} text="Jobs" />
+          <NavListItem href="/candidates" icon={<FiUsers size="20px" />} text="Candidates" /> */}
         </div>
       </div>
     </div>
