@@ -1,5 +1,5 @@
 import { Service } from './service';
-import { Client } from '../@/types';
+import { Client } from '@/types';
 
 class ClientsService extends Service<Client> {}
 
