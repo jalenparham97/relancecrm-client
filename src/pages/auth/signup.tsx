@@ -1,8 +1,8 @@
 import { Box, Center, Container, Paper, Text, Title } from '@mantine/core';
-import { useSignUp } from '@/api/auth';
-import PageShellBasic from '@/components/layouts/PageShellBasic';
-import SignupForm from '@/components/auth/SignupForm';
-import Link from '@/components/shared/Link';
+import { useSignUp } from '@/app/api/auth';
+import PageShellBasic from '@/app/components/layouts/PageShellBasic';
+import SignupForm from '@/app/components/auth/SignupForm';
+import Link from '@/app/components/shared/Link';
 
 export default function login() {
   const { signup } = useSignUp();

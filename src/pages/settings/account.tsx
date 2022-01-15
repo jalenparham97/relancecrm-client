@@ -1,10 +1,10 @@
 import { Box } from '@mantine/core';
-import { useUser } from '@/api/auth';
-import { useUserUpdateMutation } from '@/api/users';
-import PageLayout from '@/components/layouts/PageLayout';
-import SettingsPageContainer from '@/components/settings/SettingsPageContainer';
-import AccountProfile from '@/components/settings/account/AccountProfile';
-import AccountBusinessInfo from '@/components/settings/account/AccountBusinessInfo';
+import { useUser } from '@/app/api/auth';
+import { useUserUpdateMutation } from '@/app/api/users';
+import PageLayout from '@/app/components/layouts/PageLayout';
+import SettingsPageContainer from '@/app/components/settings/SettingsPageContainer';
+import AccountProfile from '@/app/components/settings/account/AccountProfile';
+import AccountBusinessInfo from '@/app/components/settings/account/AccountBusinessInfo';
 
 export default function Account() {
   const user = useUser();

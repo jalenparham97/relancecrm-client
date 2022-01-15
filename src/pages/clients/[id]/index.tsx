@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
-import { useClient } from '@/api/clients';
-import ClientPageContainer from '@/components/clients/ClientPageContainer';
-import ClientTasksWidget from '@/components/clients/ClientTasksWidget';
+import { useClient } from '@/app/api/clients';
+import ClientPageContainer from '@/app/components/clients/ClientPageContainer';
+import ClientTasksWidget from '@/app/components/clients/ClientTasksWidget';
 
 export default function ClientPageTasks() {
   const router = useRouter();

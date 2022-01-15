@@ -1,12 +1,12 @@
 import { Box, Container, SimpleGrid, Title } from '@mantine/core';
 import { FiDollarSign } from 'react-icons/fi';
-import { formatCurrency } from '@/utils';
-import PageLayout from '@/components/layouts/PageLayout';
-import StatCard from '@/components/shared/StatCard';
-import DashboardTasksWidget from '@/components/dashboard/DashboardTasksWidget';
-import DashboardProjectsWidget from '@/components/dashboard/DashboardProjectsWidget';
-import ReceiptIcon2 from '@/components/shared/icons/ReceiptIcon2';
-import DashboardIncomeStatCard from '@/components/dashboard/DashboardIncomeStatCard';
+import { formatCurrency } from '@/app/utils';
+import PageLayout from '@/app/components/layouts/PageLayout';
+import StatCard from '@/app/components/shared/StatCard';
+import DashboardTasksWidget from '@/app/components/dashboard/DashboardTasksWidget';
+import DashboardProjectsWidget from '@/app/components/dashboard/DashboardProjectsWidget';
+import ReceiptIcon2 from '@/app/components/shared/icons/ReceiptIcon2';
+import DashboardIncomeStatCard from '@/app/components/dashboard/DashboardIncomeStatCard';
 
 const IndexPage = () => (
   <PageLayout>

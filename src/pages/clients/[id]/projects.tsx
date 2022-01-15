@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router';
-import { useClient } from '@/api/clients';
-import ClientPageContainer from '@/components/clients/ClientPageContainer';
-import ClientTasksWidget from '@/components/clients/ClientTasksWidget';
-import ClientInvoicesWidget from '@/components/clients/ClientInvoicesWidget';
-import ClientProjectsWidget from '@/components/clients/ClientProjectsWidget';
+import { useClient } from '@/app/api/clients';
+import ClientPageContainer from '@/app/components/clients/ClientPageContainer';
+import ClientTasksWidget from '@/app/components/clients/ClientTasksWidget';
+import ClientInvoicesWidget from '@/app/components/clients/ClientInvoicesWidget';
+import ClientProjectsWidget from '@/app/components/clients/ClientProjectsWidget';
 
 export default function ClientPageProjects() {
   const router = useRouter();

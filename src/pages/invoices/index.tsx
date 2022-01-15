@@ -2,21 +2,25 @@ import { useMemo, useState } from 'react';
 import { Box, Container, Group, Title, Paper, Text, ActionIcon } from '@mantine/core';
 import { FiPlus, FiEdit, FiEye } from 'react-icons/fi';
 import { IoReceiptOutline } from 'react-icons/io5';
-import { useInvoiceAddMutation, useInvoiceDeleteManyMutation, useInvoices } from '@/api/invoices';
+import {
+  useInvoiceAddMutation,
+  useInvoiceDeleteManyMutation,
+  useInvoices,
+} from '@/app/api/invoices';
 import { isEmpty } from 'lodash';
-import { formatInvoices } from '@/utils';
-import { useDialog } from '@/hooks';
-import { InvoiceStatus } from '@/types';
-import Link from '@/components/shared/Link';
-import DeleteModal from '@/components/shared/DeleteModal';
-import PageLayout from '@/components/layouts/PageLayout';
-import Button from '@/components/shared/Button';
-import DataTable from '@/components/shared/DataTable';
-import InvoiceCreateModal from '@/components/invoices/InvoiceCreateModal';
-import InvoiceActionsMenu from '@/components/invoices/InvoiceActionsMenu';
-import InvoiceStatusBadge from '@/components/invoices/InvoiceStatusBadge';
-import LoadingLoader from '@/components/shared/LoadingLoader';
-import EmptyState from '@/components/shared/EmptyState';
+import { formatInvoices } from '@/app/utils';
+import { useDialog } from '@/app/hooks';
+import { InvoiceStatus } from '@/core/types';
+import Link from '@/app/components/shared/Link';
+import DeleteModal from '@/app/components/shared/DeleteModal';
+import PageLayout from '@/app/components/layouts/PageLayout';
+import Button from '@/app/components/shared/Button';
+import DataTable from '@/app/components/shared/DataTable';
+import InvoiceCreateModal from '@/app/components/invoices/InvoiceCreateModal';
+import InvoiceActionsMenu from '@/app/components/invoices/InvoiceActionsMenu';
+import InvoiceStatusBadge from '@/app/components/invoices/InvoiceStatusBadge';
+import LoadingLoader from '@/app/components/shared/LoadingLoader';
+import EmptyState from '@/app/components/shared/EmptyState';
 
 export default function InvoicesPage() {
   const [openModal, toggleOpenModal, closeModal] = useDialog();

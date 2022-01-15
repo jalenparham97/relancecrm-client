@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
-import { useProject } from '@/api/projects';
-import ProjectPageShell from '@/components/projects/ProjectPageShell';
-import ProjectTasksWidget from '@/components/projects/ProjectTasksWidget';
+import { useProject } from '@/app/api/projects';
+import ProjectPageShell from '@/app/components/projects/ProjectPageShell';
+import ProjectTasksWidget from '@/app/components/projects/ProjectTasksWidget';
 
 export default function ProjectPage() {
   const router = useRouter();

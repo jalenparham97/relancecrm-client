@@ -1,20 +1,24 @@
-import { useProjectAddMutation, useProjectDeleteManyMutation, useProjects } from '@/api/projects';
-import PageLayout from '@/components/layouts/PageLayout';
-import Button from '@/components/shared/Button';
-import DataTable from '@/components/shared/DataTable';
+import {
+  useProjectAddMutation,
+  useProjectDeleteManyMutation,
+  useProjects,
+} from '@/app/api/projects';
+import PageLayout from '@/app/components/layouts/PageLayout';
+import Button from '@/app/components/shared/Button';
+import DataTable from '@/app/components/shared/DataTable';
 import { Box, Container, Group, Loader, Paper, Title, Text, ActionIcon } from '@mantine/core';
 import { isEmpty } from 'lodash';
 import { useMemo, useState } from 'react';
 import { FiPlus, FiEye, FiBriefcase } from 'react-icons/fi';
 import { useToggle } from 'react-use';
-import { formatProjects } from '@/utils';
-import Avatar from '@/components/shared/Avatar';
-import Link from '@/components/shared/Link';
-import DeleteModal from '@/components/shared/DeleteModal';
-import ProjectCreateModal from '@/components/projects/ProjectCreateModal';
-import ProjectActionsMenu from '@/components/projects/ProjectActionsMenu';
-import ProjectStatusBadge from '@/components/projects/ProjectStatusBadge';
-import EmptyState from '@/components/shared/EmptyState';
+import { formatProjects } from '@/app/utils';
+import Avatar from '@/app/components/shared/Avatar';
+import Link from '@/app/components/shared/Link';
+import DeleteModal from '@/app/components/shared/DeleteModal';
+import ProjectCreateModal from '@/app/components/projects/ProjectCreateModal';
+import ProjectActionsMenu from '@/app/components/projects/ProjectActionsMenu';
+import ProjectStatusBadge from '@/app/components/projects/ProjectStatusBadge';
+import EmptyState from '@/app/components/shared/EmptyState';
 
 export default function ProjectsPage() {
   const [openDeleteManyDialog, toggleOpenDeleteManyDialog] = useToggle(false);

@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router';
 import { Box } from '@mantine/core';
-import { useProject } from '@/api/projects';
-import ProjectPageShell from '@/components/projects/ProjectPageShell';
-import ProjectInvoicesWidget from '@/components/projects/ProjectInvoicesWidget';
+import { useProject } from '@/app/api/projects';
+import ProjectPageShell from '@/app/components/projects/ProjectPageShell';
+import ProjectInvoicesWidget from '@/app/components/projects/ProjectInvoicesWidget';
 
 export default function ProjectInvoicesPage() {
   const router = useRouter();

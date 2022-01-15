@@ -3,22 +3,22 @@ import {
   useClientDeleteManyMutation,
   useClientDeleteMutation,
   useClients,
-} from '@/api/clients';
+} from '@/app/api/clients';
 import { Box, Container, Group, Paper, Title, Text, ActionIcon } from '@mantine/core';
 import { useMemo, useState } from 'react';
 import { FiPlus, FiTrash2, FiEye, FiUsers } from 'react-icons/fi';
 import { useToggle } from 'react-use';
-import { formatClients } from '@/utils/formatters/formatClients';
+import { formatClients } from '@/app/utils/formatters/formatClients';
 import { isEmpty } from 'lodash';
-import PageLayout from '@/components/layouts/PageLayout';
-import Button from '@/components/shared/Button';
-import DataTable from '@/components/shared/DataTable';
-import Avatar from '@/components/shared/Avatar';
-import ClientCreateModal from '@/components/clients/ClientCreateModal';
-import Link from '@/components/shared/Link';
-import DeleteModal from '@/components/shared/DeleteModal';
-import LoadingLoader from '@/components/shared/LoadingLoader';
-import EmptyState from '@/components/shared/EmptyState';
+import PageLayout from '@/app/components/layouts/PageLayout';
+import Button from '@/app/components/shared/Button';
+import DataTable from '@/app/components/shared/DataTable';
+import Avatar from '@/app/components/shared/Avatar';
+import ClientCreateModal from '@/app/components/clients/ClientCreateModal';
+import Link from '@/app/components/shared/Link';
+import DeleteModal from '@/app/components/shared/DeleteModal';
+import LoadingLoader from '@/app/components/shared/LoadingLoader';
+import EmptyState from '@/app/components/shared/EmptyState';
 
 export default function ClientsPage() {
   const [openDeleteDialog, toggleOpenDeleteDialog] = useToggle(false);

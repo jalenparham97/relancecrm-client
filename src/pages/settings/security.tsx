@@ -1,7 +1,7 @@
 import { Box } from '@mantine/core';
-import PageLayout from '@/components/layouts/PageLayout';
-import SettingsPageContainer from '@/components/settings/SettingsPageContainer';
-import SecurityChangePassword from '@/components/settings/security/ChangePassword';
+import PageLayout from '@/app/components/layouts/PageLayout';
+import SettingsPageContainer from '@/app/components/settings/SettingsPageContainer';
+import SecurityChangePassword from '@/app/components/settings/security/ChangePassword';
 
 export default function Security() {
   return (

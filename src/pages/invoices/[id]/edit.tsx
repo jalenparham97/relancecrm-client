@@ -2,17 +2,17 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useToggle } from 'react-use';
 import { Box, Text, Container, Title, Loader, Group } from '@mantine/core';
-import { useInvoice, useInvoiceUpdateMutation } from '@/api/invoices';
-import { createInvoiceState, useRecoilState } from '@/store/store';
-import { getInvoiceSubtotal, getInvoiceTotal } from '@/utils';
-import { CreateInvoice, InvoiceStatus } from '@/types';
-import { useIsDarkMode } from '@/hooks';
-import InvoicePageShell from '@/components/invoices/InvoicePageShell';
-import InvoiceEditHeader from '@/components/invoices/InvoiceEditHeader';
-import InvoiceEditForm from '@/components/invoices/InvoiceEditForm';
-import InvoicePreview from '@/components/invoices/InvoicePreview';
-import InvoiceEditSideDrawer from '@/components/invoices/InvoiceEditSideDrawer';
-import LoadingLoader from '@/components/shared/LoadingLoader';
+import { useInvoice, useInvoiceUpdateMutation } from '@/app/api/invoices';
+import { createInvoiceState, useRecoilState } from '@/app/store/store';
+import { getInvoiceSubtotal, getInvoiceTotal } from '@/app/utils';
+import { CreateInvoice, InvoiceStatus } from '@/core/types';
+import { useIsDarkMode } from '@/app/hooks';
+import InvoicePageShell from '@/app/components/invoices/InvoicePageShell';
+import InvoiceEditHeader from '@/app/components/invoices/InvoiceEditHeader';
+import InvoiceEditForm from '@/app/components/invoices/InvoiceEditForm';
+import InvoicePreview from '@/app/components/invoices/InvoicePreview';
+import InvoiceEditSideDrawer from '@/app/components/invoices/InvoiceEditSideDrawer';
+import LoadingLoader from '@/app/components/shared/LoadingLoader';
 
 const drawerWidth = 350;
 

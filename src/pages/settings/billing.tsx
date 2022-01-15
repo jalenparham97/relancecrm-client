@@ -1,7 +1,7 @@
 import { Box } from '@mantine/core';
-import PageLayout from '@/components/layouts/PageLayout';
-import SettingsPageContainer from '@/components/settings/SettingsPageContainer';
-import Billing from '@/components/settings/billing/Billing';
+import PageLayout from '@/app/components/layouts/PageLayout';
+import SettingsPageContainer from '@/app/components/settings/SettingsPageContainer';
+import Billing from '@/app/components/settings/billing/Billing';
 
 export default function BillingSettings() {
   return (

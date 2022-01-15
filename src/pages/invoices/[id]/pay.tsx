@@ -1,16 +1,16 @@
 import { useRouter } from 'next/router';
 import { useToggle } from 'react-use';
-import { useInvoicePay } from '@/api/invoices';
-import { useCreateInvoiceCheckoutSession } from '@/api/payments';
-import { InvoiceStatus, PaymentTypes } from '@/types';
-import InvoicePageShell from '@/components/invoices/InvoicePageShell';
-import InvoicePayHeader from '@/components/invoices/InvoicePayHeader';
-import LoadingLoader from '@/components/shared/LoadingLoader';
+import { useInvoicePay } from '@/app/api/invoices';
+import { useCreateInvoiceCheckoutSession } from '@/app/api/payments';
+import { InvoiceStatus, PaymentTypes } from '@/core/types';
+import InvoicePageShell from '@/app/components/invoices/InvoicePageShell';
+import InvoicePayHeader from '@/app/components/invoices/InvoicePayHeader';
+import LoadingLoader from '@/app/components/shared/LoadingLoader';
 import { Box, Col, Container, Grid, Paper, Title, Text } from '@mantine/core';
-import InvoicePreview from '@/components/invoices/InvoicePreview';
-import Button from '@/components/shared/Button';
-import Link from '@/components/shared/Link';
-import InvoiceZellePayModal from '@/components/invoices/InvoiceZellePayModal';
+import InvoicePreview from '@/app/components/invoices/InvoicePreview';
+import Button from '@/app/components/shared/Button';
+import Link from '@/app/components/shared/Link';
+import InvoiceZellePayModal from '@/app/components/invoices/InvoiceZellePayModal';
 
 export default function InvoicePayPage() {
   const { query } = useRouter();

@@ -1,13 +1,13 @@
 import { useRouter } from 'next/router';
 import { Box, Container, Paper, Title, Grid, Col, Group, Divider } from '@mantine/core';
-import { useInvoice } from '@/api/invoices';
-import { InvoiceStatus } from '@/types';
-import InvoiceDetailsHeader from '@/components/invoices/InvoiceDetailsHeader';
-import InvoicePageShell from '@/components/invoices/InvoicePageShell';
-import InvoicePreview from '@/components/invoices/InvoicePreview';
-import Button from '@/components/shared/Button';
-import InvoiceDetailsWidget from '@/components/invoices/InvoiceDetailsWidget';
-import LoadingLoader from '@/components/shared/LoadingLoader';
+import { useInvoice } from '@/app/api/invoices';
+import { InvoiceStatus } from '@/core/types';
+import InvoiceDetailsHeader from '@/app/components/invoices/InvoiceDetailsHeader';
+import InvoicePageShell from '@/app/components/invoices/InvoicePageShell';
+import InvoicePreview from '@/app/components/invoices/InvoicePreview';
+import Button from '@/app/components/shared/Button';
+import InvoiceDetailsWidget from '@/app/components/invoices/InvoiceDetailsWidget';
+import LoadingLoader from '@/app/components/shared/LoadingLoader';
 
 export default function InvoiceDetailsPage() {
   const { query } = useRouter();

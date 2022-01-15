@@ -5,20 +5,20 @@ import {
   useTaskAddMutation,
   useTaskDeleteMutation,
   useTaskUpdateMutation,
-} from '@/api/tasks';
+} from '@/app/api/tasks';
 import { FiCheckCircle, FiPlus } from 'react-icons/fi';
 import { BsListCheck } from 'react-icons/bs';
 import { isEmpty } from 'lodash';
-import { useDialog } from '@/hooks';
-import PageLayout from '@/components/layouts/PageLayout';
-import Button from '@/components/shared/Button';
-import TabPanel from '@/components/shared/TabPanel';
-import Search from '@/components/shared/Search';
-import TaskCreateModal from '@/components/tasks/TaskCreateModal';
-import TaskItem from '@/components/tasks/TaskItem';
-import Tabs from '@/components/shared/Tabs';
-import LoadingLoader from '@/components/shared/LoadingLoader';
-import EmptyState from '@/components/shared/EmptyState';
+import { useDialog } from '@/app/hooks';
+import PageLayout from '@/app/components/layouts/PageLayout';
+import Button from '@/app/components/shared/Button';
+import TabPanel from '@/app/components/shared/TabPanel';
+import Search from '@/app/components/shared/Search';
+import TaskCreateModal from '@/app/components/tasks/TaskCreateModal';
+import TaskItem from '@/app/components/tasks/TaskItem';
+import Tabs from '@/app/components/shared/Tabs';
+import LoadingLoader from '@/app/components/shared/LoadingLoader';
+import EmptyState from '@/app/components/shared/EmptyState';
 
 export default function TasksPage() {
   const [openTaskCreateModal, toggleTaskCreateModal, closeTaskCreateDialog] = useDialog();

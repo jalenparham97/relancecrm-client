@@ -1,9 +1,9 @@
 import { Alert, Box, Center, Container, Paper, Text, Title } from '@mantine/core';
-import { useLogin } from '@/api/auth';
+import { useLogin } from '@/app/api/auth';
 import { BiErrorCircle } from 'react-icons/bi';
-import LoginForm from '@/components/auth/LoginForm';
-import PageShellBasic from '@/components/layouts/PageShellBasic';
-import Link from '@/components/shared/Link';
+import LoginForm from '@/app/components/auth/LoginForm';
+import PageShellBasic from '@/app/components/layouts/PageShellBasic';
+import Link from '@/app/components/shared/Link';
 
 export default function login() {
   const { login, error, clearError } = useLogin();
