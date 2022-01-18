@@ -1,6 +1,7 @@
 import nc from 'next-connect';
 import { NextApiResponse } from 'next';
-import { Client, ExtendedApiRequest, HttpStatus } from '@/core/types';
+import { Client, HttpStatus } from '@/core/types';
+import { ExtendedApiRequest } from '@/server/types';
 import { requireAuth } from '@/server/middleware';
 import { clientsService } from '@/server/services/clients.service';
 
