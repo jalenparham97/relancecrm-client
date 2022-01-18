@@ -38,9 +38,12 @@ const PageLayout = ({ children, ...otherProps }) => {
 
                 <Group>
                   <Link to="/">
-                    <Title order={2} className="text-white">
-                      Relance CRM
-                    </Title>
+                    <Box className="flex items-center space-x-2">
+                      <img className="w-8 h-8" src="/assets/logos/logo.png" alt="" />
+                      <Title order={2} className="text-white">
+                        Relance
+                      </Title>
+                    </Box>
                   </Link>
                   {dayjs().isBefore(user?.subscription?.trialEndDate) && (
                     <Text className="text-white">
