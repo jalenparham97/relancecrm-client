@@ -27,7 +27,7 @@ export class Service<S> {
   }
 
   async removeMany(ids: string[]) {
-    return await axios.delete(`/${this.service}`, { data: { ids } });
+    return await axios.delete(`/${this.service}`, { params: { ids } });
   }
 
   async remove(id: string) {

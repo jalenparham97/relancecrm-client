@@ -1,9 +1,10 @@
 import mongoose, { Types } from 'mongoose';
 import { Project, ProjectStatus } from '@/core/types';
 import { getInitials } from '@/app/utils';
+import { ProjectDocument } from '@/server/types';
 import randomColor from 'randomcolor';
 
-const schema = new mongoose.Schema<Project>(
+const schema = new mongoose.Schema<ProjectDocument>(
   {
     userId: { type: Types.ObjectId },
     projectName: { type: String, trim: true },

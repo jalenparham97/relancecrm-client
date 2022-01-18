@@ -1,6 +1,3 @@
-import { NextApiRequest } from 'next';
-import { User } from '.';
-
 export type ServiceResponse<T> = {
   data: T[];
   limit?: number;
@@ -56,9 +53,4 @@ export enum HttpStatus {
   SERVICE_UNAVAILABLE = 503,
   GATEWAY_TIMEOUT = 504,
   HTTP_VERSION_NOT_SUPPORTED = 505,
-}
-
-export interface ExtendedApiRequest extends NextApiRequest {
-  user: User;
-  params: Record<any, any>;
 }

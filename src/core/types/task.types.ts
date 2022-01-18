@@ -3,13 +3,12 @@ import { Project } from './project.types';
 
 export type Task = {
   _id?: string;
-  userId?: string | ObjectId;
+  userId?: string;
   content?: string;
   completed?: boolean;
   dueDate?: string;
-  projectId?: string;
-  clientId?: string | ObjectId;
-  project?: string | ObjectId;
+  clientId?: string;
+  project?: string;
 };
 
 export type TaskResponse = {

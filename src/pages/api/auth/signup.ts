@@ -2,22 +2,23 @@ import nc from 'next-connect';
 import dayjs from 'dayjs';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { HttpStatus, SubscriptionPlans, UserSignupData } from '@/core/types';
-import { userModel } from '@/server/models';
-import { dbConnect } from '@/server/db';
 import { stripeApi } from '@/server/integrations/stripe';
 import { config } from '@/core/config';
+import { usersService } from '@/server/services/users.service';
+import { useDbConnection } from '@/server/middleware';
 
 const handler = nc<NextApiRequest, NextApiResponse>();
+
+handler.use(useDbConnection);
 
 handler.post(async (req, res) => {
   const body: UserSignupData = req.body;
   try {
-    await dbConnect();
     const customer = await stripeApi.createStripeCustomer({
       email: body.email,
     });
     const subscription = await stripeApi.createSubscription(customer.id, SubscriptionPlans.PRO);
-    const user = await userModel.create({
+    const user = await usersService.create({
       ...body,
       subscription: {
         customerId: customer.id,

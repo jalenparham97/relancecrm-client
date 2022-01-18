@@ -30,7 +30,7 @@ export default function TaskEditModal({ task, opened, onClose, submit }: Props) 
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<any>({ resolver });
+  } = useForm<Task>({ resolver });
 
   const handleFormClose = () => {
     onClose();

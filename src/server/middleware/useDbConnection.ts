@@ -1,6 +1,6 @@
 import { NextApiResponse } from 'next';
 import { NextHandler } from 'next-connect';
-import { ExtendedApiRequest } from '@/core/types';
+import { ExtendedApiRequest } from '@/server/types';
 import { dbConnect } from '@/server/db';
 
 export const useDbConnection = async (

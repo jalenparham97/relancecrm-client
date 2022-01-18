@@ -47,7 +47,14 @@ export default function ClientPageContainer({ client, isLoading, children }: Pro
         )}
         {!isLoading && (
           <Box>
-            <Button variant="outline" leftIcon={<FiArrowLeft />} compact to="/clients">
+            <Button
+              className="hover:bg-transparent"
+              variant="subtle"
+              color="dark"
+              leftIcon={<FiArrowLeft />}
+              compact
+              to="/clients"
+            >
               Back to clients
             </Button>
             <Paper mt={15} padding="xl" shadow="xs" withBorder>

@@ -1,9 +1,8 @@
 import { Menu } from '@mantine/core';
 import { useToggle } from 'react-use';
-// import { useCandidateDeleteMutation } from '@/api/candidates';
 import { Client } from '@/core/types';
-import DeleteModal from '@/app/components/shared/DeleteModal';
 import { useClientDeleteMutation } from '@/app/api/clients';
+import DeleteModal from '@/app/components/shared/DeleteModal';
 
 interface Props {
   client?: Client;

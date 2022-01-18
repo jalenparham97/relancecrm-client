@@ -7,13 +7,7 @@ class PaymentsService extends Service<{}> {
     const { data } = await axios.post<CheckoutSession>(`/${this.service}/checkout`);
     return data;
   }
-  // async createInvoiceCheckoutSession(paymentInfo: InvoicePaymentInfo) {
-  //   const { data } = await axios.post<CheckoutSession>(
-  //     `/${this.service}/invoice/checkout`,
-  //     paymentInfo
-  //   );
-  //   return data;
-  // }
+
   async createInvoiceCheckoutSession(paymentInfo: InvoicePaymentInfo) {
     const { data } = await axios.post<CheckoutSession>(
       `/${this.service}/checkout/invoice`,

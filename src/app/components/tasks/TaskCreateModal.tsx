@@ -37,7 +37,7 @@ export default function TaskCreateModal({
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm<any>({ resolver });
+  } = useForm<Task>({ resolver });
 
   const handleFormClose = () => {
     onClose();

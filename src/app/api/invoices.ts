@@ -238,7 +238,7 @@ export const useInvoiceSendTest = () => {
     try {
       setIsLoading(true);
       const response = await service.sendTestInvoiceEmail(invoice);
-      if (response.status === HttpStatus.CREATED) {
+      if (response.status === HttpStatus.OK) {
         setIsLoading(false);
       }
     } catch (error) {
@@ -264,7 +264,7 @@ export const useInvoiceSend = () => {
     try {
       setIsLoading(true);
       const response = await service.sendInvoiceEmail(emailData);
-      if (response.status === HttpStatus.CREATED) {
+      if (response.status === HttpStatus.OK) {
         setIsLoading(false);
         router.push('/invoices');
       }

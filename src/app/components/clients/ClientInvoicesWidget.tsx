@@ -33,8 +33,8 @@ export default function ClientInvoicesWidget({ id, client }: Props) {
       const itemId = (() => nanoid())();
       const fromData = {
         fromName: user?.fullName,
-        fromCompany: user?.businessInfo.businessName,
-        fromAddress: user?.businessInfo.address,
+        fromCompany: user?.businessInfo?.businessName || '',
+        fromAddress: user?.businessInfo?.address || '',
       };
       const toData = {
         toName: client.fullName,

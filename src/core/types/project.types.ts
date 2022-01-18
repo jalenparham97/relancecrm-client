@@ -3,7 +3,7 @@ import { Client } from './client.types';
 
 export type BaseProject = {
   _id?: string;
-  userId?: string | ObjectId;
+  userId?: string;
   projectName?: string;
   description?: string;
   backgroundColor?: string;

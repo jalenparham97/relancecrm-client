@@ -28,9 +28,3 @@ export type CheckoutSession = { id: string };
 export type StripeSession = { url: string };
 
 export type PaymentTypes = 'stripe' | 'zelle' | 'manual';
-
-export type InvoicePaymentInfo = {
-  invoiceId: string;
-  lineItems: InvoiceItem[];
-  stripeAccountId: string;
-};

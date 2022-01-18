@@ -39,17 +39,6 @@ export default function ClientPicker({
   isError = false,
   errorMessage = 'Client is required',
 }: Props) {
-  console.log({ clients });
-
-  const data = clients.map((client) => ({
-    _id: client?._id,
-    value: client?.fullName,
-    email: client?.email,
-    fullName: client?.fullName,
-    initials: client?.initials,
-    backgroundColor: client?.backgroundColor,
-  }));
-
   const handleChange = (clientName: string) => {
     setClient(clients.find((client) => client.fullName === clientName));
   };

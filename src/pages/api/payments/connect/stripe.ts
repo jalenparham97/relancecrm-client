@@ -1,6 +1,7 @@
 import nc from 'next-connect';
 import { NextApiResponse } from 'next';
-import { ExtendedApiRequest, HttpStatus } from '@/core/types';
+import { HttpStatus } from '@/core/types';
+import { ExtendedApiRequest } from '@/server/types';
 import { stripeApi } from '@/server/integrations/stripe';
 import { requireAuth } from '@/server/middleware';
 

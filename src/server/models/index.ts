@@ -3,3 +3,4 @@ export * from './client.model';
 export * from './invoice.model';
 export * from './project.model';
 export * from './tasks.model';
+export * from './webhook-event.model';

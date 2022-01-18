@@ -78,7 +78,14 @@ export default function ProjectPageShell({ project, isLoading, children }: Props
         )}
         {!isLoading && (
           <Box>
-            <Button variant="outline" leftIcon={<FiArrowLeft />} compact to="/projects">
+            <Button
+              className="hover:bg-transparent"
+              variant="subtle"
+              color="dark"
+              leftIcon={<FiArrowLeft />}
+              compact
+              to="/projects"
+            >
               Back to projects
             </Button>
             <Paper className="mt-4" padding="xl" shadow="sm">

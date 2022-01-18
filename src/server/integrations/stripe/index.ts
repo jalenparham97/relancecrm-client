@@ -1,8 +1,9 @@
-import { config } from '@/core/config';
-import { userModel } from '@/server/models';
-import { InvoicePaymentInfo, SubscriptionPlan, User } from '@/core/types';
-import { formatToCents } from '@/server/utils';
 import Stripe from 'stripe';
+import { config } from '@/core/config';
+import { InvoicePaymentInfo, SubscriptionPlan, User } from '@/core/types';
+import { formatToCents } from '@/core/utils';
+import { usersService } from '@/server/services/users.service';
+import { dbConnect } from '@/server/db';
 
 class StripeApiAdapter {
   private stripe: Stripe;
@@ -112,20 +113,17 @@ class StripeApiAdapter {
     }
   }
 
-  private async updateStripeConnectedPayment(id: string, accountId: string) {
-    const update = { connectPayments: { stripe: { accountId } } };
-    return await userModel.findByIdAndUpdate(id, update, { new: true }).exec();
-  }
-
   async createStripeConnectSession(user: User) {
+    await dbConnect();
     if (user.connectedPayments?.stripe?.accountId) {
       const accountId = user.connectedPayments?.stripe?.accountId;
       return await this.createStripeAccountLink(accountId);
     }
     const account = await this.createStripeAccount(user);
 
-    const updatedUser = await this.updateStripeConnectedPayment(user._id, account.id);
+    const updatedUser = await usersService.updateStripeConnectedPayment(user._id, account.id);
     if (updatedUser) {
+      console.log({ updatedUser });
       return await this.createStripeAccountLink(account.id);
     }
   }
@@ -134,26 +132,22 @@ class StripeApiAdapter {
     return this.stripe.customers.create(customer);
   }
 
-  // async getStripeAccountPayment(paymentId: string, accountId: string) {
-  //   return await this.stripe.paymentIntents.retrieve(
-  //     paymentId,
-  //     {
-  //       expand: ['charges.data.balance_transaction'],
-  //     },
-  //     { stripeAccount: accountId }
-  //   );
-  // }
+  async getStripeAccountPayment(paymentId: string, accountId: string) {
+    return await this.stripe.paymentIntents.retrieve(
+      paymentId,
+      {
+        expand: ['charges.data.balance_transaction'],
+      },
+      { stripeAccount: accountId }
+    );
+  }
 
-  // async constructStripeEventFromPayload(signature: string, payload: Buffer) {
-  //   return this.stripe.webhooks.constructEvent(payload, signature, config.stripe.webhookSecret);
-  // }
-
-  // private async getSubscriptionId(user: User) {
-  //   const subscriptions = await this.stripe.subscriptions.list({
-  //     customer: user.subscription.customerId,
-  //   });
-  //   return subscriptions.data[0].id;
-  // }
+  private async getSubscriptionId(user: User) {
+    const subscriptions = await this.stripe.subscriptions.list({
+      customer: user.subscription.customerId,
+    });
+    return subscriptions.data[0].id;
+  }
 
   private async getBillingPortalSession(user: User) {
     try {
@@ -165,6 +159,10 @@ class StripeApiAdapter {
       console.log(error);
       // throw new BadRequestException(error);
     }
+  }
+
+  constructEventFromPayload(signature: string, payload: Buffer) {
+    return this.stripe.webhooks.constructEvent(payload, signature, config.stripe.webhookSecret);
   }
 }
 

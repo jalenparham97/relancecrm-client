@@ -1,11 +1,11 @@
 import mongoose, { Types } from 'mongoose';
-import { Task } from '@/core/types';
+import { TaskDocument } from '@/server/types';
 
-const schema = new mongoose.Schema<Task>(
+const schema = new mongoose.Schema<TaskDocument>(
   {
     userId: { type: Types.ObjectId },
     content: { type: String, trim: true },
-    completed: { type: Boolean },
+    completed: { type: Boolean, default: false },
     dueDate: { type: String },
     clientId: { type: Types.ObjectId },
     project: { type: Types.ObjectId, ref: 'Project' },

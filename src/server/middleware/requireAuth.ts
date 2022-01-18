@@ -1,6 +1,6 @@
 import { NextApiResponse } from 'next';
 import { NextHandler } from 'next-connect';
-import { ExtendedApiRequest } from '@/core/types';
+import { ExtendedApiRequest } from '@/server/types';
 import { adminAuth, extractJwtToken } from '@/server/libs/firebase-admin';
 import { userModel } from '@/server/models';
 import { dbConnect } from '@/server/db';

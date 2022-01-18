@@ -1,12 +1,14 @@
 import { useUser } from '@/app/api/auth';
 import { createInvoiceState } from '@/app/store';
 import { Box, Group, Modal, ModalProps, Alert, Text, Textarea, Checkbox } from '@mantine/core';
-import dayjs from 'dayjs';
+import { FiCheckCircle } from 'react-icons/fi';
+import { BiErrorCircle } from 'react-icons/bi';
+import { isEmpty } from 'lodash';
 import { useToggle } from 'react-use';
 import { useRecoilValue } from 'recoil';
+import dayjs from 'dayjs';
 import Button from '@/app/components/shared/Button';
 import InvoiceRecipientItem from './InvoiceRecipientItem';
-import { isEmpty } from 'lodash';
 
 interface Props extends ModalProps {
   loading?: boolean;
@@ -79,8 +81,77 @@ export default function InvoiceSendModal({
     return user?.fullName;
   };
 
+  const handleClose = () => {
+    onClose();
+    resetError();
+    testResetError();
+    toggleSentSuccessTest(false);
+    toggleInvoiceItemError(false);
+    toggleInvoiceDueDateError(false);
+  };
+
   return (
-    <Modal opened={opened} onClose={onClose} title="Your invoice email" size="lg">
+    <Modal opened={opened} onClose={handleClose} title="Your invoice email" size="lg">
+      {sentSuccessTest && !testError && (
+        <Alert
+          title="Test Email Sent"
+          color="green"
+          className="mb-3"
+          icon={<FiCheckCircle />}
+          withCloseButton
+          onClose={toggleSentSuccessTest}
+        >
+          A sample invoice email is on its way to you.
+        </Alert>
+      )}
+      {error && (
+        <Alert
+          title="Error"
+          color="red"
+          className="mb-3"
+          icon={<BiErrorCircle />}
+          withCloseButton
+          onClose={resetError}
+        >
+          {error}
+        </Alert>
+      )}
+      {testError && (
+        <Alert
+          title="Error"
+          color="red"
+          className="mb-3"
+          icon={<BiErrorCircle />}
+          withCloseButton
+          onClose={testResetError}
+        >
+          {testError}
+        </Alert>
+      )}
+      {invoiceItemError && (
+        <Alert
+          title="Error"
+          color="red"
+          className="mb-3"
+          icon={<BiErrorCircle />}
+          withCloseButton
+          onClose={toggleInvoiceItemError}
+        >
+          Please add an invoice item of at least 1 dollar.
+        </Alert>
+      )}
+      {invoiceDueDateError && (
+        <Alert
+          title="Error"
+          color="red"
+          className="mb-3"
+          icon={<BiErrorCircle />}
+          withCloseButton
+          onClose={toggleInvoiceDueDateError}
+        >
+          Invoice due date cannot be in the past.
+        </Alert>
+      )}
       <Box className="space-y-2">
         <Group>
           <Text className="font-semibold">From:</Text>

@@ -17,7 +17,7 @@ interface Props extends ModalProps {
 export default function InvoiceCreateModal({ opened, onClose, submit, isLoading }: Props) {
   const user = useUser();
   const { push: navigate } = useRouter();
-  // const { data: clients } = useClients();
+  const { data: clients } = useClients();
   const [showClientPicker, toggleShowClientPicker] = useToggle(false);
   const [isSkipLoading, setIsSkipLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -38,8 +38,8 @@ export default function InvoiceCreateModal({ opened, onClose, submit, isLoading 
         console.log({ user });
         const fromData = {
           fromName: user?.fullName,
-          fromCompany: user?.businessInfo.businessName,
-          fromAddress: user?.businessInfo.address,
+          fromCompany: user?.businessInfo?.businessName || '',
+          fromAddress: user?.businessInfo?.address || '',
         };
         const toData = {
           toName: client.fullName,
@@ -82,8 +82,8 @@ export default function InvoiceCreateModal({ opened, onClose, submit, isLoading 
       const itemId = (() => nanoid())();
       const fromData = {
         fromName: user?.fullName,
-        fromCompany: user?.businessInfo.businessName,
-        fromAddress: user?.businessInfo.address,
+        fromCompany: user?.businessInfo?.businessName || '',
+        fromAddress: user?.businessInfo?.address || '',
       };
       const paymentMethods: InvoicePaymentMethods = {
         stripe: {
@@ -119,7 +119,7 @@ export default function InvoiceCreateModal({ opened, onClose, submit, isLoading 
   return (
     <Modal opened={opened} onClose={handleFormClose} title="Create a new invoice" size="lg">
       <form onSubmit={handleInvoiceSubmit}>
-        {/* {clients && <ClientPicker clients={clients?.data} setClient={addClient} />} */}
+        {clients && <ClientPicker clients={clients?.data} setClient={addClient} />}
 
         <Box mt={20}>
           <Group position="apart" align="center">

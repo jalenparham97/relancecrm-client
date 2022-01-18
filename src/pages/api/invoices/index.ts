@@ -1,33 +1,23 @@
 import nc from 'next-connect';
 import { NextApiResponse } from 'next';
-import { CreateInvoice, ExtendedApiRequest, HttpStatus } from '@/core/types';
+import { CreateInvoice, HttpStatus } from '@/core/types';
+import { ExtendedApiRequest } from '@/server/types';
 import { requireAuth } from '@/server/middleware';
-import { invoiceModel } from '@/server/models';
+import { invoicesService } from '@/server/services/invoices.service';
 
-const handler = nc<ExtendedApiRequest, NextApiResponse>({ attachParams: true });
+const handler = nc<ExtendedApiRequest, NextApiResponse>();
 
 handler.use(requireAuth);
 
 handler.get(async (req, res) => {
-  const query = { userId: req.user._id };
-
-  const data = await invoiceModel
-    .find(query)
-    .sort({ createdAt: 'desc' })
-    .select('_id invoiceNumber toName issuedOn dueOn total status')
-    .lean()
-    .exec();
-
-  const count = await invoiceModel.count(query);
-
-  return res.status(HttpStatus.OK).json({ total: count, data });
+  const response = await invoicesService.findAll(req.user._id);
+  return res.status(HttpStatus.OK).json(response);
 });
 
 handler.post(async (req, res) => {
   const invoiceData: CreateInvoice = req.body;
   try {
-    const data = await invoiceModel.create({ userId: req.user._id, ...invoiceData });
-    console.log({ data });
+    const data = await invoicesService.create(invoiceData, req.user._id);
     return res.status(HttpStatus.OK).json(data);
   } catch (error) {
     throw new Error(error.message);
@@ -35,9 +25,9 @@ handler.post(async (req, res) => {
 });
 
 handler.delete(async (req, res) => {
-  const body: { ids: string[] } = req.body;
-  await invoiceModel.deleteMany({ _id: { $in: body.ids } });
-  return res.status(HttpStatus.OK).json(body.ids);
+  const ids: string[] = [req.query['ids[]']].flat();
+  await invoicesService.removeMany(ids);
+  return res.status(HttpStatus.OK).json({ message: 'success' });
 });
 
 export default handler;

@@ -23,9 +23,9 @@ export const useAuth = () => {
             initials: getInitials(getFullName(currentUser)),
             ...currentUser,
           });
-          if (dayjs().isAfter(currentUser?.subscription?.trialEndDate)) {
-            navigate('/subscribe');
-          }
+          // if (dayjs().isAfter(currentUser?.subscription?.trialEndDate)) {
+          //   navigate('/subscribe');
+          // }
           if (pathname.includes('/auth/login') || pathname.includes('/auth/signup')) {
             navigate('/');
           }
