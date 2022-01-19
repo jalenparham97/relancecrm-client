@@ -88,7 +88,7 @@ export default function ProjectPageShell({ project, isLoading, children }: Props
             >
               Back to projects
             </Button>
-            <Paper className="mt-4" padding="xl" shadow="sm">
+            <Paper className="mt-4" padding="xl" shadow="md">
               <Group position="apart">
                 <Group spacing={20}>
                   <Avatar radius="xl" size="lg" backgroundColor={project?.backgroundColor}>

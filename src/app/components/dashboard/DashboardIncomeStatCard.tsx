@@ -22,7 +22,7 @@ export default function DashboardIncomeStatCard({ icon, title, content }: Props)
   };
 
   return (
-    <Paper padding="lg" shadow="xs" withBorder>
+    <Paper padding="lg" shadow="md">
       <Box className="space-y-3">
         <Box className="flex justify-between">
           <ThemeIcon size={45}>{icon}</ThemeIcon>

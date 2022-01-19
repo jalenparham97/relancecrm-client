@@ -36,7 +36,7 @@ export default function AccountProfile({ user, submit }: Props) {
   };
 
   return (
-    <Paper padding="lg" shadow="xs" withBorder>
+    <Paper padding="lg" shadow="md">
       <Title order={2}>Profile</Title>
       <Text className="mt-1">Manage your personal profile details.</Text>
 

@@ -1,9 +1,9 @@
 import { useUser } from '@/app/api/auth';
-import { Box, Container, Grid, Col, Paper, Title } from '@mantine/core';
+import { Box, Container, Title } from '@mantine/core';
 import { isEmpty } from 'lodash';
-import { FiCreditCard, FiDollarSign, FiLock, FiUser } from 'react-icons/fi';
 import LoadingLoader from '../shared/LoadingLoader';
-import SettingsNavListItem from './SettingsNavListItem';
+import NavTab from '../shared/NavTab';
+import NavTabs from '../shared/NavTabs';
 
 interface Props {
   children: React.ReactNode;
@@ -20,33 +20,14 @@ export default function SettingsPageContainer({ children }: Props) {
         <Box className="space-y-2">
           <Title order={1}>Settings</Title>
 
-          <Grid gutter="lg">
-            <Col span={3}>
-              <Paper padding="lg" shadow="xs" withBorder>
-                <Box className="flex flex-col space-y-1">
-                  <SettingsNavListItem text="Account" href="/settings/account" icon={<FiUser />} />
-                  <SettingsNavListItem
-                    text="Security"
-                    href="/settings/security"
-                    icon={<FiLock />}
-                  />
-                  <SettingsNavListItem
-                    text="Billing"
-                    href="/settings/billing"
-                    icon={<FiCreditCard />}
-                  />
-                  <SettingsNavListItem
-                    text="Payments"
-                    href="/settings/payments"
-                    icon={<FiDollarSign />}
-                  />
-                </Box>
-              </Paper>
-            </Col>
-            <Col span={9}>
-              <Box>{children}</Box>
-            </Col>
-          </Grid>
+          <NavTabs>
+            <NavTab to="/settings/account" label="Account" />
+            <NavTab to="/settings/security" label="Security" />
+            <NavTab to="/settings/billing" label="Billing" />
+            <NavTab to="/settings/payments" label="Payments" />
+          </NavTabs>
+
+          <Box className="pt-2">{children}</Box>
         </Box>
       )}
     </Container>

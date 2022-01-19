@@ -25,7 +25,7 @@ export default function NavTab({ to, label, exact = true, ...otherProps }: Props
     <Link to={to}>
       <Box
         {...otherProps}
-        className="px-4"
+        className="mr-4"
         sx={{
           borderBottom: borderBottomStyle,
           height: '50px',
@@ -37,7 +37,7 @@ export default function NavTab({ to, label, exact = true, ...otherProps }: Props
         }}
       >
         <Text
-          className={`font-semibold text-sm transition-all duration-[150ms] ${
+          className={`font-semibold transition-all duration-[150ms] ${
             isRouteMatch && (isDarkMode ? 'text-indigo-400' : 'text-indigo-600')
           }`}
         >

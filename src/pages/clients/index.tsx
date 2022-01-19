@@ -126,7 +126,7 @@ export default function ClientsPage() {
             </Box>
 
             <Box className="mt-4">
-              <Paper shadow="xs" className="p-0" withBorder>
+              <Paper shadow="md" className="p-0">
                 {!isEmpty(clients?.data) && (
                   <DataTable
                     columns={columns}

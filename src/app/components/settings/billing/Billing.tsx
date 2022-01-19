@@ -11,7 +11,7 @@ export default function Billing() {
   const { initiate, isLoading } = useBillingPortalSession();
 
   return (
-    <Paper padding="lg" shadow="xs" withBorder>
+    <Paper padding="lg" shadow="md">
       <Title order={2}>Billing subscription</Title>
       <Box className="space-y-5">
         <Text className="mt-1">

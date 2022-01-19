@@ -18,7 +18,7 @@ export default function PaymentMethods() {
   const isZelleConnected = !isEmpty(user?.connectedPayments?.zelle?.accountId);
 
   return (
-    <Paper padding="lg" shadow="xs" withBorder>
+    <Paper padding="lg" shadow="md">
       <Title order={2}>Payment methods</Title>
       <Text className="mt-1">
         Setup any payments methods you'd like to make available for clients. Connected payment
