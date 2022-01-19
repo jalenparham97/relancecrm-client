@@ -1,3 +1,4 @@
+import { useAuth } from '@/app/api/auth';
 import { AppShell } from '@mantine/core';
 
 interface Props {
@@ -6,6 +7,8 @@ interface Props {
 }
 
 export default function PageShellBasic({ children, header, ...otherProps }: Props) {
+  useAuth();
+
   return (
     <AppShell
       navbarOffsetBreakpoint="sm"
