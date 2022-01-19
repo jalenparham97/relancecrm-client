@@ -21,7 +21,7 @@ export default function DashboardProjectItem({ project }: Props) {
   };
 
   return (
-    <Paper withBorder padding="sm" className="border-gray-600 border-opacity-30">
+    <Paper padding="sm" withBorder className="border-gray-600 border-opacity-30">
       <Group position="apart">
         <Link to={`/projects/${project._id}`}>
           <Box>

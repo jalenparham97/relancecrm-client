@@ -35,7 +35,7 @@ export default function DashboardTasksWidget() {
   const activeTasks = tasks?.data.filter(filterActiveTasks).slice(0, 5);
 
   return (
-    <Paper padding="lg" shadow="xs" withBorder>
+    <Paper padding="lg" shadow="md">
       {isLoading && <LoadingLoader height="100%" />}
       {!isLoading && (
         <Box>

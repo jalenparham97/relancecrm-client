@@ -118,7 +118,7 @@ export default function InvoicesPage() {
             </Box>
 
             <Box className="mt-4">
-              <Paper shadow="xs" withBorder>
+              <Paper shadow="md">
                 {!isEmpty(invoices?.data) && (
                   <DataTable
                     columns={columns}

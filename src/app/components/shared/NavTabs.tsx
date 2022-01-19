@@ -14,7 +14,7 @@ export default function NavTabs({ children, className }: Props) {
       <Box className={`flex space-x-2 pb-0 ${className}`}>
         <>{children}</>
       </Box>
-      <Divider className={`-mt-[2px] border-t-2 ${isDarkMode && 'border-dark-400'}`} />
+      <Divider className={`border-t-1 ${isDarkMode && 'border-dark-400'}`} />
     </Box>
   );
 }

@@ -49,7 +49,7 @@ export default function SecurityChangePassword() {
   };
 
   return (
-    <Paper padding="lg" shadow="xs" withBorder>
+    <Paper padding="lg" shadow="md">
       <Title order={2}>Change password</Title>
       <Text className="mt-1">Manage your password settings.</Text>
 

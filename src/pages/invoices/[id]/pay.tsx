@@ -54,7 +54,7 @@ export default function InvoicePayPage() {
                   <>
                     <Title order={2}>Pay now with</Title>
                     {invoice?.paymentMethods?.stripe?.connected && (
-                      <Paper padding="lg" shadow="xs" withBorder>
+                      <Paper padding="lg" shadow="md">
                         <Box className="space-y-3">
                           <Text>Credit & Debit cards</Text>
                           <Box className="flex justify-between items-center">
@@ -95,7 +95,7 @@ export default function InvoicePayPage() {
                       </Paper>
                     )}
                     {invoice?.paymentMethods?.zelle?.connected && (
-                      <Paper padding="lg" shadow="xs" withBorder>
+                      <Paper padding="lg" shadow="md">
                         <Box className="space-y-3">
                           <img
                             src="/assets/logos/zelle-logo.svg"

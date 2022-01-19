@@ -39,7 +39,7 @@ export default function AccountBusinessInfo({ submit, user }: Props) {
   };
 
   return (
-    <Paper padding="lg" shadow="xs" withBorder>
+    <Paper padding="lg" shadow="md">
       <Title order={2}>Business info</Title>
       <Text className="mt-1">Manage your business info.</Text>
 

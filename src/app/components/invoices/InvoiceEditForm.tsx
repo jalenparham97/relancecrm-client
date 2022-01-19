@@ -144,7 +144,7 @@ export default function InvoiceEditForm({ invoice }: Props) {
     <Box>
       <Group direction="column" spacing="sm" grow>
         <SimpleGrid cols={3}>
-          <Paper padding="md" shadow="xs" withBorder>
+          <Paper padding="md" shadow="md">
             <Group direction="column" spacing="sm" grow>
               <Title order={2}>Invoice details</Title>
               <TextField
@@ -171,7 +171,7 @@ export default function InvoiceEditForm({ invoice }: Props) {
               />
             </Group>
           </Paper>
-          <Paper padding="md" shadow="xs" withBorder>
+          <Paper padding="md" shadow="md">
             <Group direction="column" spacing="sm" grow>
               <Title order={2}>Bill from</Title>
               <TextField
@@ -197,7 +197,7 @@ export default function InvoiceEditForm({ invoice }: Props) {
               />
             </Group>
           </Paper>
-          <Paper padding="md" shadow="xs" withBorder>
+          <Paper padding="md" shadow="md">
             <Group direction="column" spacing="sm" grow>
               <Title order={2}>Bill to</Title>
               {isEmpty(invoice?.toName) ? (
@@ -239,7 +239,7 @@ export default function InvoiceEditForm({ invoice }: Props) {
           </Paper>
         </SimpleGrid>
 
-        <Paper padding="md" shadow="xs" withBorder>
+        <Paper padding="md" shadow="md">
           <Title order={2}>Items</Title>
           <Grid mt={5}>
             <Col span={5}>
@@ -319,7 +319,7 @@ export default function InvoiceEditForm({ invoice }: Props) {
 
         <Grid>
           <Col span={8}>
-            <Paper padding="md" shadow="xs" withBorder>
+            <Paper padding="md" shadow="md">
               <Title order={2}>Notes</Title>
               <Textarea
                 className="mt-2"
@@ -332,7 +332,7 @@ export default function InvoiceEditForm({ invoice }: Props) {
             </Paper>
           </Col>
           <Col span={4}>
-            <Paper padding="md" shadow="xs" withBorder>
+            <Paper padding="md" shadow="md">
               <Group direction="column" grow>
                 <Group position="apart" align="center">
                   <Text className="font-medium">Subtotal</Text>

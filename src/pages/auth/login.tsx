@@ -23,7 +23,7 @@ export default function login() {
               </Link>
             </Text>
           </Box>
-          <Paper className="p-8" shadow="xs" mt="lg" withBorder>
+          <Paper className="p-8" shadow="md" mt="lg">
             {error && (
               <Alert
                 className="mb-2"

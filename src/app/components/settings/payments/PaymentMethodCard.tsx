@@ -82,7 +82,7 @@ export default function PaymentMethodCard({
               </Link>
             )}
             {isConnected && appName === 'zelle' && (
-              <Paper withBorder padding="xs" className="border-gray-600 border-opacity-30">
+              <Paper padding="xs" className="border-gray-600 border-opacity-30">
                 <Text className="text-sm leading-none text-center">
                   Zelle account: {user?.connectedPayments.zelle.accountId}
                 </Text>

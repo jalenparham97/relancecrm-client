@@ -62,7 +62,7 @@ export default function TasksPage() {
               </Group>
             </Box>
 
-            <Paper className="mt-4" shadow="xs" withBorder>
+            <Paper className="mt-4" shadow="md">
               <Tabs
                 active={activeTab}
                 onTabChange={setActiveTab}
