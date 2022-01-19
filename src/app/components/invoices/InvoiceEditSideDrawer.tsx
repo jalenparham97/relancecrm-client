@@ -128,7 +128,7 @@ export default function InvoiceEditSideDrawer({
               Add additional recipients
             </Button>
           </Box>
-          <Box className="space-y-3">
+          <Box className="space-y-2">
             <Title order={4}>Payment Methods</Title>
             <Group>
               {invoice?.paymentMethods?.stripe?.connected && (

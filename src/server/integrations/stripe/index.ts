@@ -161,7 +161,7 @@ class StripeApiAdapter {
     }
   }
 
-  constructEventFromPayload(signature: string, payload: Buffer) {
+  constructEventFromPayload(signature: string, payload: string | Buffer) {
     return this.stripe.webhooks.constructEvent(payload, signature, config.stripe.webhookSecret);
   }
 }

@@ -1,9 +1,11 @@
 import nc from 'next-connect';
+import Cors from 'micro-cors';
+import { buffer } from 'micro';
 import { NextApiResponse } from 'next';
 import { HttpStatus } from '@/core/types';
 import { ExtendedApiRequest } from '@/server/types';
 import { stripeApi } from '@/server/integrations/stripe';
-import { useDbConnection, useRawBody } from '@/server/middleware';
+import { useDbConnection } from '@/server/middleware';
 import { paymentsService } from '@/server/services/payments.service';
 
 // Stripe requires the raw body to construct the event.
@@ -13,12 +15,16 @@ export const config = {
   },
 };
 
+const cors = Cors({
+  allowMethods: ['POST', 'HEAD'],
+});
+
 const handler = nc<ExtendedApiRequest, NextApiResponse>();
 
 handler.use(useDbConnection);
-handler.use(useRawBody);
 
 handler.post(async (req, res) => {
+  const rawBody = await buffer(req);
   const signature = req.headers['stripe-signature']! as string;
 
   if (!signature) {
@@ -26,9 +32,7 @@ handler.post(async (req, res) => {
   }
 
   try {
-    const event = stripeApi.constructEventFromPayload(signature, req.rawBody);
-
-    console.log({ event });
+    const event = stripeApi.constructEventFromPayload(signature, rawBody);
 
     switch (event.type) {
       case 'customer.subscription.updated':
@@ -49,4 +53,4 @@ handler.post(async (req, res) => {
   }
 });
 
-export default handler;
+export default cors(handler as any);
