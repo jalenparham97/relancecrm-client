@@ -25,16 +25,8 @@ export default function NavTab({ to, label, exact = true, ...otherProps }: Props
     <Link to={to}>
       <Box
         {...otherProps}
-        className="mr-4"
-        sx={{
-          borderBottom: borderBottomStyle,
-          height: '50px',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          transition: 'all',
-          transitionDuration: '150ms',
-        }}
+        className={`mr-4 h-[50px] flex justify-center items-center transition-all`}
+        sx={{ borderBottom: borderBottomStyle }}
       >
         <Text
           className={`font-semibold transition-all duration-[150ms] ${

@@ -26,7 +26,7 @@ export default function PaymentMethods() {
       </Text>
 
       <Box className="mt-4">
-        <SimpleGrid cols={2}>
+        <SimpleGrid cols={3}>
           <PaymentMethodCard
             appName="stripe"
             appLogo="https://cdn.brandfolder.io/KGT2DTA4/at/8vbr8k4mr5xjwk4hxq4t9vs/Stripe_wordmark_-_blurple.svg"
