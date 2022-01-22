@@ -17,7 +17,7 @@ export default function InvoiceDetailsPage() {
     <InvoicePageShell header={!isLoading && <InvoiceDetailsHeader invoice={invoice} />}>
       {isLoading && <LoadingLoader height="90vh" />}
       {!isLoading && (
-        <Container className="pt-[80px]" size="xl">
+        <Container className="pt-[80px]" size="lg">
           <Grid>
             <Col span={8}>
               <InvoicePreview invoice={invoice} />

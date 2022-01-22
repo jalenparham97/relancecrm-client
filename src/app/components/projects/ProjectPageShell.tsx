@@ -163,7 +163,7 @@ export default function ProjectPageShell({ project, isLoading, children }: Props
             </Paper>
 
             <Paper mt={20} shadow="md">
-              <NavTabs className="ml-[12px]">
+              <NavTabs className="ml-[12px] px-2">
                 <NavTab to={`/projects/${query.id}`} label="Tasks" />
                 <NavTab to={`/projects/${query.id}/invoices`} label="Invoices" />
               </NavTabs>

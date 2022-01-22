@@ -64,13 +64,15 @@ export default function InvoiceEditPage() {
       {!isLoading && (
         <Box className="flex">
           <Box sx={{ width: `calc(100% - ${drawerWidth}px)` }}>
-            <Container className="pt-[80px]" size={1000}>
-              {openPreview ? (
+            {openPreview ? (
+              <Container className="pt-[80px]" size={700}>
                 <InvoicePreview invoice={invoice} />
-              ) : (
+              </Container>
+            ) : (
+              <Container className="pt-[80px]" size={1000}>
                 <InvoiceEditForm invoice={invoice} />
-              )}
-            </Container>
+              </Container>
+            )}
           </Box>
           <InvoiceEditSideDrawer
             drawerWidth={drawerWidth}
