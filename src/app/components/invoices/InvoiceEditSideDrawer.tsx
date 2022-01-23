@@ -71,8 +71,9 @@ export default function InvoiceEditSideDrawer({
 
   return (
     <Navbar
-      className="border-l border-gray-500 border-opacity-20"
+      className="!border-l !border-gray-600 !border-r-0 border-opacity-20"
       padding="lg"
+      sx={{ borderLeft: '1px solid' }}
       width={{ base: drawerWidth }}
       fixed
       position={{ top: 0, right: 0 }}

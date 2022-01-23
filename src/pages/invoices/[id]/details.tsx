@@ -18,11 +18,11 @@ export default function InvoiceDetailsPage() {
       {isLoading && <LoadingLoader height="90vh" />}
       {!isLoading && (
         <Container className="pt-[80px]" size="lg">
-          <Grid>
-            <Col span={8}>
+          <Grid gutter={40}>
+            <Col span={7}>
               <InvoicePreview invoice={invoice} />
             </Col>
-            <Col span={4}>
+            <Col span={5}>
               <Paper padding="lg" shadow="md">
                 <Box className="space-y-3">
                   <Group position="apart">

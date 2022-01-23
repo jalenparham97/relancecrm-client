@@ -88,7 +88,11 @@ export default function ProjectPageShell({ project, isLoading, children }: Props
             >
               Back to projects
             </Button>
-            <Paper className="mt-4" padding="xl" shadow="md">
+            <Paper
+              padding="xl"
+              withBorder
+              className="mt-4 border-gray-600 border-opacity-20 shadow-sm"
+            >
               <Group position="apart">
                 <Group spacing={20}>
                   <Avatar radius="xl" size="lg" backgroundColor={project?.backgroundColor}>
@@ -162,7 +166,7 @@ export default function ProjectPageShell({ project, isLoading, children }: Props
               </Box>
             </Paper>
 
-            <Paper mt={20} shadow="md">
+            <Paper mt={20} withBorder className="border-gray-600 border-opacity-20 shadow-sm">
               <NavTabs className="ml-[12px] px-2">
                 <NavTab to={`/projects/${query.id}`} label="Tasks" />
                 <NavTab to={`/projects/${query.id}/invoices`} label="Invoices" />

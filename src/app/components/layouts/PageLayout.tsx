@@ -73,7 +73,7 @@ const PageLayout = ({ children, ...otherProps }) => {
         styles={(theme) => ({
           main: {
             backgroundColor:
-              theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[1],
+              theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[0],
             paddingRight: '16px',
             paddingBottom: '30px',
           },

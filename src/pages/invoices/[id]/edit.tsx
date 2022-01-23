@@ -65,7 +65,7 @@ export default function InvoiceEditPage() {
         <Box className="flex">
           <Box sx={{ width: `calc(100% - ${drawerWidth}px)` }}>
             {openPreview ? (
-              <Container className="pt-[80px]" size={700}>
+              <Container className="pt-[80px]" size={750}>
                 <InvoicePreview invoice={invoice} />
               </Container>
             ) : (

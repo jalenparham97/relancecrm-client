@@ -94,9 +94,9 @@ export default function InvoicePreview({ invoice }: Props) {
           <thead>
             <tr>
               <th className="!px-0 !w-8/12">Description</th>
-              <th className="!px-0 !w-2/3 !text-right">Units/hrs</th>
-              <th className="!px-0 !w-2/3 !text-right">Rate</th>
-              <th className="!px-0 !w-2/3 !text-right">Subtotal</th>
+              <th className="!px-0 !w-1/3 !text-right">Units/hrs</th>
+              <th className="!px-0 !w-1/3 !text-right">Rate</th>
+              <th className="!px-0 !w-1/3 !text-right">Subtotal</th>
             </tr>
           </thead>
           <tbody>
