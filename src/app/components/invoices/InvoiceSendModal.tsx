@@ -154,24 +154,24 @@ export default function InvoiceSendModal({
       )}
       <Box className="space-y-2">
         <Group>
-          <Text className="font-semibold">From:</Text>
+          <Text className="font-semibold text-sm">From:</Text>
           <Text>{getFrom()}</Text>
         </Group>
         <Group>
-          <Text className="font-semibold">To:</Text>
+          <Text className="font-semibold text-sm">To:</Text>
           {invoice?.client && (
             <Text>{`${invoice?.client.fullName} (${invoice?.client.email})`}</Text>
           )}
         </Group>
         <Group>
-          <Text className="font-semibold">Subject:</Text>
+          <Text className="font-semibold text-sm">Subject:</Text>
           <Text>{`${getFrom()}`} sent you an invoice</Text>
         </Group>
       </Box>
 
       {!isEmpty(invoice?.recipients) && (
         <Box className="mt-3">
-          <Text className="font-semibold">Additional recipients</Text>
+          <Text className="font-semibold text-sm">Additional recipients</Text>
           <Box className="mt-2 space-y-2">
             {invoice.recipients.map((recipient) => (
               <Box key={recipient._id}>
@@ -182,8 +182,14 @@ export default function InvoiceSendModal({
         </Box>
       )}
 
-      <Box className="mt-4 space-y-3">
-        <Textarea placeholder="Enter your message" value={message} onChange={handleMessageChange} />
+      <Box className="mt-2 space-y-3">
+        <Textarea
+          placeholder="Enter your message"
+          label="Message"
+          classNames={{ label: 'font-semibold text-sm' }}
+          value={message}
+          onChange={handleMessageChange}
+        />
         <Checkbox
           label="Send youself a copy of this invoice"
           checked={sendUserCopy}

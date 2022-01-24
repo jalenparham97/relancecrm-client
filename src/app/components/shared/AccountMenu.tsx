@@ -23,6 +23,7 @@ export default function AccountMenu({ ...otherProps }: Props) {
       control={
         <UnstyledButton>
           <Avatar
+            src={user?.photoUrl}
             styles={{ placeholder: { backgroundColor: colors.indigo[6], color: 'white' } }}
             radius="xl"
           >

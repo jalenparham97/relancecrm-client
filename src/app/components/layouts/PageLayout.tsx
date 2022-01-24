@@ -29,7 +29,7 @@ const PageLayout = ({ children, ...otherProps }) => {
         navbarOffsetBreakpoint="sm"
         fixed
         header={
-          <Header height={60} padding="md" className="bg-dark-700">
+          <Header height={60} padding="md">
             <Box className="flex justify-between items-center h-full">
               <Box>
                 <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
@@ -40,13 +40,11 @@ const PageLayout = ({ children, ...otherProps }) => {
                   <Link to="/">
                     <Box className="flex items-center space-x-2">
                       <img className="w-8 h-8" src="/assets/logos/logo.png" alt="" />
-                      <Title order={2} className="text-white">
-                        Relance
-                      </Title>
+                      <Title order={2}>Relance</Title>
                     </Box>
                   </Link>
                   {dayjs().isBefore(user?.subscription?.trialEndDate) && (
-                    <Text className="text-white">
+                    <Text>
                       <span className="font-semibold">
                         {Math.abs(dayjs(Date.now()).diff(user?.subscription?.trialEndDate, 'days'))}
                       </span>{' '}

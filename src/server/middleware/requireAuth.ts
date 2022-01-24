@@ -18,7 +18,7 @@ export const requireAuth = async (
     if (!user) {
       throw new Error('Unauthorized');
     }
-    req.user = user;
+    req.user = user ?? {};
     next();
   } catch (error) {}
 };

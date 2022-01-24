@@ -112,7 +112,6 @@ export const useStripeConnectSession = () => {
     try {
       setIsLoading(true);
       const session = await paymentsService.createStripeConnectSession();
-      console.log(session);
       if (session) {
         window.location.assign(session.url);
       }

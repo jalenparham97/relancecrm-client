@@ -30,7 +30,8 @@ export const config = {
   },
   email: {
     emailApiKey: process.env.EMAIL_API_KEY,
-    emailFrom: 'notifications@relancecrm.com',
+    emailFrom: 'no-reply@relancecrm.com',
     invoiceTestTemplateId: 'd-cb5c1bca499649d3b6e8472282069b49',
+    invoiceTemplateId: '3z0vklo6enxl7qrx',
   },
 };
