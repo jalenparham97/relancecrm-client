@@ -1,6 +1,6 @@
 import { config } from '@/core/config';
-import mailer from '@sendgrid/mail';
+import MailerSend, { EmailParams, Recipient } from 'mailersend';
 
-mailer.setApiKey(config.email.emailApiKey);
+const mailer = new MailerSend({ api_key: config.email.apiKey });
 
-export { mailer };
+export { mailer, EmailParams, Recipient };

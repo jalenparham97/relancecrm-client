@@ -30,18 +30,22 @@ export default function SignupForm({ onFormSubmit, loading }: Props) {
     <Box>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Group direction="column" grow>
-          <TextInput
-            {...register('firstName')}
-            placeholder="Your first name"
-            label="First name"
-            error={formErrors.firstName && formErrors.firstName.message}
-          />
-          <TextInput
-            {...register('lastName')}
-            placeholder="Your last name"
-            label="Last name"
-            error={formErrors.lastName && formErrors.lastName.message}
-          />
+          <Box className="flex justify-between space-x-4">
+            <TextInput
+              className="w-full"
+              {...register('firstName')}
+              placeholder="Your first name"
+              label="First name"
+              error={formErrors.firstName && formErrors.firstName.message}
+            />
+            <TextInput
+              className="w-full"
+              {...register('lastName')}
+              placeholder="Your last name"
+              label="Last name"
+              error={formErrors.lastName && formErrors.lastName.message}
+            />
+          </Box>
           <TextInput
             {...register('email')}
             icon={<HiOutlineMail size="20px" />}
@@ -63,7 +67,7 @@ export default function SignupForm({ onFormSubmit, loading }: Props) {
               </Anchor>
             </Box>
           </Box>
-          <Button loading={isSubmitting} type="submit">
+          <Button loading={isSubmitting} size="md" type="submit">
             Sign up
           </Button>
         </Group>

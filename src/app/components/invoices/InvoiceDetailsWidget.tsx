@@ -44,7 +44,7 @@ export default function InvoiceDetailsWidget({ invoice }: Props) {
 
   return (
     <Box className="space-y-6">
-      {/* {invoice?.project && (
+      {invoice?.project && (
         <Box className="space-y-2">
           <Title order={5}>Connected project</Title>
           <Group position="apart">
@@ -59,7 +59,7 @@ export default function InvoiceDetailsWidget({ invoice }: Props) {
             </Group>
           </Group>
         </Box>
-      )} */}
+      )}
       {!isEmpty(invoice?.recipients) && (
         <Box className="space-y-2">
           <Title order={5}>Additional recipients</Title>
@@ -103,7 +103,7 @@ export default function InvoiceDetailsWidget({ invoice }: Props) {
             </Box>
             <Box className="flex justify-between">
               <Text className="font-semibold">Payment method:</Text>
-              <Box>{getInvoicePaymentMethod(invoice?.paymentDetails?.paymentMethod)}</Box>
+              <Text>{getInvoicePaymentMethod(invoice?.paymentDetails?.paymentMethod)}</Text>
             </Box>
             {isStripeOrPaypal && (
               <>
@@ -118,7 +118,7 @@ export default function InvoiceDetailsWidget({ invoice }: Props) {
               </>
             )}
             <Box className="flex justify-between">
-              <Text className="font-semibold">Amount:</Text>
+              <Text className="font-semibold">Total amount:</Text>
               <Text>{formatCurrency(invoice?.total)}</Text>
             </Box>
           </Box>

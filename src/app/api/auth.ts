@@ -16,6 +16,7 @@ export const useAuth = () => {
   useEffect(() => {
     const unsubscribe = firebaseAuth.onAuthStateChanged(async (firebaseUser) => {
       if (firebaseUser) {
+        console.log({ firebaseUser });
         if (isEmpty(user)) {
           const currentUser = await authService.authenticate();
           setUser({
@@ -41,7 +42,7 @@ export const useAuth = () => {
 };
 
 export const useSignUp = (isMounted?: boolean) => {
-  const { push: navigate } = useRouter();
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -50,7 +51,7 @@ export const useSignUp = (isMounted?: boolean) => {
       setIsLoading(true);
       const user = await authService.signup(signupData);
       if (user) {
-        navigate('/');
+        router.push('/');
         setIsLoading(false);
       }
     } catch (error) {
@@ -64,7 +65,7 @@ export const useSignUp = (isMounted?: boolean) => {
 };
 
 export const useLogin = () => {
-  const { push: navigate } = useRouter();
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -77,7 +78,7 @@ export const useLogin = () => {
       setIsLoading(true);
       const user = await authService.login(loginData);
       if (user) {
-        navigate('/');
+        router.push('/');
         setIsLoading(false);
       }
     } catch (error) {
@@ -88,6 +89,39 @@ export const useLogin = () => {
   };
 
   return { login, isLoading, error, clearError };
+};
+
+export const useGoogleAuth = () => {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [signInError, setSignInError] = useState(null);
+  const [signUpError, setSignUpError] = useState(null);
+
+  const loginWithGoogle = async () => {
+    try {
+      await authService.signInWithGoogle();
+    } catch (error) {
+      setSignInError(error);
+    }
+  };
+
+  const signUpWithGoogle = async () => {
+    try {
+      const user = await authService.signUpWithGoogle();
+      if (user) {
+        router.push('/');
+      }
+    } catch (error) {
+      setSignUpError(error);
+    }
+  };
+
+  const clearError = () => {
+    setSignInError(null);
+    setSignUpError(null);
+  };
+
+  return { loginWithGoogle, signUpWithGoogle, signInError, signUpError, clearError };
 };
 
 export const useLogout = () => {

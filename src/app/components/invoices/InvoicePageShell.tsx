@@ -1,5 +1,6 @@
 import { AppShell, Box } from '@mantine/core';
 import AuthGuard from '@/app/guards/AuthGuard';
+import { useAuth } from '@/app/api/auth';
 
 interface Props {
   header?: React.ReactElement<any, string | React.JSXElementConstructor<any>>;
@@ -7,6 +8,8 @@ interface Props {
 }
 
 export default function InvoicePageShell({ header, children, ...otherProps }: Props) {
+  useAuth();
+
   return (
     <AuthGuard>
       <AppShell
@@ -16,7 +19,7 @@ export default function InvoicePageShell({ header, children, ...otherProps }: Pr
         styles={(theme) => ({
           main: {
             backgroundColor:
-              theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[1],
+              theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[0],
             paddingRight: '16px',
             paddingBottom: '20px',
           },

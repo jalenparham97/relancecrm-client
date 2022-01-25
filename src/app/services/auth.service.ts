@@ -3,9 +3,12 @@ import {
   firebaseAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signInWithPopup,
+  googleAuthProvider,
+  microsoftAuthProvider,
 } from '@/app/libs/firebase';
 import { queryClient } from '@/app/libs/react-query';
-import { User, UserLoginData, UserSignupData } from '@/core/types';
+import { FirebaseUser, User, UserLoginData, UserSignupData } from '@/core/types';
 
 class AuthService {
   async authenticate() {
@@ -26,6 +29,27 @@ class AuthService {
       firstName,
       lastName,
       plan,
+    });
+    return user;
+  }
+
+  private async authenticateWithGoogle() {
+    const { user } = await signInWithPopup(firebaseAuth, googleAuthProvider);
+    return user;
+  }
+
+  async signInWithGoogle() {
+    return await this.authenticateWithGoogle();
+  }
+
+  async signUpWithGoogle() {
+    const firebaseUser: FirebaseUser = await this.authenticateWithGoogle();
+    const { data: user } = await axios.post<User>('/auth/signup', {
+      uid: firebaseUser.uid,
+      email: firebaseUser.email,
+      firstName: firebaseUser.displayName.split(' ')[0],
+      lastName: firebaseUser.displayName.split(' ')[1],
+      photoUrl: firebaseUser.photoURL,
     });
     return user;
   }

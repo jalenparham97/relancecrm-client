@@ -49,7 +49,7 @@ export default function LoginForm({ onFormSubmit, loading }: Props) {
               </Anchor>
             </Box>
           </Box>
-          <Button loading={isSubmitting} type="submit">
+          <Button loading={isSubmitting} size="md" type="submit">
             Login
           </Button>
         </Group>

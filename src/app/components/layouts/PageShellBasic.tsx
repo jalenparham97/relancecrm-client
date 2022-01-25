@@ -7,8 +7,6 @@ interface Props {
 }
 
 export default function PageShellBasic({ children, header, ...otherProps }: Props) {
-  useAuth();
-
   return (
     <AppShell
       navbarOffsetBreakpoint="sm"
@@ -17,7 +15,7 @@ export default function PageShellBasic({ children, header, ...otherProps }: Prop
       styles={(theme) => ({
         main: {
           backgroundColor:
-            theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[1],
+            theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[0],
           paddingRight: '16px',
           paddingBottom: '20px',
         },

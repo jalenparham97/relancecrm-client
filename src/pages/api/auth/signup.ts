@@ -30,7 +30,7 @@ handler.post(async (req, res) => {
           .toISOString(),
       },
     });
-    return res.status(HttpStatus.OK).json({ ...user });
+    return res.status(HttpStatus.OK).json(user);
   } catch (error) {
     if (error.code === 11000) {
       throw new Error('User already exists');

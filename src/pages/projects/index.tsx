@@ -104,7 +104,7 @@ export default function ProjectsPage() {
             </Box>
 
             <Box className="mt-4">
-              <Paper shadow="md">
+              <Paper withBorder className="p-0 border-gray-600 border-opacity-20 shadow-sm">
                 {!isEmpty(projects?.data) && (
                   <DataTable
                     columns={columns}

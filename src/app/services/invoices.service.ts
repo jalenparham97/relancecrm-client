@@ -9,7 +9,7 @@ class InvoicesService extends Service<Invoice> {
   }
 
   async removeInvoiceProject(id: string) {
-    const { data } = await axios.patch<Invoice>(`/${this.service}/${id}/project`);
+    const { data } = await axios.patch<Invoice>(`/${this.service}/project`, {}, { params: { id } });
     return data;
   }
 
