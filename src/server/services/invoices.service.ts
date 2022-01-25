@@ -1,6 +1,6 @@
 import { isEmpty } from 'lodash';
 import { config } from '@/core/config';
-import { mailer } from '@/server/libs/email/email-manager';
+import { mailer, EmailParams, Recipient } from '@/server/libs/email/email-manager';
 import {
   CreateInvoice,
   Invoice,
@@ -10,7 +10,7 @@ import {
   ServiceResponse,
   User,
 } from '@/core/types';
-import { InvoiceTemplateData, MailOptions } from '@/server/types';
+import { InvoiceTemplateData, MailOptions, Personalization, TemplateData } from '@/server/types';
 import { invoiceModel } from '@/server/models';
 import { formatCurrency, formatDate, omitObjProperty } from '@/core/utils';
 import { padInvoiceNumber } from '@/server/utils';
@@ -123,52 +123,58 @@ class InvoicesService {
   }
 
   async sendInvoiceEmail(invoiceEmailOptions: InvoiceEmailData, user: User) {
-    const { invoice } = invoiceEmailOptions;
-    const email = this.createInvoiceEmail(invoiceEmailOptions, user);
-    await mailer.send(email);
-    return await this.updateInvoiceStatus(invoice, user);
+    try {
+      const { invoice } = invoiceEmailOptions;
+      const email = this.createInvoiceEmail(invoiceEmailOptions, user);
+      await mailer.send(email);
+      return await this.updateInvoiceStatus(invoice, user);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async sendTestInvoiceEmail(invoiceEmailOptions: InvoiceEmailData, user: User) {
-    const isTest = { isTest: true };
-    const email = this.createInvoiceEmail(invoiceEmailOptions, user, isTest);
-    return await mailer.send(email);
+    try {
+      const isTest = true;
+      const email = this.createInvoiceEmail(invoiceEmailOptions, user, isTest);
+      return await mailer.send(email);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  private createInvoiceEmail(
-    emailOptions: InvoiceEmailData,
-    user: User,
-    test: { isTest: boolean } = { isTest: false }
-  ) {
+  private createInvoiceEmail(emailOptions: InvoiceEmailData, user: User, isTest: boolean = false) {
     const { invoice, sendUserCopy, message, recipients, from } = emailOptions;
-    const { isTest } = test;
 
     const isTestHeader = isTest ? 'Your test email:' : '';
 
-    const dynamicTemplateData: InvoiceTemplateData = {
-      subject: `${isTestHeader} ${invoice.fromName} sent you an invoice`,
-      invoiceUrl: `${config.webAppURL}/invoices/${invoice._id}/pay`,
-      contentSubject: `${invoice.fromName} sent you an invoice`,
-      invoiceNumber: `${invoice.invoiceNumber}`,
-      total: formatCurrency(invoice.total),
-      dueDate: formatDate(invoice.dueOn),
-      message,
+    const dynamicTemplateData: Personalization<TemplateData> = {
+      email: isTest ? user.email : invoice.client?.email,
+      data: {
+        invoiceUrl: `${config.webAppURL}/invoices/${invoice._id}/pay`,
+        contentSubject: `${invoice.client?.fullName} sent you an invoice`,
+        invoiceNumber: `${invoice.invoiceNumber}`,
+        total: formatCurrency(invoice.total),
+        dueDate: formatDate(invoice.dueOn),
+        message: message || 'Hi! Please find my invoice attached. Thanks for your business!',
+      },
     };
 
-    const email: MailOptions = {
-      from: `${invoice.fromName} <${config.email.emailFrom}>`,
-      templateId: config.email.invoiceTestTemplateId,
-      dynamicTemplateData,
-    };
+    const email = new EmailParams();
+
+    email.setFrom(config.email.emailFrom);
+    email.setSubject(`${isTestHeader} ${invoice.fromName} sent you an invoice`);
+    email.setTemplateId(config.email.invoiceTemplateId);
+    email.setPersonalization([dynamicTemplateData]);
 
     if (isTest) {
-      email.to = [user.email];
+      email.setRecipients([new Recipient(user.email)]);
     } else {
-      email.to = [invoice.toEmail];
-      email.cc = !isEmpty(recipients) ? [...recipients] : [];
-      email.bcc = sendUserCopy ? [user.email] : [];
+      const ccRecipients = recipients.map((recipient) => new Recipient(recipient));
+      email.setRecipients([new Recipient(invoice.toEmail)]);
+      email.setCc(!isEmpty(recipients) ? ccRecipients : []);
+      email.setBcc(sendUserCopy ? [new Recipient(user.email)] : []);
     }
-
     return email;
   }
 

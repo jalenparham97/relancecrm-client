@@ -14,7 +14,18 @@ export type InvoiceEmailOptions = {
 };
 
 export type InvoiceTemplateData = {
-  subject: string;
+  email: string;
+  data: {
+    invoiceUrl: string;
+    contentSubject: string;
+    invoiceNumber: string;
+    total: string;
+    dueDate: string;
+    message?: string;
+  };
+};
+
+export type TemplateData = {
   invoiceUrl: string;
   contentSubject: string;
   invoiceNumber: string;

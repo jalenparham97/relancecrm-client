@@ -4,7 +4,7 @@ import { Box, Text, Navbar, Title, Group, ActionIcon, Badge } from '@mantine/cor
 import { FiPlus, FiX } from 'react-icons/fi';
 import Button from '@/app/components/shared/Button';
 import { useInvoiceRemoveProjectMutation, useInvoiceUpdateMutation } from '@/app/api/invoices';
-import { useDialog } from '@/app/hooks';
+import { useDialog, useIsDarkMode } from '@/app/hooks';
 import { Client, Project } from '@/core/types';
 import InvoiceProjectPickerModal from './InvoiceProjectPickerModal';
 import { useRecoilValue } from 'recoil';
@@ -26,6 +26,7 @@ export default function InvoiceEditSideDrawer({
   updateLoading,
 }: Props) {
   const { query } = useRouter();
+  const isDarkMode = useIsDarkMode();
   const invoice = useRecoilValue(createInvoiceState);
   const [projectPicker, openProjectPicker, closeProjectPicker] = useDialog();
   const [recipientModal, openRecipientModal, closeRecipientModal] = useDialog();
@@ -71,11 +72,11 @@ export default function InvoiceEditSideDrawer({
 
   return (
     <Navbar
-      className="!border-l !border-gray-600 !border-r-0 border-opacity-20"
+      fixed
       padding="lg"
+      className={`!border-l ${isDarkMode ? '!border-gray-800' : '!border-gray-300'} !border-r-0`}
       sx={{ borderLeft: '1px solid' }}
       width={{ base: drawerWidth }}
-      fixed
       position={{ top: 0, right: 0 }}
     >
       <Box className="pt-[75px]">
