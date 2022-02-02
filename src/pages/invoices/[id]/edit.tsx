@@ -14,7 +14,7 @@ import InvoicePreview from '@/app/components/invoices/InvoicePreview';
 import InvoiceEditSideDrawer from '@/app/components/invoices/InvoiceEditSideDrawer';
 import LoadingLoader from '@/app/components/shared/LoadingLoader';
 
-const drawerWidth = 350;
+const drawerWidth = 370;
 
 export default function InvoiceEditPage() {
   const { query, push } = useRouter();

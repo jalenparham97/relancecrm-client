@@ -26,7 +26,7 @@ interface Props {
 
 export default function InvoicePreview({ invoice }: Props) {
   return (
-    <Paper shadow="md" withBorder className="border-gray-600 border-opacity-20 shadow-sm">
+    <Paper withBorder className="border-gray-600 border-opacity-20 shadow-sm">
       <Group position="right" className="pt-4 px-4">
         <Text>
           <span>INVOICE #</span>{' '}

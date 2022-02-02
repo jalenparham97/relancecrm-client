@@ -12,3 +12,4 @@ export * from './formatters/formatCurrency';
 export * from './formatters/formatClients';
 export * from './formatters/formatProjects';
 export * from './formatters/formatInvoices';
+export * from './formatters/formatForms';

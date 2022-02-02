@@ -98,7 +98,7 @@ export default function ProjectsPage() {
               <Title order={1}>Projects</Title>
               <Group spacing="xs">
                 <Button leftIcon={<FiPlus fontSize="16px" />} onClick={toggleOpen}>
-                  Add Project
+                  Add project
                 </Button>
               </Group>
             </Box>

@@ -6,6 +6,7 @@ export * from './integration.types';
 export * from './client.types';
 export * from './project.types';
 export * from './task.types';
+export * from './form.types';
 export * from './http.types';
 
 export type UpdateParams<T> = {

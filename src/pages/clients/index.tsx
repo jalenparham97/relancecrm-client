@@ -53,6 +53,8 @@ export default function ClientsPage() {
 
   const data = useMemo(() => formatClients(clients?.data), [clients?.data]);
 
+  console.log({ data });
+
   const columns = useMemo(
     () => [
       {
@@ -120,7 +122,7 @@ export default function ClientsPage() {
               <Title order={1}>Clients</Title>
               <Group spacing="xs">
                 <Button leftIcon={<FiPlus fontSize="16px" />} onClick={toggleOpen}>
-                  Add Client
+                  Add client
                 </Button>
               </Group>
             </Box>

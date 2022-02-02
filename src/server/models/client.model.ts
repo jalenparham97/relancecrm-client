@@ -1,7 +1,6 @@
 import mongoose, { Types } from 'mongoose';
 import { ClientDocument } from '@/server/types';
 import { getInitials } from '@/app/utils';
-import { shuffle } from 'lodash';
 import randomColor from 'randomcolor';
 
 const schema = new mongoose.Schema<ClientDocument>(

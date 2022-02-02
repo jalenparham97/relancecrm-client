@@ -7,11 +7,11 @@
     "type-check": "tsc"
   },
   "dependencies": {
-    "@mantine/core": "^3.6.2",
-    "@mantine/dates": "^3.6.2",
-    "@mantine/hooks": "^3.6.2",
-    "@mantine/next": "^3.6.2",
-    "@mantine/notifications": "^3.6.2",
+    "@mantine/core": "^3.6.3",
+    "@mantine/dates": "^3.6.3",
+    "@mantine/hooks": "^3.6.3",
+    "@mantine/next": "^3.6.3",
+    "@mantine/notifications": "^3.6.3",
     "@stripe/react-stripe-js": "^1.6.0",
     "@stripe/stripe-js": "^1.21.1",
     "axios": "^0.24.0",

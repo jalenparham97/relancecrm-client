@@ -14,7 +14,7 @@ export default function InvoicePayHeader({ invoice }: Props) {
 
   return (
     <Header
-      height={80}
+      height={70}
       padding="md"
       fixed
       sx={(theme) => ({

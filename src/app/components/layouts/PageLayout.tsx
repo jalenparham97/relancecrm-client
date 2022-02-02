@@ -16,11 +16,12 @@ import dayjs from 'dayjs';
 import AuthGuard from '@/app/guards/AuthGuard';
 import NavListItem from '@/app/components/shared/NavListItem';
 import Link from '@/app/components/shared/Link';
-import NavListItemCustom from '@/app/components/shared/NavListItemCustom';
 import AccountMenu from '@/app/components/shared/AccountMenu';
+import { useIsDarkMode } from '@/app/hooks';
 
 const PageLayout = ({ children, ...otherProps }) => {
   const user = useUser();
+  const isDarkMode = useIsDarkMode();
   const [opened, setOpened] = useState(false);
 
   return (
@@ -29,7 +30,7 @@ const PageLayout = ({ children, ...otherProps }) => {
         navbarOffsetBreakpoint="sm"
         fixed
         header={
-          <Header height={60} padding="md">
+          <Header height={65} padding="md">
             <Box className="flex justify-between items-center h-full">
               <Box>
                 <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
@@ -39,8 +40,20 @@ const PageLayout = ({ children, ...otherProps }) => {
                 <Group>
                   <Link to="/">
                     <Box className="flex items-center space-x-2">
-                      <img className="w-8 h-8" src="/assets/logos/logo.png" alt="" />
-                      <Title order={2}>Relance</Title>
+                      <img
+                        className="w-10 !-ml-2 h-10"
+                        src="/assets/logos/relance-logo.svg"
+                        alt=""
+                      />
+                      {isDarkMode ? (
+                        <img className="w-28 !-ml-2" src="/assets/logos/logo-light.svg" alt="" />
+                      ) : (
+                        <img
+                          className="w-28 h-10 !-ml-2"
+                          src="/assets/logos/logo-dark.svg"
+                          alt=""
+                        />
+                      )}
                     </Box>
                   </Link>
                   {dayjs().isBefore(user?.subscription?.trialEndDate) && (
@@ -62,8 +75,22 @@ const PageLayout = ({ children, ...otherProps }) => {
             <Box className="w-full grid gap-1">
               <NavListItem href="/" icon={<FiHome />} text="Dashboard" />
               <NavListItem href="/clients" icon={<FiUsers />} text="Clients" />
-              <NavListItem href="/projects" icon={<FiBriefcase />} text="Projects" />
-              <NavListItemCustom href="/invoices" icon="invoices" text="Invoices" />
+              <NavListItem
+                href="/projects"
+                icon={<i className="fi fi-rr-briefcase text-base"></i>}
+                text="Projects"
+              />
+              {/* <NavListItem href="/projects" icon={<FiBriefcase />} text="Projects" /> */}
+              <NavListItem
+                href="/invoices"
+                icon={<i className="fi fi-rr-receipt text-base" />}
+                text="Invoices"
+              />
+              <NavListItem
+                href="/forms"
+                icon={<i className="fi fi-rr-form text-base" />}
+                text="Forms"
+              />
               <NavListItem href="/tasks" icon={<FiCheckSquare />} text="Tasks" />
             </Box>
           </Navbar>
@@ -73,7 +100,7 @@ const PageLayout = ({ children, ...otherProps }) => {
             backgroundColor:
               theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[0],
             paddingRight: '16px',
-            paddingBottom: '30px',
+            paddingBottom: '40px',
           },
         })}
       >

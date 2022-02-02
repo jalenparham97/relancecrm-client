@@ -21,7 +21,7 @@ interface Props {
 }
 
 export default function InvoiceEditSideDrawer({
-  drawerWidth = 350,
+  drawerWidth = 370,
   updateInvoiceSubmit,
   updateLoading,
 }: Props) {
@@ -74,7 +74,9 @@ export default function InvoiceEditSideDrawer({
     <Navbar
       fixed
       padding="lg"
-      className={`!border-l ${isDarkMode ? '!border-gray-800' : '!border-gray-300'} !border-r-0`}
+      className={`!border-l ${
+        isDarkMode ? '!border-gray-800 !border-opacity-70' : '!border-gray-300'
+      } !border-r-0`}
       sx={{ borderLeft: '1px solid' }}
       width={{ base: drawerWidth }}
       position={{ top: 0, right: 0 }}

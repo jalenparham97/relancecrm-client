@@ -17,15 +17,14 @@ export default function InvoiceDetailsPage() {
     <InvoicePageShell header={!isLoading && <InvoiceDetailsHeader invoice={invoice} />}>
       {isLoading && <LoadingLoader height="90vh" />}
       {!isLoading && (
-        <Container className="pt-[80px]" size="lg">
-          <Grid gutter={40}>
-            <Col span={7}>
+        <Container className="pt-[80px]" size={1220}>
+          <Grid gutter={20}>
+            <Col span={8}>
               <InvoicePreview invoice={invoice} />
             </Col>
-            <Col span={5}>
+            <Col span={4}>
               <Paper
                 padding="lg"
-                shadow="sm"
                 withBorder
                 className="border-gray-600 border-opacity-20 shadow-sm"
               >

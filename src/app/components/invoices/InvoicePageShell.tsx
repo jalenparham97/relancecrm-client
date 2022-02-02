@@ -21,7 +21,7 @@ export default function InvoicePageShell({ header, children, ...otherProps }: Pr
             backgroundColor:
               theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[0],
             paddingRight: '16px',
-            paddingBottom: '20px',
+            paddingBottom: '40px',
           },
         })}
       >

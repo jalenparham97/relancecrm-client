@@ -16,7 +16,6 @@ export const useAuth = () => {
   useEffect(() => {
     const unsubscribe = firebaseAuth.onAuthStateChanged(async (firebaseUser) => {
       if (firebaseUser) {
-        console.log({ firebaseUser });
         if (isEmpty(user)) {
           const currentUser = await authService.authenticate();
           setUser({

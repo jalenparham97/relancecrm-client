@@ -23,7 +23,7 @@ export default function DashboardProjectsWidget() {
   const recentProjects = projects?.data.slice(0, 4);
 
   return (
-    <Paper padding="lg" shadow="md">
+    <Paper padding="lg" withBorder className="border-gray-600 border-opacity-20 shadow-sm">
       {isLoading && <LoadingLoader height="100%" />}
       {!isLoading && (
         <Box>
