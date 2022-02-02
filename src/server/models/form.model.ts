@@ -1,7 +1,6 @@
 import mongoose, { Types } from 'mongoose';
 import { FormDocument } from '@/server/types';
 import { FormStatus, FormType } from '@/core/types';
-import randomColor from 'randomcolor';
 
 const schema = new mongoose.Schema<FormDocument>(
   {
@@ -16,7 +15,7 @@ const schema = new mongoose.Schema<FormDocument>(
     headerImageUrl: { type: String },
     responsesCount: { type: Number, default: 0 },
     submitButtonText: { type: String, default: 'Send' },
-    content: { type: Array, default: [] },
+    content: { type: [], default: [] },
     type: { type: String, default: FormType.USER },
   },
   { timestamps: true }
