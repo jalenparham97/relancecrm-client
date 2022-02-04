@@ -6,10 +6,15 @@ import { MdOutlineColorLens } from 'react-icons/md';
 const colors = ['#4263eb', '#18cf76', '#0eb6ff', '#ffc607'];
 const textColors = ['#ffffff', '#000000'];
 
-export default function BrandColorPicker() {
+interface Props {
+  bgColor: string;
+  textColor: string;
+  setBgColor: (color: string) => void;
+  setTextColor: (color: string) => void;
+}
+
+export default function BrandColorPicker({ bgColor, textColor, setBgColor, setTextColor }: Props) {
   const isDarkMode = useIsDarkMode();
-  const [bgColor, setBgColor] = useState(colors[0]);
-  const [textColor, setTextColor] = useState(textColors[0]);
 
   return (
     <Paper
@@ -32,7 +37,7 @@ export default function BrandColorPicker() {
                 format="hex"
                 size="xs"
                 swatches={colors}
-                classNames={{ swatch: 'w-5 h-2' }}
+                swatchesPerRow={7}
               />
               <ColorInput
                 value={textColor}
@@ -40,11 +45,14 @@ export default function BrandColorPicker() {
                 format="hex"
                 size="xs"
                 swatches={textColors}
-                classNames={{ swatch: 'w-5 h-2' }}
+                swatchesPerRow={7}
               />
             </Box>
-            <Box className="p-2 rounded" sx={{ backgroundColor: bgColor }}>
-              <Text className="text-sm font-medium text-center" sx={{ color: textColor }}>
+            <Box className="p-2 rounded" sx={{ backgroundColor: bgColor || colors[0] }}>
+              <Text
+                className="text-sm font-medium text-center"
+                sx={{ color: textColor || textColors[0] }}
+              >
                 This is what the text will look like
               </Text>
             </Box>

@@ -128,17 +128,17 @@ export default function ClientsPage() {
             </Box>
 
             <Box className="mt-4">
-              <Paper withBorder className="p-0 border-gray-600 border-opacity-20 shadow-sm">
-                {!isEmpty(clients?.data) && (
-                  <DataTable
-                    columns={columns}
-                    data={data}
-                    setSelectedIds={setSelectedIds}
-                    searchPlaceholder="Search clients"
-                    onDeleteClick={toggleOpenDeleteManyDialog}
-                  />
-                )}
-                {isEmpty(clients?.data) && (
+              {!isEmpty(clients?.data) && (
+                <DataTable
+                  columns={columns}
+                  data={data}
+                  setSelectedIds={setSelectedIds}
+                  searchPlaceholder="Search clients"
+                  onDeleteClick={toggleOpenDeleteManyDialog}
+                />
+              )}
+              {isEmpty(clients?.data) && (
+                <Paper withBorder className="p-0 border-gray-600 border-opacity-20 shadow-sm">
                   <Box className="py-7">
                     <EmptyState
                       title="There are no clients yet"
@@ -150,8 +150,8 @@ export default function ClientsPage() {
                       }
                     />
                   </Box>
-                )}
-              </Paper>
+                </Paper>
+              )}
             </Box>
           </Box>
         </Container>

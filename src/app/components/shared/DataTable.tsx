@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Table as MantineTable, Checkbox, Box } from '@mantine/core';
+import { Table as MantineTable, Checkbox, Box, Paper } from '@mantine/core';
 import { useTable, useRowSelect, useGlobalFilter } from 'react-table';
 import { isEmpty } from 'lodash';
 import { FiTrash2 } from 'react-icons/fi';
@@ -69,12 +69,13 @@ export default function DataTable({
 
   return (
     <>
-      <Box className="px-4 pt-4">
+      <Box className="py-4">
         {isEmpty(selectedFlatRows) && (
           <DataTableGlobalFilter
             placeholder={searchPlaceholder}
             globalFilter={state.globalFilter}
             setGlobalFilter={setGlobalFilter}
+            className="w-72"
           />
         )}
         {!isEmpty(selectedFlatRows) && (
@@ -83,35 +84,37 @@ export default function DataTable({
           </Button>
         )}
       </Box>
-      <MantineTable highlightOnHover {...getTableProps()}>
-        <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th className="!p-4" {...column.getHeaderProps()}>
-                  {column.render('Header')}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {rows.map((row, i) => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => {
-                  return (
-                    <td className="!py-3 !px-4" {...cell.getCellProps()}>
-                      {cell.render('Cell')}
-                    </td>
-                  );
-                })}
+      <Paper withBorder className="p-0 border-gray-600 border-opacity-20 shadow-sm">
+        <MantineTable highlightOnHover {...getTableProps()}>
+          <thead>
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <th className="!p-4" {...column.getHeaderProps()}>
+                    {column.render('Header')}
+                  </th>
+                ))}
               </tr>
-            );
-          })}
-        </tbody>
-      </MantineTable>
+            ))}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {rows.map((row, i) => {
+              prepareRow(row);
+              return (
+                <tr {...row.getRowProps()}>
+                  {row.cells.map((cell) => {
+                    return (
+                      <td className="!py-3 !px-4" {...cell.getCellProps()}>
+                        {cell.render('Cell')}
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+        </MantineTable>
+      </Paper>
     </>
   );
 }

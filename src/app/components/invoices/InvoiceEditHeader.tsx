@@ -5,7 +5,7 @@ import { useRecoilValue } from 'recoil';
 import { isEqual } from 'lodash';
 import { ActionIcon, Box, Group, Header, Title } from '@mantine/core';
 import { FiArrowLeft, FiSave, FiSend, FiEye, FiEyeOff } from 'react-icons/fi';
-import { useIsDarkMode, useToasts } from '@/app/hooks';
+import { useIsDarkMode, useToasts, useDialog } from '@/app/hooks';
 import { useUser } from '@/app/api/auth';
 import { useInvoiceSend, useInvoiceSendTest, useInvoiceUpdateMutation } from '@/app/api/invoices';
 import { CreateInvoice, Invoice } from '@/core/types';
@@ -14,7 +14,6 @@ import { createInvoiceState } from '@/app/store';
 import Button from '@/app/components/shared/Button';
 import InvoiceStatusBadge from './InvoiceStatusBadge';
 import UnsavedDataModal from '@/app/components/shared/UnsavedDataModal';
-import { useDialog } from '@/app/hooks/useDialog';
 import InvoiceSendModal from './InvoiceSendModal';
 
 interface Props {
@@ -73,7 +72,7 @@ export default function InvoiceEditHeader({ openPreview, toggleOpenPreview, invo
         subtotal: getInvoiceSubtotal(invoice?.items),
         total: getInvoiceTotal({ ...invoice }),
       } as CreateInvoice);
-      toasts.success('Invoice Updated');
+      toasts.success('Invoice updated');
     } catch (error) {
       console.log(error);
     }

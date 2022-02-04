@@ -3,8 +3,9 @@ import { useRouter } from 'next/router';
 import { Box, Text, Navbar, Title, Group, ScrollArea, Checkbox } from '@mantine/core';
 import { FiHash, FiSave, FiEye, FiCheckCircle, FiCheckSquare } from 'react-icons/fi';
 import { CgFormatHeading, CgDetailsLess, CgDetailsMore } from 'react-icons/cg';
-import { useIsDarkMode } from '@/app/hooks';
+import { useIsDarkMode, useToasts } from '@/app/hooks';
 import { useRecoilState } from 'recoil';
+import { useFormUpdateMutation } from '@/app/api/forms';
 import { formState, selectedElementState } from '@/app/store';
 import { FormElement, FormElementSubTypeType } from '@/core/types';
 import { nanoid } from 'nanoid';
@@ -27,9 +28,21 @@ interface Props {
 
 export default function FormEditSideDrawer({ drawerWidth = 370 }: Props) {
   const isDarkMode = useIsDarkMode();
+  const toasts = useToasts();
   const [selectedId, setSelectedId] = useRecoilState(selectedElementState);
   const [form, setForm] = useRecoilState(formState);
   const [newId, setNewId] = useState('');
+
+  const handleUpdateFormSubmit = useFormUpdateMutation(form?._id);
+
+  const saveForm = async () => {
+    try {
+      await handleUpdateFormSubmit.mutateAsync(form);
+      toasts.success('Form updated');
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const insertElement = (content: FormElement[], subtype: FormElementSubTypeType) => {
     const newContent = [...content];
@@ -100,6 +113,20 @@ export default function FormEditSideDrawer({ drawerWidth = 370 }: Props) {
     }));
   };
 
+  const setTextColor = (color: string) => {
+    setForm((prevForm) => ({
+      ...prevForm,
+      brandTextColor: color,
+    }));
+  };
+
+  const setBgColor = (color: string) => {
+    setForm((prevForm) => ({
+      ...prevForm,
+      brandFillColor: color,
+    }));
+  };
+
   return (
     <Navbar
       fixed
@@ -124,7 +151,12 @@ export default function FormEditSideDrawer({ drawerWidth = 370 }: Props) {
               <Button variant="default" fullWidth leftIcon={<FiEye />}>
                 Preview
               </Button>
-              <Button fullWidth leftIcon={<FiSave />}>
+              <Button
+                fullWidth
+                leftIcon={<FiSave />}
+                onClick={saveForm}
+                loading={handleUpdateFormSubmit.isLoading}
+              >
                 Save changes
               </Button>
             </Box>
@@ -170,7 +202,12 @@ export default function FormEditSideDrawer({ drawerWidth = 370 }: Props) {
             <Box className="space-y-2">
               <Title order={2}>Branding options</Title>
               <Box className="space-y-2">
-                <BrandColorPicker />
+                <BrandColorPicker
+                  bgColor={form?.brandFillColor}
+                  textColor={form?.brandTextColor}
+                  setTextColor={setTextColor}
+                  setBgColor={setBgColor}
+                />
                 <Checkbox label="Save these brading options as your default" />
               </Box>
             </Box>

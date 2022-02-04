@@ -119,17 +119,17 @@ export default function FormsPage() {
             </Box>
 
             <Box className="mt-4">
-              <Paper withBorder className="p-0 border-gray-600 border-opacity-20 shadow-sm">
-                {!isEmpty(forms?.data) && (
-                  <DataTable
-                    columns={columns}
-                    data={data}
-                    setSelectedIds={setSelectedIds}
-                    searchPlaceholder="Search forms"
-                    onDeleteClick={toggleOpenDeleteManyDialog}
-                  />
-                )}
-                {isEmpty(forms?.data) && (
+              {!isEmpty(forms?.data) && (
+                <DataTable
+                  columns={columns}
+                  data={data}
+                  setSelectedIds={setSelectedIds}
+                  searchPlaceholder="Search forms"
+                  onDeleteClick={toggleOpenDeleteManyDialog}
+                />
+              )}
+              {isEmpty(forms?.data) && (
+                <Paper withBorder className="p-0 border-gray-600 border-opacity-20 shadow-sm">
                   <Box className="py-7">
                     <EmptyState
                       title="There are no forms yet"
@@ -141,8 +141,8 @@ export default function FormsPage() {
                       }
                     />
                   </Box>
-                )}
-              </Paper>
+                </Paper>
+              )}
             </Box>
           </Box>
         </Container>

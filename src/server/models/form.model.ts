@@ -6,7 +6,7 @@ const schema = new mongoose.Schema<FormDocument>(
   {
     userId: { type: Types.ObjectId },
     name: { type: String, default: 'Untitled Form' },
-    brandFillColor: { type: String },
+    brandFillColor: { type: String, default: '#4263eb' },
     brandTextColor: { type: String, default: '#ffffff' },
     logoUrl: { type: String },
     brandingEnabled: { type: Boolean, default: false },

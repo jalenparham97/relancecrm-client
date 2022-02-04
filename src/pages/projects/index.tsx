@@ -104,17 +104,17 @@ export default function ProjectsPage() {
             </Box>
 
             <Box className="mt-4">
-              <Paper withBorder className="p-0 border-gray-600 border-opacity-20 shadow-sm">
-                {!isEmpty(projects?.data) && (
-                  <DataTable
-                    columns={columns}
-                    data={data}
-                    setSelectedIds={setSelectedIds}
-                    searchPlaceholder="Search projects"
-                    onDeleteClick={toggleOpenDeleteManyDialog}
-                  />
-                )}
-                {isEmpty(projects?.data) && (
+              {!isEmpty(projects?.data) && (
+                <DataTable
+                  columns={columns}
+                  data={data}
+                  setSelectedIds={setSelectedIds}
+                  searchPlaceholder="Search projects"
+                  onDeleteClick={toggleOpenDeleteManyDialog}
+                />
+              )}
+              {isEmpty(projects?.data) && (
+                <Paper withBorder className="p-0 border-gray-600 border-opacity-20 shadow-sm">
                   <Box className="py-7">
                     <EmptyState
                       title="There are no projects yet"
@@ -126,8 +126,8 @@ export default function ProjectsPage() {
                       }
                     />
                   </Box>
-                )}
-              </Paper>
+                </Paper>
+              )}
             </Box>
           </Box>
         </Container>

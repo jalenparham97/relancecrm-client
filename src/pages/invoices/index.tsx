@@ -118,17 +118,17 @@ export default function InvoicesPage() {
             </Box>
 
             <Box className="mt-4">
-              <Paper withBorder className="p-0 border-gray-600 border-opacity-20 shadow-sm">
-                {!isEmpty(invoices?.data) && (
-                  <DataTable
-                    columns={columns}
-                    data={data}
-                    setSelectedIds={setSelectedIds}
-                    searchPlaceholder="Search invoices"
-                    onDeleteClick={toggleOpenDeleteManyModal}
-                  />
-                )}
-                {isEmpty(invoices?.data) && (
+              {!isEmpty(invoices?.data) && (
+                <DataTable
+                  columns={columns}
+                  data={data}
+                  setSelectedIds={setSelectedIds}
+                  searchPlaceholder="Search invoices"
+                  onDeleteClick={toggleOpenDeleteManyModal}
+                />
+              )}
+              {isEmpty(invoices?.data) && (
+                <Paper withBorder className="p-0 border-gray-600 border-opacity-20 shadow-sm">
                   <Box className="py-7">
                     <EmptyState
                       title="There are no invoices yet"
@@ -140,8 +140,8 @@ export default function InvoicesPage() {
                       }
                     />
                   </Box>
-                )}
-              </Paper>
+                </Paper>
+              )}
             </Box>
           </Box>
         </Container>
