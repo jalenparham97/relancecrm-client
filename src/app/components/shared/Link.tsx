@@ -34,7 +34,7 @@ export default function Link({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className={className}
+      className={`${className} ${underline ? 'hover:underline' : '!no-underline'}`}
       {...otherProps}
     >
       {children}

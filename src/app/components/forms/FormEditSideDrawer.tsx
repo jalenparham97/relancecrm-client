@@ -12,6 +12,7 @@ import { nanoid } from 'nanoid';
 import Button from '@/app/components/shared/Button';
 import FormElementType from './FormElementType';
 import BrandColorPicker from '../shared/BrandColorPicker';
+import Link from '../shared/Link';
 
 const elementsLabelMap = {
   heading: 'Section heading',
@@ -148,9 +149,11 @@ export default function FormEditSideDrawer({ drawerWidth = 370 }: Props) {
         <Box className="pt-[75px] pb-14 w-[97.5%]">
           <Group direction="column" spacing="lg" grow>
             <Box className="flex w-full justify-between space-x-3">
-              <Button variant="default" fullWidth leftIcon={<FiEye />}>
-                Preview
-              </Button>
+              <Link href={`/forms/${form?._id}/preview`}>
+                <Button variant="default" fullWidth leftIcon={<FiEye />}>
+                  Preview
+                </Button>
+              </Link>
               <Button
                 fullWidth
                 leftIcon={<FiSave />}
