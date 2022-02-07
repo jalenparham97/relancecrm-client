@@ -8,7 +8,7 @@ export type Form = {
   brandingEnabled?: boolean;
   status?: FormStatus;
   header?: string;
-  headerImageUrl?: string;
+  headerImage?: HeaderImage;
   responsesCount?: number;
   submitButtonText?: string;
   content?: FormElement[];
@@ -16,6 +16,11 @@ export type Form = {
 
   createdAt?: string;
   updatedAt?: string;
+};
+
+type HeaderImage = {
+  url?: string;
+  name?: string;
 };
 
 export type FormElement = {

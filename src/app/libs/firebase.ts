@@ -1,10 +1,12 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider, OAuthProvider } from 'firebase/auth';
+import { getStorage } from 'firebase/storage';
 import firebase from 'firebase/compat/app';
 import { config } from '@/core/config';
 
 export const firebaseApp = initializeApp(config.firebaseConfig);
 export const firebaseAuth = getAuth(firebaseApp);
+export const storage = getStorage(firebaseApp);
 export const fb = firebase;
 
 export const googleAuthProvider = new GoogleAuthProvider();
@@ -16,3 +18,4 @@ export enum AuthProviders {
 }
 
 export * from 'firebase/auth';
+export * from 'firebase/storage';

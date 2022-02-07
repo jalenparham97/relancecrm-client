@@ -1,7 +1,11 @@
 import { Tabs as MantineTabs, Divider, TabsProps, Box } from '@mantine/core';
 import { useIsDarkMode, useColors } from '@/app/hooks';
 
-export default function Tabs({ children, styles, ...otherProps }: TabsProps) {
+interface Props extends TabsProps {
+  height?: string;
+}
+
+export default function Tabs({ children, styles, height = '50px', ...otherProps }: Props) {
   const isDarkMode = useIsDarkMode();
   const colors = useColors();
 
@@ -12,7 +16,7 @@ export default function Tabs({ children, styles, ...otherProps }: TabsProps) {
         styles={(theme) => ({
           tabControl: {
             borderBottom: `2px solid transparent`,
-            height: '50px',
+            height,
             color: theme.colorScheme === 'dark' ? '#b5b6b9' : '',
           },
           tabActive: {
