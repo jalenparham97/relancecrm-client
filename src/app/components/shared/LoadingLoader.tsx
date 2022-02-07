@@ -1,13 +1,14 @@
-import { Center, Loader } from '@mantine/core';
+import { Center, Loader, MantineColor } from '@mantine/core';
 
 interface Props {
   height?: string;
+  color?: MantineColor;
 }
 
-export default function LoadingLoader({ height = '80vh' }: Props) {
+export default function LoadingLoader({ height = '80vh', color }: Props) {
   return (
     <Center sx={{ height }}>
-      <Loader />
+      <Loader color={color} />
     </Center>
   );
 }
