@@ -28,10 +28,15 @@ export type FormElement = {
   label?: string;
   subtype?: FormElementSubTypeType;
   type?: 'text' | 'select' | 'email';
-  options?: string[];
+  options?: FormOption[];
   required?: boolean;
   description?: string;
   showDescription?: boolean;
+};
+
+export type FormOption = {
+  id: string;
+  option: string;
 };
 
 export type FormElementSubTypeType =

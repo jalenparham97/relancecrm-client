@@ -214,7 +214,7 @@ export default function InvoiceEditForm({ invoice }: Props) {
                   <Box mt={-2}>
                     <Text>{invoice?.toName}</Text>
                     <Box mt={-2}>
-                      <Link size="sm" onClick={resetClient}>
+                      <Link size="sm" onClick={resetClient} underline>
                         Choose a different client
                       </Link>
                     </Box>

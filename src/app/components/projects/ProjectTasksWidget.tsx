@@ -45,23 +45,27 @@ export default function ProjectTasksWidget({ id, ...otherProps }: Props) {
       {isLoading && <LoadingLoader height="100%" />}
       {!isLoading && (
         <Box>
-          <Group position="apart" className="mb-2">
-            <Title order={3}>Tasks</Title>
-            <Button leftIcon={<FiPlus />} onClick={openTaskCreateModal}>
-              Add task
-            </Button>
-          </Group>
-          {activeTasks.map((task, index) => (
-            <Box key={task._id}>
-              <TaskItem
-                task={task}
-                index={index}
-                onUpdate={handleUpdateTask.mutateAsync}
-                onDelete={handelDeleteTask.mutateAsync}
-                loading={handelDeleteTask.isLoading}
-              />
+          {!isEmpty(activeTasks) && (
+            <Box>
+              <Group position="apart" className="mb-2">
+                <Title order={3}>Tasks</Title>
+                <Button leftIcon={<FiPlus />} onClick={openTaskCreateModal}>
+                  Add task
+                </Button>
+              </Group>
+              {activeTasks.map((task, index) => (
+                <Box key={task._id}>
+                  <TaskItem
+                    task={task}
+                    index={index}
+                    onUpdate={handleUpdateTask.mutateAsync}
+                    onDelete={handelDeleteTask.mutateAsync}
+                    loading={handelDeleteTask.isLoading}
+                  />
+                </Box>
+              ))}
             </Box>
-          ))}
+          )}
 
           {isEmpty(activeTasks) && (
             <Box className="py-4">

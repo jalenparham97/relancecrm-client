@@ -5,7 +5,7 @@ import { FiHash, FiSave, FiEye, FiCheckCircle, FiCheckSquare } from 'react-icons
 import { CgFormatHeading, CgDetailsLess, CgDetailsMore } from 'react-icons/cg';
 import { useIsDarkMode, useToasts } from '@/app/hooks';
 import { useRecoilState } from 'recoil';
-import { useFormUpdateMutation } from '@/app/api/forms';
+import { useForm, useFormUpdateMutation } from '@/app/api/forms';
 import { formState, selectedElementState } from '@/app/store';
 import { FormElement, FormElementSubTypeType } from '@/core/types';
 import { nanoid } from 'nanoid';
@@ -13,6 +13,7 @@ import Button from '@/app/components/shared/Button';
 import FormElementType from './FormElementType';
 import BrandColorPicker from '../shared/BrandColorPicker';
 import Link from '../shared/Link';
+import { isEqual } from 'lodash';
 
 const elementsLabelMap = {
   heading: 'Section heading',
@@ -30,8 +31,10 @@ interface Props {
 export default function FormEditSideDrawer({ drawerWidth = 370 }: Props) {
   const isDarkMode = useIsDarkMode();
   const toasts = useToasts();
-  const [selectedId, setSelectedId] = useRecoilState(selectedElementState);
+  const { query } = useRouter();
+  const { data: formData } = useForm(query.id as string);
   const [form, setForm] = useRecoilState(formState);
+  const [selectedId, setSelectedId] = useRecoilState(selectedElementState);
   const [newId, setNewId] = useState('');
 
   const handleUpdateFormSubmit = useFormUpdateMutation(form?._id);
@@ -59,7 +62,11 @@ export default function FormEditSideDrawer({ drawerWidth = 370 }: Props) {
     };
 
     if (subtype === 'multiple_choice' || subtype === 'single_choice') {
-      element.options = ['Option 1', 'Option 2', 'Option 3'];
+      element.options = [
+        { id: nanoid(), option: 'Option 1' },
+        { id: nanoid(), option: 'Option 2' },
+        { id: nanoid(), option: 'Option 3' },
+      ];
     }
 
     if (selectedId) {
@@ -159,6 +166,7 @@ export default function FormEditSideDrawer({ drawerWidth = 370 }: Props) {
                 leftIcon={<FiSave />}
                 onClick={saveForm}
                 loading={handleUpdateFormSubmit.isLoading}
+                disabled={isEqual(formData, form)}
               >
                 Save changes
               </Button>

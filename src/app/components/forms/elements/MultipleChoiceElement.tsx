@@ -3,7 +3,7 @@ import { ActionIcon, Box, Divider, TextInput, Tooltip, Chip, Text, Checkbox } fr
 import { FiCopy, FiTrash2, FiPlus, FiX, FiCheckSquare } from 'react-icons/fi';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { formState, selectedElementState } from '@/app/store';
-import { FormElement } from '@/core/types';
+import { FormElement, FormOption } from '@/core/types';
 import Button from '@/app/components/shared/Button';
 import CheckboxGroup from '@/app/components/shared/CheckboxGroup';
 import FormElementContainer from '../FormElementContainer';
@@ -26,7 +26,7 @@ export default function MultipleChoiceElement({ element }: Props) {
     const updatedContent = form.content.map((el) => {
       const newElement = { ...el };
       if (el.id === element.id) {
-        newElement[name] = value;
+        newElement[name] = value.trim();
       }
       return newElement;
     });
@@ -95,6 +95,65 @@ export default function MultipleChoiceElement({ element }: Props) {
     }));
   };
 
+  const addOption = () => {
+    const updatedElement = { ...element };
+
+    updatedElement.options = [
+      ...element.options,
+      { id: nanoid(), option: `Option ${element.options.length + 1}` },
+    ];
+
+    setForm((prevForm) => ({
+      ...prevForm,
+      content: form.content.map((element) => {
+        if (element.id === updatedElement.id) {
+          return updatedElement;
+        }
+        return element;
+      }),
+    }));
+  };
+
+  const updateOption = (e: React.SyntheticEvent<HTMLInputElement>) => {
+    const { id, value } = e.currentTarget;
+    let updatedElement = { ...element };
+
+    const updatedOptions = updatedElement.options.map((option) => {
+      if (id === option.id) {
+        return { ...option, option: value.trim() };
+      }
+      return option;
+    });
+
+    updatedElement.options = updatedOptions;
+
+    setForm((prevForm) => ({
+      ...prevForm,
+      content: form.content.map((element) => {
+        if (element.id === updatedElement.id) {
+          return { ...updatedElement };
+        }
+        return { ...element };
+      }),
+    }));
+  };
+
+  const deleteOption = (id: string) => {
+    const updatedElement = { ...element };
+
+    updatedElement.options = element.options.filter((option) => option.id !== id);
+
+    setForm((prevForm) => ({
+      ...prevForm,
+      content: form.content.map((element) => {
+        if (element.id === updatedElement.id) {
+          return updatedElement;
+        }
+        return element;
+      }),
+    }));
+  };
+
   return (
     <FormElementContainer elementId={element.id}>
       {isSelected && (
@@ -117,22 +176,24 @@ export default function MultipleChoiceElement({ element }: Props) {
             )}
 
             <Box className="space-y-2">
-              {element?.options.map((option) => (
-                <Box className="flex items-center space-x-3" key={option}>
+              {element.options.map((option) => (
+                <Box className="flex items-center space-x-3" key={option.id}>
                   <Checkbox disabled classNames={{ input: '!cursor-default' }} />
                   <TextInput
+                    id={option.id}
                     className="w-full"
                     placeholder="Enter and option"
-                    defaultValue={option}
+                    defaultValue={option.option}
+                    onChange={updateOption}
                   />
-                  <ActionIcon variant="default" size="lg">
+                  <ActionIcon variant="default" size="lg" onClick={() => deleteOption(option.id)}>
                     <FiX />
                   </ActionIcon>
                 </Box>
               ))}
             </Box>
 
-            <Button compact variant="default" leftIcon={<FiPlus />}>
+            <Button compact variant="default" leftIcon={<FiPlus />} onClick={addOption}>
               Add option
             </Button>
           </Box>
@@ -185,7 +246,7 @@ export default function MultipleChoiceElement({ element }: Props) {
             required={element?.required}
           >
             {element?.options.map((option) => (
-              <Checkbox disabled label={option} key={option} />
+              <Checkbox disabled label={option.option} key={option.id} />
             ))}
           </CheckboxGroup>
         </Box>

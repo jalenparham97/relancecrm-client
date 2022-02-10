@@ -42,13 +42,13 @@ export default function NavListItem({ text, icon, href }: Props) {
         {isActive ? (
           <Text className="mt-1 text-white">{icon}</Text>
         ) : (
-          <Text className="mt-1">{icon}</Text>
+          <Text className={`mt-1 ${isDarkMode && 'text-gray-400'}`}>{icon}</Text>
         )}
         <Box className="ml-5 leading-none">
           {isActive ? (
             <Text className="font-semibold text-white">{text}</Text>
           ) : (
-            <Text>{text}</Text>
+            <Text className={`${isDarkMode && 'text-gray-400'}`}>{text}</Text>
           )}
         </Box>
       </Box>

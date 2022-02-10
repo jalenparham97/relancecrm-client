@@ -5,7 +5,6 @@ import { HiOutlineSelector } from 'react-icons/hi';
 import * as yup from 'yup';
 import { Client, CreateProject, Project } from '@/core/types';
 import { useIsDarkMode, useColors, useYupResolver } from '@/app/hooks';
-import { useToggle } from 'react-use';
 import { useState, useCallback } from 'react';
 import { DatePicker } from '@mantine/dates';
 import { debounce } from 'lodash';
@@ -36,7 +35,6 @@ export default function ProjectEditModal({ project, opened, onClose, submit }: P
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    reset,
   } = useForm<CreateProject>({ resolver });
 
   const handleFormClose = () => {
@@ -69,6 +67,7 @@ export default function ProjectEditModal({ project, opened, onClose, submit }: P
       <form onSubmit={handleSubmit(handleFormSubmit)}>
         <Box className="flex flex-col space-y-3">
           <TextInput
+            autoFocus
             required
             {...register('projectName')}
             label="Project name"

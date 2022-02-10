@@ -36,7 +36,7 @@ export default function SingleChoiceElement({ element }: Props) {
     const updatedContent = form.content.map((el) => {
       const newElement = { ...el };
       if (el.id === element.id) {
-        newElement[name] = value;
+        newElement[name] = value.trim();
       }
       return newElement;
     });
@@ -105,6 +105,65 @@ export default function SingleChoiceElement({ element }: Props) {
     }));
   };
 
+  const addOption = () => {
+    const updatedElement = { ...element };
+
+    updatedElement.options = [
+      ...element.options,
+      { id: nanoid(), option: `Option ${element.options.length + 1}` },
+    ];
+
+    setForm((prevForm) => ({
+      ...prevForm,
+      content: form.content.map((element) => {
+        if (element.id === updatedElement.id) {
+          return updatedElement;
+        }
+        return element;
+      }),
+    }));
+  };
+
+  const updateOption = (e: React.SyntheticEvent<HTMLInputElement>) => {
+    const { id, value } = e.currentTarget;
+    let updatedElement = { ...element };
+
+    const updatedOptions = updatedElement.options.map((option) => {
+      if (id === option.id) {
+        return { ...option, option: value.trim() };
+      }
+      return option;
+    });
+
+    updatedElement.options = updatedOptions;
+
+    setForm((prevForm) => ({
+      ...prevForm,
+      content: form.content.map((element) => {
+        if (element.id === updatedElement.id) {
+          return { ...updatedElement };
+        }
+        return { ...element };
+      }),
+    }));
+  };
+
+  const deleteOption = (id: string) => {
+    const updatedElement = { ...element };
+
+    updatedElement.options = element.options.filter((option) => option.id !== id);
+
+    setForm((prevForm) => ({
+      ...prevForm,
+      content: form.content.map((element) => {
+        if (element.id === updatedElement.id) {
+          return updatedElement;
+        }
+        return element;
+      }),
+    }));
+  };
+
   return (
     <FormElementContainer elementId={element.id}>
       {isSelected && (
@@ -128,21 +187,28 @@ export default function SingleChoiceElement({ element }: Props) {
 
             <Box className="space-y-2">
               {element?.options.map((option) => (
-                <Box className="flex items-center" key={option}>
+                <Box className="flex items-center" key={option.id}>
                   <Radio disabled value="" />
                   <TextInput
+                    id={option.id}
                     className="w-full"
                     placeholder="Enter and option"
-                    defaultValue={option}
+                    defaultValue={option.option}
+                    onChange={updateOption}
                   />
-                  <ActionIcon variant="default" className="ml-3" size="lg">
+                  <ActionIcon
+                    className="ml-3"
+                    variant="default"
+                    size="lg"
+                    onClick={() => deleteOption(option.id)}
+                  >
                     <FiX />
                   </ActionIcon>
                 </Box>
               ))}
             </Box>
 
-            <Button compact variant="default" leftIcon={<FiPlus />}>
+            <Button compact variant="default" leftIcon={<FiPlus />} onClick={addOption}>
               Add option
             </Button>
           </Box>
@@ -196,11 +262,11 @@ export default function SingleChoiceElement({ element }: Props) {
             variant="vertical"
             classNames={{ radio: '!text-dark-800' }}
           >
-            {element?.options.map((option) => (
+            {element?.options?.map((option) => (
               <Radio
-                key={option}
+                key={option.id}
                 disabled
-                value={option}
+                value={option.option}
                 sx={(theme) => ({
                   '& span': {
                     color: theme.colors.dark[8],
@@ -208,7 +274,7 @@ export default function SingleChoiceElement({ element }: Props) {
                   },
                 })}
               >
-                {option}
+                {option.option}
               </Radio>
             ))}
           </RadioGroup>

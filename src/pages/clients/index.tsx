@@ -62,11 +62,11 @@ export default function ClientsPage() {
         accessor: 'fullName',
         Cell: ({ value, row }) => (
           <Link to={`/clients/${row.original.id}`}>
-            <Box className="flex items-center space-x-2">
+            <Box className="flex items-center space-x-2 hover:text-indigo-500">
               <Avatar radius="xl" backgroundColor={row.original?.backgroundColor}>
                 {row.original.initials}
               </Avatar>
-              <Text className="font-semibold hover:underline">{value}</Text>
+              <Text className="font-semibold">{value}</Text>
             </Box>
           </Link>
         ),

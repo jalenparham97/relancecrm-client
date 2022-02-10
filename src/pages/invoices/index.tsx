@@ -49,7 +49,7 @@ export default function InvoicesPage() {
               row.original.status === InvoiceStatus.DRAFT ? 'edit' : 'details'
             }`}
           >
-            <Text className="font-semibold hover:underline">{value}</Text>
+            <Text className="font-semibold hover:text-indigo-500">{value}</Text>
           </Link>
         ),
       },

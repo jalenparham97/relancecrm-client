@@ -18,9 +18,9 @@ export default function SingleChoicePreviewElement({ element, isPreview = false 
       >
         {element?.options.map((option) => (
           <Radio
-            key={option}
+            key={option.id}
             disabled={isPreview}
-            value={option}
+            value={option.option}
             sx={(theme) => ({
               '& span': {
                 color: isPreview && theme.colors.dark[8],
@@ -28,7 +28,7 @@ export default function SingleChoicePreviewElement({ element, isPreview = false 
               },
             })}
           >
-            {option}
+            {option.option}
           </Radio>
         ))}
       </RadioGroup>

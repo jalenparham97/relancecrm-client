@@ -61,8 +61,8 @@ export default function FormsPage() {
         accessor: 'name',
         Cell: ({ value, row }) => (
           <Link to={`/forms/${row.original.id}/edit`}>
-            <Box className="flex items-center space-x-2">
-              <Text className="font-semibold hover:underline">{value}</Text>
+            <Box className="flex items-center space-x-2 hover:text-indigo-500">
+              <Text className="font-semibold">{value}</Text>
             </Box>
           </Link>
         ),

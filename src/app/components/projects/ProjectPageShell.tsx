@@ -150,6 +150,11 @@ export default function ProjectPageShell({ project, isLoading, children }: Props
                         </Text>
                       </Box>
                     )}
+                    {!project.endDate && (
+                      <Button variant="default" onClick={toggleOpenProjectEditDialog}>
+                        Add end date
+                      </Button>
+                    )}
                   </Col>
                   <Col span={6}>
                     {!isEmpty(project?.client) && (
@@ -159,6 +164,13 @@ export default function ProjectPageShell({ project, isLoading, children }: Props
                             {project.client.initials}
                           </Avatar>
                         </Link>
+                      </Group>
+                    )}
+                    {isEmpty(project?.client) && (
+                      <Group direction="column" position="right" spacing={0}>
+                        <Button variant="default" onClick={toggleOpenProjectEditDialog}>
+                          Add client
+                        </Button>
                       </Group>
                     )}
                   </Col>

@@ -57,13 +57,13 @@ export default function AccountMenu({ ...otherProps }: Props) {
         Support
       </Menu.Item>
       <Divider />
-      <Menu.Item
+      {/* <Menu.Item
         icon={isDarkMode ? <FiSun /> : <FiMoon />}
         onClick={() => toggleColorScheme()}
         className="hover:bg-gray-500 hover:bg-opacity-20"
       >
         {isDarkMode ? 'Light' : 'Dark'} mode
-      </Menu.Item>
+      </Menu.Item> */}
       <Menu.Item
         icon={<FiLogOut />}
         onClick={logout}

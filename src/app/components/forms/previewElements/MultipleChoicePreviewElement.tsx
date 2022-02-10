@@ -19,8 +19,8 @@ export default function MultipleChoicePreviewElement({ element, isPreview = fals
           <Checkbox
             color="blue"
             disabled={isPreview}
-            label={option}
-            key={option}
+            label={option.option}
+            key={option.id}
             classNames={{
               input: isPreview && '!cursor-default',
               label: isPreview && '!cursor-default',
