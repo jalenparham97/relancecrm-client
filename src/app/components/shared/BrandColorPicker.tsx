@@ -7,13 +7,18 @@ const colors = ['#4263eb', '#18cf76', '#0eb6ff', '#ffc607'];
 const textColors = ['#ffffff', '#000000'];
 
 interface Props {
-  bgColor: string;
-  textColor: string;
-  setBgColor: (color: string) => void;
-  setTextColor: (color: string) => void;
+  bgColor?: string;
+  textColor?: string;
+  setBgColor?: (color: string) => void;
+  setTextColor?: (color: string) => void;
 }
 
-export default function BrandColorPicker({ bgColor, textColor, setBgColor, setTextColor }: Props) {
+export default function BrandColorPicker({
+  bgColor = colors[0],
+  textColor = textColors[0],
+  setBgColor,
+  setTextColor,
+}: Props) {
   const isDarkMode = useIsDarkMode();
 
   return (
@@ -48,7 +53,7 @@ export default function BrandColorPicker({ bgColor, textColor, setBgColor, setTe
                 swatchesPerRow={7}
               />
             </Box>
-            <Box className="p-2 rounded" sx={{ backgroundColor: bgColor || colors[0] }}>
+            <Box className="p-2 rounded" sx={{ backgroundColor: bgColor }}>
               <Text
                 className="text-sm font-medium text-center"
                 sx={{ color: textColor || textColors[0] }}

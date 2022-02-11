@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { Box, Text, Navbar, Title, Group, ScrollArea, Checkbox } from '@mantine/core';
+import { Box, Text, Navbar, Title, Group, ScrollArea } from '@mantine/core';
 import { FiHash, FiSave, FiEye, FiCheckCircle, FiCheckSquare, FiAtSign } from 'react-icons/fi';
 import { CgFormatHeading, CgDetailsLess, CgDetailsMore } from 'react-icons/cg';
 import { useIsDarkMode, useToasts } from '@/app/hooks';
@@ -236,7 +236,11 @@ export default function FormEditSideDrawer({ drawerWidth = 370 }: Props) {
                   setTextColor={setTextColor}
                   setBgColor={setBgColor}
                 />
-                <Checkbox label="Save these brading options as your default" />
+                <Box>
+                  <Button variant="default" compact to="/settings/account">
+                    Set your default brand colors
+                  </Button>
+                </Box>
               </Box>
             </Box>
           </Group>

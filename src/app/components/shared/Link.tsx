@@ -23,7 +23,7 @@ export default function Link({
     return (
       <Anchor component={NextLink} sx={sx} href={to} {...otherProps}>
         <a
-          className={`${className} ${underline ? 'hover:underline' : 'no-underline'} text-current`}
+          className={`text-current ${className} ${underline ? 'hover:underline' : 'no-underline'}`}
         >
           {children}
         </a>

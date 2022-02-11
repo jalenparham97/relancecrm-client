@@ -32,15 +32,13 @@ export type UserSignupData = {
 } & UserLoginData;
 
 export type UserBusinessInfo = {
-  businessName: string;
-  website: string;
-  address: string;
+  businessName?: string;
+  website?: string;
+  address?: string;
   branding?: {
-    logoUrl: string;
-    color: string;
-  };
-  brandingSettings?: {
-    removeDefaultBranding: false;
+    logoUrl?: string;
+    bgColor?: string;
+    textColor?: string;
   };
 };
 

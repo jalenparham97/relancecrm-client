@@ -5,6 +5,7 @@ import PageLayout from '@/app/components/layouts/PageLayout';
 import SettingsPageContainer from '@/app/components/settings/SettingsPageContainer';
 import AccountProfile from '@/app/components/settings/account/AccountProfile';
 import AccountBusinessInfo from '@/app/components/settings/account/AccountBusinessInfo';
+import AccountBrandingOptions from '@/app/components/settings/account/AccountBrandingOptions';
 
 export default function Account() {
   const user = useUser();
@@ -17,6 +18,7 @@ export default function Account() {
         <Box className="space-y-4">
           <AccountProfile user={user} submit={handleUserUpdateSubmit.mutateAsync} />
           <AccountBusinessInfo user={user} submit={handleUserUpdateSubmit.mutateAsync} />
+          <AccountBrandingOptions user={user} submit={handleUserUpdateSubmit.mutateAsync} />
         </Box>
       </SettingsPageContainer>
     </PageLayout>
