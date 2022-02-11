@@ -66,6 +66,21 @@ export default function FormPreview({ form, isPreview = false }: Props) {
                   />
                 );
               }
+              if (element.subtype === 'email') {
+                return (
+                  <TextInput
+                    key={element.id}
+                    label={element.label}
+                    required={element.required}
+                    disabled={isPreview}
+                    type="email"
+                    classNames={{
+                      disabled: '!cursor-default',
+                      input: 'focus:outline-none focus:border-blue-500',
+                    }}
+                  />
+                );
+              }
               if (element.subtype === 'paragraph') {
                 return (
                   <Textarea
@@ -73,7 +88,10 @@ export default function FormPreview({ form, isPreview = false }: Props) {
                     label={element.label}
                     required={element.required}
                     disabled={isPreview}
-                    classNames={{ disabled: '!cursor-default' }}
+                    classNames={{
+                      disabled: '!cursor-default',
+                      input: 'focus:outline-none focus:border-blue-500',
+                    }}
                   />
                 );
               }
@@ -95,7 +113,10 @@ export default function FormPreview({ form, isPreview = false }: Props) {
                     description={element.showDescription && element?.description}
                     required={element?.required}
                     disabled={isPreview}
-                    classNames={{ disabled: '!cursor-default' }}
+                    classNames={{
+                      disabled: '!cursor-default',
+                      input: 'focus:outline-none focus:border-blue-500',
+                    }}
                   />
                 );
               }

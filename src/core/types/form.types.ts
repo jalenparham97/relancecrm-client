@@ -40,6 +40,7 @@ export type FormOption = {
 };
 
 export type FormElementSubTypeType =
+  | 'email'
   | 'single_line'
   | 'paragraph'
   | 'heading'

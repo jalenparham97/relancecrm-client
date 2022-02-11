@@ -18,6 +18,7 @@ import MultipleChoiceElement from '@/app/components/forms/elements/MultipleChoic
 import FormSubmitButtonSection from '@/app/components/forms/FormSubmitButtonSection';
 import FormHeaderSection from '@/app/components/forms/FormHeaderSection';
 import LoadingLoader from '@/app/components/shared/LoadingLoader';
+import EmailElement from '@/app/components/forms/elements/EmailElement';
 
 const drawerWidth = 370;
 
@@ -93,6 +94,7 @@ function renderElement(element: FormElement, index: number) {
     multiple_choice: <MultipleChoiceElement element={element} index={index} key={element.id} />,
     single_choice: <SingleChoiceElement element={element} index={index} key={element.id} />,
     number: <NumberText element={element} index={index} key={element.id} />,
+    email: <EmailElement element={element} index={index} key={element.id} />,
   };
 
   return elementsMap[element.subtype];

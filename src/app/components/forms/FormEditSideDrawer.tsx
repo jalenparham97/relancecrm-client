@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Box, Text, Navbar, Title, Group, ScrollArea, Checkbox } from '@mantine/core';
-import { FiHash, FiSave, FiEye, FiCheckCircle, FiCheckSquare } from 'react-icons/fi';
+import { FiHash, FiSave, FiEye, FiCheckCircle, FiCheckSquare, FiAtSign } from 'react-icons/fi';
 import { CgFormatHeading, CgDetailsLess, CgDetailsMore } from 'react-icons/cg';
 import { useIsDarkMode, useToasts } from '@/app/hooks';
 import { useRecoilState } from 'recoil';
@@ -22,6 +22,7 @@ const elementsLabelMap = {
   multiple_choice: 'Multiple choice selection',
   single_choice: 'Single choice selection',
   number: 'Number',
+  email: 'Email',
 };
 
 interface Props {
@@ -69,6 +70,11 @@ export default function FormEditSideDrawer({ drawerWidth = 370 }: Props) {
       ];
     }
 
+    if (subtype === 'email') {
+      element.type = 'email';
+      element.required = true;
+    }
+
     if (selectedId) {
       newContent.splice(newContent.findIndex((el) => el.id === selectedId) + 1, 0, element);
     } else {
@@ -100,6 +106,12 @@ export default function FormEditSideDrawer({ drawerWidth = 370 }: Props) {
     return setForm((prevForm) => ({
       ...prevForm,
       content: insertElement(prevForm.content, 'paragraph'),
+    }));
+  };
+  const addEmailElement = () => {
+    return setForm((prevForm) => ({
+      ...prevForm,
+      content: insertElement(prevForm.content, 'email'),
     }));
   };
   const addNumberElement = () => {
@@ -193,6 +205,16 @@ export default function FormEditSideDrawer({ drawerWidth = 370 }: Props) {
                   onClick={addParagraphElement}
                 />
                 <FormElementType
+                  icon={<FiAtSign size="20px" />}
+                  name="Email input"
+                  onClick={addEmailElement}
+                />
+                <FormElementType
+                  icon={<FiHash size="20px" />}
+                  name="Number input"
+                  onClick={addNumberElement}
+                />
+                <FormElementType
                   icon={<FiCheckCircle size="20px" />}
                   name="Single choice selection"
                   onClick={addSingleChoiceElement}
@@ -201,11 +223,6 @@ export default function FormEditSideDrawer({ drawerWidth = 370 }: Props) {
                   icon={<FiCheckSquare size="20px" />}
                   name="Multiple choice selection"
                   onClick={addMultipleChoiceElement}
-                />
-                <FormElementType
-                  icon={<FiHash size="20px" />}
-                  name="Number"
-                  onClick={addNumberElement}
                 />
               </Box>
             </Box>

@@ -1,27 +1,18 @@
 import { useEffect, useState } from 'react';
-import {
-  ActionIcon,
-  Box,
-  Divider,
-  TextInput,
-  Tooltip,
-  Chip,
-  Text,
-  NumberInput,
-} from '@mantine/core';
-import { FiCopy, FiTrash2, FiHash } from 'react-icons/fi';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { formState, selectedElementState } from '@/app/store';
+import { ActionIcon, Box, Divider, TextInput, Tooltip, Chip, Text } from '@mantine/core';
+import { FiAtSign, FiCopy, FiTrash2 } from 'react-icons/fi';
+import { useRecoilState } from 'recoil';
 import { FormElement } from '@/core/types';
-import FormElementContainer from '../FormElementContainer';
+import { formState, selectedElementState } from '@/app/store';
 import { nanoid } from 'nanoid';
+import FormElementContainer from '../FormElementContainer';
 
 interface Props {
   element: FormElement;
   index?: number;
 }
 
-export default function NumberText({ element, index }: Props) {
+export default function EmailElement({ element, index }: Props) {
   const [selectedId, setSelectedId] = useRecoilState(selectedElementState);
   const [form, setForm] = useRecoilState(formState);
   const [newId, setNewId] = useState(selectedId);
@@ -113,6 +104,7 @@ export default function NumberText({ element, index }: Props) {
               placeholder="Enter a question"
               name="label"
               defaultValue={element?.label}
+              type="email"
               onChange={updateLabelOrDescription}
             />
             {element?.showDescription && (
@@ -123,7 +115,7 @@ export default function NumberText({ element, index }: Props) {
                 onChange={updateLabelOrDescription}
               />
             )}
-            <NumberInput
+            <TextInput
               placeholder="Client will type their answer here"
               disabled
               classNames={{ disabled: '!cursor-default' }}
@@ -132,8 +124,8 @@ export default function NumberText({ element, index }: Props) {
           <Divider />
           <Box className="flex items-center justify-between">
             <Box className="flex items-center space-x-2">
-              <Box className="pt-[5px]">{<FiHash size="" />}</Box>
-              <Text className="font-medium text-sm">Number input</Text>
+              <Box className="pt-[5px]">{<FiAtSign size="" />}</Box>
+              <Text className="font-medium text-sm">Email input</Text>
             </Box>
             <Box className="flex items-center space-x-2">
               <Box className="flex items-center space-x-2 mr-4">
@@ -172,10 +164,10 @@ export default function NumberText({ element, index }: Props) {
       )}
       {!isSelected && (
         <Box className="space-y-2">
-          <NumberInput
-            label={element?.label || 'Number'}
-            placeholder="Client will type their answer here"
+          <TextInput
+            label={element?.label || 'Email'}
             description={element.showDescription && element?.description}
+            placeholder="Client will type their answer here"
             required={element?.required}
             disabled
             classNames={{ disabled: '!cursor-default' }}
