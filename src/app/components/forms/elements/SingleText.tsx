@@ -10,9 +10,10 @@ import { nanoid } from 'nanoid';
 
 interface Props {
   element: FormElement;
+  index?: number;
 }
 
-export default function SingleText({ element }: Props) {
+export default function SingleText({ element, index }: Props) {
   const [selectedId, setSelectedId] = useRecoilState(selectedElementState);
   const [form, setForm] = useRecoilState(formState);
   const [newId, setNewId] = useState(selectedId);
@@ -95,7 +96,7 @@ export default function SingleText({ element }: Props) {
   };
 
   return (
-    <FormElementContainer elementId={element.id}>
+    <FormElementContainer elementId={element.id} index={index}>
       {isSelected && (
         <Box className="space-y-4">
           <Box className="space-y-3">

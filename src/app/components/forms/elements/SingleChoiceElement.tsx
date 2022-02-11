@@ -4,7 +4,6 @@ import {
   Box,
   Divider,
   TextInput,
-  Textarea,
   Tooltip,
   Chip,
   Text,
@@ -12,18 +11,19 @@ import {
   Radio,
 } from '@mantine/core';
 import { FiCopy, FiTrash2, FiPlus, FiX, FiCheckCircle } from 'react-icons/fi';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { formState, selectedElementState } from '@/app/store';
 import { FormElement } from '@/core/types';
+import { nanoid } from 'nanoid';
 import Button from '@/app/components/shared/Button';
 import FormElementContainer from '../FormElementContainer';
-import { nanoid } from 'nanoid';
 
 interface Props {
   element: FormElement;
+  index?: number;
 }
 
-export default function SingleChoiceElement({ element }: Props) {
+export default function SingleChoiceElement({ element, index }: Props) {
   const [selectedId, setSelectedId] = useRecoilState(selectedElementState);
   const [form, setForm] = useRecoilState(formState);
   const [newId, setNewId] = useState(selectedId);
@@ -165,7 +165,7 @@ export default function SingleChoiceElement({ element }: Props) {
   };
 
   return (
-    <FormElementContainer elementId={element.id}>
+    <FormElementContainer elementId={element.id} index={index}>
       {isSelected && (
         <Box className="space-y-4">
           <Box className="space-y-3">

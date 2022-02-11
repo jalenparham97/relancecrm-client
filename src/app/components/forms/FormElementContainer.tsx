@@ -1,14 +1,19 @@
-import { Paper } from '@mantine/core';
+import { Box, Paper } from '@mantine/core';
+import { useHover } from '@mantine/hooks';
 import { useUnmount } from 'react-use';
 import { useRecoilState } from 'recoil';
+import { Draggable } from 'react-beautiful-dnd';
 import { selectedElementState } from '@/app/store';
+import { MdDragHandle } from 'react-icons/md';
 
 interface Props {
   children: React.ReactNode;
   elementId: string | number;
+  index?: number;
 }
 
-export default function FormElementContainer({ children, elementId }: Props) {
+export default function FormElementContainer({ children, elementId, index }: Props) {
+  const { hovered, ref } = useHover();
   const [selectedId, setSelectedId] = useRecoilState(selectedElementState);
 
   useUnmount(() => setSelectedId(''));
@@ -18,15 +23,47 @@ export default function FormElementContainer({ children, elementId }: Props) {
   const isSelected = elementId === selectedId;
 
   return (
-    <Paper
-      onClick={handleSelect}
-      padding="lg"
-      withBorder
-      className={`border-gray-600 border-opacity-20 shadow-sm ${
-        isSelected && 'border-opacity-50 shadow-lg'
-      }`}
-    >
-      {children}
-    </Paper>
+    <Draggable key={elementId} draggableId={elementId as string} index={index}>
+      {(provided, snapshot) => (
+        <Box ref={ref}>
+          {isSelected && (
+            <Box ref={provided.innerRef} {...provided.draggableProps}>
+              <Paper
+                onClick={handleSelect}
+                padding="lg"
+                withBorder
+                className={`relative border-gray-600 border-opacity-20 shadow-sm ${
+                  isSelected && 'border-opacity-50 shadow-lg'
+                }`}
+              >
+                <Box className="absolute -top-[2px] left-1/2" {...provided.dragHandleProps}>
+                  <MdDragHandle size="25px" />
+                </Box>
+                {children}
+              </Paper>
+            </Box>
+          )}
+          {!isSelected && (
+            <Box ref={provided.innerRef} {...provided.draggableProps}>
+              <Paper
+                onClick={handleSelect}
+                padding="lg"
+                withBorder
+                className={`relative border-gray-600 border-opacity-20 shadow-sm ${
+                  isSelected && 'border-opacity-50 shadow-lg'
+                }`}
+              >
+                {hovered && (
+                  <Box className="absolute -top-[2px] left-1/2" {...provided.dragHandleProps}>
+                    <MdDragHandle size="25px" />
+                  </Box>
+                )}
+                {children}
+              </Paper>
+            </Box>
+          )}
+        </Box>
+      )}
+    </Draggable>
   );
 }

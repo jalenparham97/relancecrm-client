@@ -9,11 +9,11 @@ import { useForm, useFormUpdateMutation } from '@/app/api/forms';
 import { formState, selectedElementState } from '@/app/store';
 import { FormElement, FormElementSubTypeType } from '@/core/types';
 import { nanoid } from 'nanoid';
+import { isEqual } from 'lodash';
 import Button from '@/app/components/shared/Button';
 import FormElementType from './FormElementType';
 import BrandColorPicker from '../shared/BrandColorPicker';
 import Link from '../shared/Link';
-import { isEqual } from 'lodash';
 
 const elementsLabelMap = {
   heading: 'Section heading',

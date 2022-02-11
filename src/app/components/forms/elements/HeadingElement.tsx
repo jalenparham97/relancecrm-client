@@ -15,14 +15,15 @@ import { CgFormatHeading } from 'react-icons/cg';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { formState, selectedElementState } from '@/app/store';
 import { Form, FormElement } from '@/core/types';
-import FormElementContainer from '../FormElementContainer';
 import { nanoid } from 'nanoid';
+import FormElementContainer from '../FormElementContainer';
 
 interface Props {
   element: FormElement;
+  index?: number;
 }
 
-export default function HeadingElement({ element }: Props) {
+export default function HeadingElement({ element, index }: Props) {
   const [selectedId, setSelectedId] = useRecoilState(selectedElementState);
   const [form, setForm] = useRecoilState(formState);
   const [newId, setNewId] = useState(selectedId);
@@ -93,7 +94,7 @@ export default function HeadingElement({ element }: Props) {
   };
 
   return (
-    <FormElementContainer elementId={element.id}>
+    <FormElementContainer elementId={element.id} index={index}>
       {isSelected && (
         <Box className="space-y-4">
           <Box className="space-y-3">

@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useRecoilState } from 'recoil';
-import { Box, Text, Container, Title, Loader, Group } from '@mantine/core';
-import { formState } from '@/app/store';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
+import { Box, Container } from '@mantine/core';
+import { formState, selectedElementState } from '@/app/store';
 import { useForm } from '@/app/api/forms';
+import { FormElement } from '@/core/types';
 import FormEditSideDrawer from '@/app/components/forms/FormEditSideDrawer';
 import FormPageContainer from '@/app/components/forms/FormPageContainer';
 import FormPageHeader from '@/app/components/forms/FormPageHeader';
@@ -16,18 +18,35 @@ import MultipleChoiceElement from '@/app/components/forms/elements/MultipleChoic
 import FormSubmitButtonSection from '@/app/components/forms/FormSubmitButtonSection';
 import FormHeaderSection from '@/app/components/forms/FormHeaderSection';
 import LoadingLoader from '@/app/components/shared/LoadingLoader';
-import { FormElement } from '@/core/types';
 
 const drawerWidth = 370;
+
+const reorder = (list: FormElement[], startIndex: number, endIndex: number) => {
+  const result = Array.from(list);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+  return result;
+};
 
 export default function edit() {
   const { query } = useRouter();
   const [form, setForm] = useRecoilState(formState);
+  const setSelectedElement = useSetRecoilState(selectedElementState);
   const { isLoading, data: formData } = useForm(query.id as string);
 
   useEffect(() => {
     setForm(formData);
   }, [formData]);
+
+  const onDragEnd = (result: DropResult) => {
+    // dropped outside the list
+    if (!result.destination) {
+      return;
+    }
+    const content = reorder(form?.content, result.source.index, result.destination.index);
+    setForm((prevForm) => ({ ...prevForm, content }));
+    setSelectedElement(result.draggableId);
+  };
 
   return (
     <FormPageContainer header={!isLoading && <FormPageHeader />}>
@@ -39,10 +58,22 @@ export default function edit() {
               <Box className="space-y-3">
                 <FormHeaderSection form={form} />
 
-                {form?.content?.map((element) => {
-                  return renderElement(element);
-                })}
-
+                <DragDropContext onDragEnd={onDragEnd}>
+                  <Droppable droppableId="droppable">
+                    {(provided, snapshot) => (
+                      <Box
+                        className="space-y-3"
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                      >
+                        {form?.content?.map((element, i) => {
+                          return renderElement(element, i);
+                        })}
+                        {provided.placeholder}
+                      </Box>
+                    )}
+                  </Droppable>
+                </DragDropContext>
                 <FormSubmitButtonSection />
               </Box>
             </Container>
@@ -54,14 +85,14 @@ export default function edit() {
   );
 }
 
-function renderElement(element: FormElement) {
+function renderElement(element: FormElement, index: number) {
   const elementsMap = {
-    heading: <HeadingElement element={element} key={element.id} />,
-    single_line: <SingleText element={element} key={element.id} />,
-    paragraph: <ParagraphText element={element} key={element.id} />,
-    multiple_choice: <MultipleChoiceElement element={element} key={element.id} />,
-    single_choice: <SingleChoiceElement element={element} key={element.id} />,
-    number: <NumberText element={element} key={element.id} />,
+    heading: <HeadingElement element={element} index={index} key={element.id} />,
+    single_line: <SingleText element={element} index={index} key={element.id} />,
+    paragraph: <ParagraphText element={element} index={index} key={element.id} />,
+    multiple_choice: <MultipleChoiceElement element={element} index={index} key={element.id} />,
+    single_choice: <SingleChoiceElement element={element} index={index} key={element.id} />,
+    number: <NumberText element={element} index={index} key={element.id} />,
   };
 
   return elementsMap[element.subtype];
