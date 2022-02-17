@@ -1,23 +1,20 @@
 import { useState } from 'react';
+import { AppShell, Navbar, Header, MediaQuery, Burger, Box, Text, Group } from '@mantine/core';
 import {
-  AppShell,
-  Navbar,
-  Header,
-  MediaQuery,
-  Burger,
-  Title,
-  Box,
-  Text,
-  Group,
-} from '@mantine/core';
-import { FiUsers, FiCheckSquare, FiBriefcase, FiHome } from 'react-icons/fi';
+  UilBill,
+  UilFileQuestionAlt,
+  UilSuitcaseAlt,
+  UilEstate,
+  UilUsersAlt,
+  UilCheckSquare,
+} from '@iconscout/react-unicons';
 import { useUser } from '@/app/api/auth';
+import { useIsDarkMode } from '@/app/hooks';
 import dayjs from 'dayjs';
 import AuthGuard from '@/app/guards/AuthGuard';
 import NavListItem from '@/app/components/shared/NavListItem';
 import Link from '@/app/components/shared/Link';
 import AccountMenu from '@/app/components/shared/AccountMenu';
-import { useIsDarkMode } from '@/app/hooks';
 
 const PageLayout = ({ children, ...otherProps }) => {
   const user = useUser();
@@ -73,32 +70,42 @@ const PageLayout = ({ children, ...otherProps }) => {
         navbar={
           <Navbar padding="md" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 270, lg: 270 }}>
             <Box className="w-full grid gap-1">
-              <NavListItem href="/" icon={<FiHome />} text="Dashboard" />
-              <NavListItem href="/clients" icon={<FiUsers />} text="Clients" />
+              <NavListItem
+                href="/"
+                icon={<UilEstate className="w-[20px] h-[20px]" />}
+                text="Dashboard"
+              />
+              <NavListItem
+                href="/clients"
+                icon={<UilUsersAlt className="w-[20px] h-[20px]" />}
+                text="Clients"
+              />
               <NavListItem
                 href="/projects"
-                icon={<i className="fi fi-rr-briefcase text-base"></i>}
+                icon={<UilSuitcaseAlt className="w-[20px] h-[20px]" />}
                 text="Projects"
               />
-              {/* <NavListItem href="/projects" icon={<FiBriefcase />} text="Projects" /> */}
               <NavListItem
                 href="/invoices"
-                icon={<i className="fi fi-rr-receipt text-base" />}
+                icon={<UilBill className="w-[20px] h-[20px]" />}
                 text="Invoices"
               />
               <NavListItem
                 href="/forms"
-                icon={<i className="fi fi-rr-form text-base" />}
+                icon={<UilFileQuestionAlt className="w-[20px] h-[20px]" />}
                 text="Forms"
               />
-              <NavListItem href="/tasks" icon={<FiCheckSquare />} text="Tasks" />
+              <NavListItem
+                href="/tasks"
+                icon={<UilCheckSquare className="w-[20px] h-[20px]" />}
+                text="Tasks"
+              />
             </Box>
           </Navbar>
         }
         styles={(theme) => ({
           main: {
-            backgroundColor:
-              theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[0],
+            backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[9] : '#fbfcfc',
             paddingRight: '16px',
             paddingBottom: '40px',
           },

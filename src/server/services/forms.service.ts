@@ -1,5 +1,5 @@
-import { Client, Form, Project, ServiceResponse, Task } from '@/core/types';
-import { formsModel } from '@/server/models';
+import { Client, Form, FormResponse, Project, ServiceResponse, Task } from '@/core/types';
+import { formsModel, responsesModel } from '@/server/models';
 
 class FormsService {
   async create(createData: Form, userId: string): Promise<Form> {
@@ -38,6 +38,28 @@ class FormsService {
 
   async remove(id: string, userId: string) {
     return await formsModel.findOneAndRemove({ _id: id, userId });
+  }
+
+  async createResponse(createData: FormResponse): Promise<FormResponse> {
+    return await responsesModel.create(createData);
+  }
+
+  async findAllResponses(formId: string): Promise<ServiceResponse<FormResponse>> {
+    const query = { formId };
+
+    const data = await responsesModel.find(query).sort({ _id: -1 }).exec();
+
+    const total = await responsesModel.count(query);
+
+    return { total, data };
+  }
+
+  async removeManyResponses(ids: string[]) {
+    return await responsesModel.deleteMany({ _id: { $in: ids } });
+  }
+
+  async removeResponse(id: string) {
+    return await responsesModel.findOneAndRemove({ _id: id });
   }
 }
 

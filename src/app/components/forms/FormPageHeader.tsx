@@ -25,7 +25,7 @@ export default function FormPageHeader() {
   const updateFormName = async () => {
     await handleUpdateForm.mutateAsync({ name: form?.name });
     toggleEditMode(false);
-    toasts.success('Form updated');
+    // toasts.success('Form updated');
   };
 
   const onFormNameChange = (e: React.SyntheticEvent<HTMLInputElement>) => {

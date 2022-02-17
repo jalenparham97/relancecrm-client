@@ -27,6 +27,10 @@ export function ThemeProvider({ children }) {
             input: { cursor: 'pointer' },
             label: { cursor: 'pointer' },
           }),
+          Switch: (theme) => ({
+            input: { cursor: 'pointer' },
+            label: { cursor: 'pointer' },
+          }),
           Modal: (theme) => ({
             title: { fontSize: '25px', fontWeight: 'bold' },
           }),

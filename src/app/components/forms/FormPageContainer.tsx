@@ -1,32 +1,47 @@
-import { AppShell, Box } from '@mantine/core';
-import AuthGuard from '@/app/guards/AuthGuard';
-import { useAuth } from '@/app/api/auth';
+import { useRouter } from 'next/router';
+import { Box, Container, Group, Title } from '@mantine/core';
+import { FiEdit } from 'react-icons/fi';
+import { Form } from '@/core/types';
+import PageLayout from '@/app/components/layouts/PageLayout';
+import LoadingLoader from '@/app/components/shared/LoadingLoader';
+import Button from '@/app/components/shared/Button';
+import NavTab from '@/app/components/shared/NavTab';
+import NavTabs from '@/app/components/shared/NavTabs';
 
 interface Props {
-  header?: React.ReactElement<any, string | React.JSXElementConstructor<any>>;
+  form: Form;
+  isLoading: boolean;
   children?: React.ReactNode;
 }
 
-export default function FormPageContainer({ header, children, ...otherProps }: Props) {
-  useAuth();
+export default function FormPageContainer({ form, isLoading, children }: Props) {
+  const { query } = useRouter();
 
   return (
-    <AuthGuard>
-      <AppShell
-        navbarOffsetBreakpoint="sm"
-        fixed
-        header={header}
-        styles={(theme) => ({
-          main: {
-            backgroundColor:
-              theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[0],
-            paddingRight: '16px',
-            paddingBottom: '40px',
-          },
-        })}
-      >
-        <Box>{children}</Box>
-      </AppShell>
-    </AuthGuard>
+    <PageLayout>
+      {isLoading && <LoadingLoader height="90vh" />}
+      {!isLoading && (
+        <Container size="xl">
+          <Box className="flex justify-between items-center">
+            <Title order={1}>{form?.name}</Title>
+            <Group spacing="xs">
+              <Button to={`/forms/${query.id}/edit`} leftIcon={<FiEdit />}>
+                Edit
+              </Button>
+            </Group>
+          </Box>
+
+          <Box className="mt-8">
+            <NavTabs className="">
+              <NavTab to={`/forms/${query.id}`} label="Responses" />
+              <NavTab to={`/forms/${query.id}/share`} label="Share" />
+              <NavTab to={`/forms/${query.id}/settings`} label="Settings" />
+            </NavTabs>
+
+            <Box className="pt-5">{children}</Box>
+          </Box>
+        </Container>
+      )}
+    </PageLayout>
   );
 }

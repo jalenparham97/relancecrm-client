@@ -1,11 +1,11 @@
 import { Box } from '@mantine/core';
-import FormPageContainer from '@/app/components/forms/FormPageContainer';
+import FormEditPageContainer from '@/app/components/forms/FormEditPageContainer';
 import FormPageHeader from '@/app/components/forms/FormPageHeader';
 
 export default function repspones() {
   return (
-    <FormPageContainer header={<FormPageHeader />}>
+    <FormEditPageContainer header={<FormPageHeader />}>
       <Box>Repspones Page</Box>
-    </FormPageContainer>
+    </FormEditPageContainer>
   );
 }

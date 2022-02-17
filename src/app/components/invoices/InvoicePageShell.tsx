@@ -18,8 +18,7 @@ export default function InvoicePageShell({ header, children, ...otherProps }: Pr
         header={header}
         styles={(theme) => ({
           main: {
-            backgroundColor:
-              theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[0],
+            backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[9] : '#fbfcfc',
             paddingRight: '16px',
             paddingBottom: '40px',
           },

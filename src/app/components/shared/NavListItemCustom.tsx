@@ -7,6 +7,7 @@ import TasksIcon from '@/app/components/shared/icons/TasksIcon';
 import RecieptIcon from '@/app/components/shared/icons/RecieptIcon';
 import DocumentIcon from '@/app/components/shared/icons/DocumentIcon';
 import ReceiptIcon2 from './icons/ReceiptIcon2';
+import FormIcon from './icons/FormIcon';
 
 interface Props {
   text: string;

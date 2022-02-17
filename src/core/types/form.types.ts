@@ -13,12 +13,33 @@ export type Form = {
   submitButtonText?: string;
   content?: FormElement[];
   type?: FormType;
+  createdAt?: string;
+  updatedAt?: string;
+  settings?: FormSettings;
+};
 
+export type FormSettings = {
+  isClosed?: boolean;
+  closeMessageDescription?: string;
+  closeMessageTitle?: string;
+  hasClosedMessage?: boolean;
+  responsesLimit?: number;
+};
+
+export type FormResponse = {
+  _id?: string;
+  formId: string;
+  content: FormResponseContent;
   createdAt?: string;
   updatedAt?: string;
 };
 
-type HeaderImage = {
+export type FormResponseContent = {
+  element: FormElement;
+  value?: string | string[];
+}[];
+
+export type HeaderImage = {
   url?: string;
   name?: string;
 };
@@ -27,7 +48,7 @@ export type FormElement = {
   id?: string;
   label?: string;
   subtype?: FormElementSubTypeType;
-  type?: 'text' | 'select' | 'email';
+  type?: 'text' | 'select' | 'email' | 'tel';
   options?: FormOption[];
   required?: boolean;
   description?: string;
@@ -41,6 +62,7 @@ export type FormOption = {
 
 export type FormElementSubTypeType =
   | 'email'
+  | 'phone'
   | 'single_line'
   | 'paragraph'
   | 'heading'
@@ -49,8 +71,8 @@ export type FormElementSubTypeType =
   | 'number';
 
 export enum FormStatus {
-  PUBLISHED = 'published',
-  DRAFT = 'draft',
+  OPEN = 'open',
+  CLOSED = 'closed',
 }
 
 export enum FormType {

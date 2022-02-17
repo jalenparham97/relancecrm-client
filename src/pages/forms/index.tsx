@@ -8,6 +8,8 @@ import {
   useFormDeleteMutation,
   useForms,
 } from '@/app/api/forms';
+import { formatForms } from '@/app/utils';
+import { isEmpty } from 'lodash';
 import PageLayout from '@/app/components/layouts/PageLayout';
 import Button from '@/app/components/shared/Button';
 import DataTable from '@/app/components/shared/DataTable';
@@ -16,8 +18,7 @@ import DeleteModal from '@/app/components/shared/DeleteModal';
 import LoadingLoader from '@/app/components/shared/LoadingLoader';
 import EmptyState from '@/app/components/shared/EmptyState';
 import FormCreateModal from '@/app/components/forms/FormCreateModal';
-import { formatForms } from '@/app/utils';
-import { isEmpty } from 'lodash';
+import FormActionMenu from '@/app/components/forms/FormActionMenu';
 
 export default function FormsPage() {
   const [openDeleteDialog, toggleOpenDeleteDialog] = useToggle(false);
@@ -52,15 +53,13 @@ export default function FormsPage() {
 
   const data = useMemo(() => formatForms(forms?.data), [forms?.data]);
 
-  console.log({ data });
-
   const columns = useMemo(
     () => [
       {
         Header: 'Form name',
         accessor: 'name',
         Cell: ({ value, row }) => (
-          <Link to={`/forms/${row.original.id}/edit`}>
+          <Link to={`/forms/${row.original.id}`}>
             <Box className="flex items-center space-x-2 hover:text-indigo-500">
               <Text className="font-semibold">{value}</Text>
             </Box>
@@ -88,13 +87,7 @@ export default function FormsPage() {
         accessor: '_id',
         Cell: ({ value, row }) => (
           <Box className="flex space-x-1">
-            <ActionIcon
-              title="Delete"
-              color="red"
-              onClick={() => openDeleteOneModal(row.original.id)}
-            >
-              <FiTrash2 />
-            </ActionIcon>
+            <FormActionMenu id={row.original.id} status={row.original.status} />
           </Box>
         ),
       },

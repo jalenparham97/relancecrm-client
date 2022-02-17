@@ -4,7 +4,7 @@ import { useUnmount } from 'react-use';
 import { useRecoilState } from 'recoil';
 import { Draggable } from 'react-beautiful-dnd';
 import { selectedElementState } from '@/app/store';
-import { MdDragHandle } from 'react-icons/md';
+import { BsGripHorizontal } from 'react-icons/bs';
 
 interface Props {
   children: React.ReactNode;
@@ -37,7 +37,7 @@ export default function FormElementContainer({ children, elementId, index }: Pro
                 }`}
               >
                 <Box className="absolute -top-[2px] left-1/2" {...provided.dragHandleProps}>
-                  <MdDragHandle size="25px" />
+                  <BsGripHorizontal size="25px" className="text-gray-600" />
                 </Box>
                 {children}
               </Paper>
@@ -55,7 +55,7 @@ export default function FormElementContainer({ children, elementId, index }: Pro
               >
                 {hovered && (
                   <Box className="absolute -top-[2px] left-1/2" {...provided.dragHandleProps}>
-                    <MdDragHandle size="25px" />
+                    <BsGripHorizontal size="25px" className="text-gray-600" />
                   </Box>
                 )}
                 {children}

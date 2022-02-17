@@ -8,9 +8,10 @@ interface Props {
   text: string;
   icon?: React.ReactNode;
   href: string;
+  textClassName?: string;
 }
 
-export default function NavListItem({ text, icon, href }: Props) {
+export default function NavListItem({ text, icon, href, textClassName }: Props) {
   const { pathname } = useRouter();
   const isDarkMode = useIsDarkMode();
   const colors = useColors();
@@ -40,15 +41,15 @@ export default function NavListItem({ text, icon, href }: Props) {
         })}
       >
         {isActive ? (
-          <Text className="mt-1 text-white">{icon}</Text>
+          <Text className="mt-1 text-white ">{icon}</Text>
         ) : (
           <Text className={`mt-1 ${isDarkMode && 'text-gray-400'}`}>{icon}</Text>
         )}
         <Box className="ml-5 leading-none">
           {isActive ? (
-            <Text className="font-semibold text-white">{text}</Text>
+            <Text className={`font-semibold text-white ${textClassName}`}>{text}</Text>
           ) : (
-            <Text className={`${isDarkMode && 'text-gray-400'}`}>{text}</Text>
+            <Text className={`${isDarkMode && 'text-gray-400'} ${textClassName}`}>{text}</Text>
           )}
         </Box>
       </Box>

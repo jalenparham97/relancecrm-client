@@ -28,7 +28,7 @@ export default function FormHeaderSection({}: Props) {
   const updateHeader = async () => {
     await handleUpdateForm.mutateAsync({ header: form?.header });
     toggleEditMode(false);
-    toasts.success('Form updated');
+    // toasts.success('Form updated');
   };
 
   const onFormHeaderChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
@@ -76,6 +76,7 @@ export default function FormHeaderSection({}: Props) {
             value={form?.header}
             onChange={onFormHeaderChange}
             autoFocus
+            className="w-96"
             rightSectionWidth={70}
             rightSection={
               <Box className="flex">

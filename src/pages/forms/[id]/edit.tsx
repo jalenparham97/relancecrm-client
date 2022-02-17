@@ -7,7 +7,7 @@ import { formState, selectedElementState } from '@/app/store';
 import { useForm } from '@/app/api/forms';
 import { FormElement } from '@/core/types';
 import FormEditSideDrawer from '@/app/components/forms/FormEditSideDrawer';
-import FormPageContainer from '@/app/components/forms/FormPageContainer';
+import FormEditPageContainer from '@/app/components/forms/FormEditPageContainer';
 import FormPageHeader from '@/app/components/forms/FormPageHeader';
 import SingleText from '@/app/components/forms/elements/SingleText';
 import ParagraphText from '@/app/components/forms/elements/ParagraphText';
@@ -19,6 +19,7 @@ import FormSubmitButtonSection from '@/app/components/forms/FormSubmitButtonSect
 import FormHeaderSection from '@/app/components/forms/FormHeaderSection';
 import LoadingLoader from '@/app/components/shared/LoadingLoader';
 import EmailElement from '@/app/components/forms/elements/EmailElement';
+import PhoneNumberElement from '@/app/components/forms/elements/PhoneNumberElement';
 
 const drawerWidth = 370;
 
@@ -50,7 +51,7 @@ export default function edit() {
   };
 
   return (
-    <FormPageContainer header={!isLoading && <FormPageHeader />}>
+    <FormEditPageContainer header={!isLoading && <FormPageHeader />}>
       {isLoading && <LoadingLoader height="90vh" />}
       {!isLoading && (
         <Box>
@@ -82,7 +83,7 @@ export default function edit() {
           <FormEditSideDrawer drawerWidth={drawerWidth} />
         </Box>
       )}
-    </FormPageContainer>
+    </FormEditPageContainer>
   );
 }
 
@@ -95,6 +96,7 @@ function renderElement(element: FormElement, index: number) {
     single_choice: <SingleChoiceElement element={element} index={index} key={element.id} />,
     number: <NumberText element={element} index={index} key={element.id} />,
     email: <EmailElement element={element} index={index} key={element.id} />,
+    phone: <PhoneNumberElement element={element} index={index} key={element.id} />,
   };
 
   return elementsMap[element.subtype];

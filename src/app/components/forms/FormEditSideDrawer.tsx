@@ -1,7 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Box, Text, Navbar, Title, Group, ScrollArea } from '@mantine/core';
-import { FiHash, FiSave, FiEye, FiCheckCircle, FiCheckSquare, FiAtSign } from 'react-icons/fi';
+import {
+  FiHash,
+  FiSave,
+  FiEye,
+  FiCheckCircle,
+  FiCheckSquare,
+  FiAtSign,
+  FiPhone,
+} from 'react-icons/fi';
 import { CgFormatHeading, CgDetailsLess, CgDetailsMore } from 'react-icons/cg';
 import { useIsDarkMode, useToasts } from '@/app/hooks';
 import { useRecoilState } from 'recoil';
@@ -23,6 +31,7 @@ const elementsLabelMap = {
   single_choice: 'Single choice selection',
   number: 'Number',
   email: 'Email',
+  phone: 'Phone number',
 };
 
 interface Props {
@@ -43,7 +52,7 @@ export default function FormEditSideDrawer({ drawerWidth = 370 }: Props) {
   const saveForm = async () => {
     try {
       await handleUpdateFormSubmit.mutateAsync(form);
-      toasts.success('Form updated');
+      // toasts.success('Form updated');
     } catch (error) {
       console.log(error);
     }
@@ -73,6 +82,10 @@ export default function FormEditSideDrawer({ drawerWidth = 370 }: Props) {
     if (subtype === 'email') {
       element.type = 'email';
       element.required = true;
+    }
+
+    if (subtype === 'phone') {
+      element.type = 'tel';
     }
 
     if (selectedId) {
@@ -118,6 +131,12 @@ export default function FormEditSideDrawer({ drawerWidth = 370 }: Props) {
     return setForm((prevForm) => ({
       ...prevForm,
       content: insertElement(prevForm.content, 'number'),
+    }));
+  };
+  const addPhoneNumberElement = () => {
+    return setForm((prevForm) => ({
+      ...prevForm,
+      content: insertElement(prevForm.content, 'phone'),
     }));
   };
   const addSingleChoiceElement = () => {
@@ -208,6 +227,11 @@ export default function FormEditSideDrawer({ drawerWidth = 370 }: Props) {
                   icon={<FiAtSign size="20px" />}
                   name="Email input"
                   onClick={addEmailElement}
+                />
+                <FormElementType
+                  icon={<FiPhone size="20px" />}
+                  name="Phone number input"
+                  onClick={addPhoneNumberElement}
                 />
                 <FormElementType
                   icon={<FiHash size="20px" />}

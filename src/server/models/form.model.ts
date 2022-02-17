@@ -10,13 +10,17 @@ const schema = new mongoose.Schema<FormDocument>(
     brandTextColor: { type: String, trim: true, default: '#ffffff' },
     logoUrl: { type: String, trim: true },
     brandingEnabled: { type: Boolean, default: false },
-    status: { type: String, default: FormStatus.DRAFT },
+    status: { type: String, default: FormStatus.OPEN },
     header: { type: String, trim: true, default: 'Untitled Form' },
     headerImage: { type: Object, default: { url: '', name: '' } },
     responsesCount: { type: Number, default: 0 },
     submitButtonText: { type: String, default: 'Send' },
     content: { type: [], default: [] },
     type: { type: String, default: FormType.USER },
+    settings: {
+      type: Object,
+      default: { isClosed: false, closeMessageTitle: '', closeMessageDescription: '' },
+    },
   },
   { timestamps: true }
 );

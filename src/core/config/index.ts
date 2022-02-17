@@ -2,6 +2,7 @@ import { SubscriptionPlan } from '@/core/types';
 
 export const config = {
   apiURL: process.env.NEXT_PUBLIC_API_URL,
+  publicWebAppURL: process.env.NEXT_PUBLIC_WEB_APP_URL,
   webAppURL: process.env.WEB_APP_URL,
   stripePublishableKey: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
   pizzlyHost: process.env.NEXT_PUBLIC_PIZZLY_HOST,
