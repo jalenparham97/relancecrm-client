@@ -5,7 +5,7 @@ interface Props extends TabsProps {
   height?: string;
 }
 
-export default function Tabs({ children, styles, height = '50px', ...otherProps }: Props) {
+export default function Tabs({ children, styles, height = '40px', ...otherProps }: Props) {
   const isDarkMode = useIsDarkMode();
   const colors = useColors();
 
@@ -18,6 +18,8 @@ export default function Tabs({ children, styles, height = '50px', ...otherProps 
             borderBottom: `2px solid transparent`,
             height,
             color: theme.colorScheme === 'dark' ? '#b5b6b9' : '',
+            padding: '0px',
+            marginRight: '20px',
           },
           tabActive: {
             color: theme.colorScheme === 'dark' ? theme.colors.indigo[4] : theme.colors.indigo[6],

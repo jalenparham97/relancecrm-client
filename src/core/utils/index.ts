@@ -4,3 +4,4 @@ export * from './formatters/formatPhoneNumber';
 export * from './formatters/formatToCents';
 export * from './formatters/formatToDollars';
 export * from './omitObjProperty';
+export * from './convertArrayToObject';

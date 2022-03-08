@@ -6,7 +6,8 @@ import {
   UilSuitcaseAlt,
   UilEstate,
   UilUsersAlt,
-  UilCheckSquare,
+  UilCheckCircle,
+  UilClipboardNotes,
 } from '@iconscout/react-unicons';
 import { useUser } from '@/app/api/auth';
 import { useIsDarkMode } from '@/app/hooks';
@@ -92,12 +93,12 @@ const PageLayout = ({ children, ...otherProps }) => {
               />
               <NavListItem
                 href="/forms"
-                icon={<UilFileQuestionAlt className="w-[20px] h-[20px]" />}
+                icon={<UilClipboardNotes className="w-[20px] h-[20px]" />}
                 text="Forms"
               />
               <NavListItem
                 href="/tasks"
-                icon={<UilCheckSquare className="w-[20px] h-[20px]" />}
+                icon={<UilCheckCircle className="w-[20px] h-[20px]" />}
                 text="Tasks"
               />
             </Box>
@@ -106,6 +107,7 @@ const PageLayout = ({ children, ...otherProps }) => {
         styles={(theme) => ({
           main: {
             backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[9] : '#fbfcfc',
+            // backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[9] : '#fff',
             paddingRight: '16px',
             paddingBottom: '40px',
           },

@@ -5,9 +5,9 @@ import { FormResponse, ServiceResponse } from '@/core/types';
 const queryKey = 'responses';
 const service = responsesService;
 
-export const useResponses = () => {
+export const useResponses = (formId: string) => {
   const fetchData = async () => {
-    const data = await service.find<FormResponse>();
+    const data = await service.findResponses<FormResponse>(formId);
     return data;
   };
   return useQuery(queryKey, fetchData);

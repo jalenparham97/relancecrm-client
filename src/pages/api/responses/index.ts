@@ -8,7 +8,7 @@ import { formsService } from '@/server/services/forms.service';
 const handler = nc<ExtendedApiRequest, NextApiResponse>();
 
 handler.use(requireAuth).get(async (req, res) => {
-  const response = await formsService.findAllResponses(req.query.id as string);
+  const response = await formsService.findAllResponses(req.query.formId as string);
   return res.status(HttpStatus.OK).json(response);
 });
 

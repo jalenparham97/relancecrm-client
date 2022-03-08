@@ -61,13 +61,6 @@ export default function FormPreview({ form, isPreview = false }: Props) {
             };
           }
 
-          if (choiceValue === undefined) {
-            return {
-              element: omitObjProperty(item, ['description', 'showDescription']),
-              value: '',
-            };
-          }
-
           return {
             element: omitObjProperty(item, ['description', 'showDescription']),
             value: data[item.id],

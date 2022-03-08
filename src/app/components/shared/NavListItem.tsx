@@ -28,7 +28,7 @@ export default function NavListItem({ text, icon, href, textClassName }: Props) 
             backgroundColor: isActive
               ? isDarkMode
                 ? colors.indigo[7]
-                : colors.indigo[5]
+                : colors.indigo[7]
               : isDarkMode
               ? colors.dark[5]
               : colors.gray[1],
@@ -36,14 +36,14 @@ export default function NavListItem({ text, icon, href, textClassName }: Props) 
           backgroundColor: isActive
             ? isDarkMode
               ? colors.indigo[7]
-              : colors.indigo[5]
+              : colors.indigo[7]
             : 'transparent',
         })}
       >
         {isActive ? (
-          <Text className="mt-1 text-white ">{icon}</Text>
+          <Text className="mt-[5px] text-white ">{icon}</Text>
         ) : (
-          <Text className={`mt-1 ${isDarkMode && 'text-gray-400'}`}>{icon}</Text>
+          <Text className={`mt-[5px] ${isDarkMode && 'text-gray-400'}`}>{icon}</Text>
         )}
         <Box className="ml-5 leading-none">
           {isActive ? (

@@ -66,7 +66,9 @@ export default function TasksPage() {
               <Tabs
                 active={activeTab}
                 onTabChange={setActiveTab}
-                styles={{ root: { marginLeft: '20px' } }}
+                styles={{
+                  root: { marginLeft: '20px' },
+                }}
               >
                 <MantineTabs.Tab label="Active" />
                 <MantineTabs.Tab label="Completed" />

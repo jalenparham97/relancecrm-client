@@ -28,6 +28,7 @@ export type FormSettings = {
 
 export type FormResponse = {
   _id?: string;
+  id?: string;
   formId: string;
   content: FormResponseContent;
   createdAt?: string;

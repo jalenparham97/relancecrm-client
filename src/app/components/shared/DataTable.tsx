@@ -9,7 +9,7 @@ import Button from './Button';
 interface Props {
   columns?: any;
   data?: any;
-  setSelectedIds: (ids: string[]) => void;
+  setSelectedIds?: (ids: string[]) => void;
   searchPlaceholder?: string;
   onDeleteClick?: () => void;
 }
