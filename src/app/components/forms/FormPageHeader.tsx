@@ -91,13 +91,10 @@ export default function FormPageHeader() {
           )}
         </Box>
         <Box className="flex items-center space-x-3">
-          <NavButton to={`/forms/${query.id}/edit`} leftIcon={<FiEdit2 />}>
-            Create
-          </NavButton>
           <NavButton to={`/forms/${query.id}/share`} leftIcon={<FiSend />}>
             Share
           </NavButton>
-          <NavButton to={`/forms/${query.id}/responses`} leftIcon={<FiFileText />}>
+          <NavButton to={`/forms/${query.id}`} leftIcon={<FiFileText />}>
             Responses
           </NavButton>
         </Box>

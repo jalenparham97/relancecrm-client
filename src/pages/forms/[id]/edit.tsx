@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useRecoilState, useSetRecoilState } from 'recoil';
+import { isEmpty } from 'lodash';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
-import { Box, Container } from '@mantine/core';
+import { Box, Container, Paper, Title, Text } from '@mantine/core';
 import { formState, selectedElementState } from '@/app/store';
 import { useForm } from '@/app/api/forms';
 import { FormElement } from '@/core/types';
@@ -60,22 +61,38 @@ export default function edit() {
               <Box className="space-y-3">
                 <FormHeaderSection form={form} />
 
-                <DragDropContext onDragEnd={onDragEnd}>
-                  <Droppable droppableId="droppable">
-                    {(provided, snapshot) => (
-                      <Box
-                        className="space-y-3"
-                        {...provided.droppableProps}
-                        ref={provided.innerRef}
-                      >
-                        {form?.content?.map((element, i) => {
-                          return renderElement(element, i);
-                        })}
-                        {provided.placeholder}
-                      </Box>
-                    )}
-                  </Droppable>
-                </DragDropContext>
+                {isEmpty(form?.content) && (
+                  <Paper
+                    padding="lg"
+                    withBorder
+                    className={`border-gray-600 border-opacity-20 shadow-sm`}
+                  >
+                    <Box className="py-2 text-center space-y-2">
+                      <Title order={4}>Start building!</Title>
+                      <Text>Select elements from the right panel to add them to your form.</Text>
+                    </Box>
+                  </Paper>
+                )}
+
+                {!isEmpty(form?.content) && (
+                  <DragDropContext onDragEnd={onDragEnd}>
+                    <Droppable droppableId="droppable">
+                      {(provided, snapshot) => (
+                        <Box
+                          className="space-y-3"
+                          {...provided.droppableProps}
+                          ref={provided.innerRef}
+                        >
+                          {form?.content?.map((element, i) => {
+                            return renderElement(element, i);
+                          })}
+                          {provided.placeholder}
+                        </Box>
+                      )}
+                    </Droppable>
+                  </DragDropContext>
+                )}
+
                 <FormSubmitButtonSection />
               </Box>
             </Container>
