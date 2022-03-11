@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { Box, Container, Group, Title } from '@mantine/core';
-import { FiEdit } from 'react-icons/fi';
+import { FiArrowLeft, FiEdit } from 'react-icons/fi';
 import { Form } from '@/core/types';
 import PageLayout from '@/app/components/layouts/PageLayout';
 import LoadingLoader from '@/app/components/shared/LoadingLoader';
@@ -22,7 +22,17 @@ export default function FormPageContainer({ form, isLoading, children }: Props) 
       {isLoading && <LoadingLoader height="90vh" />}
       {!isLoading && (
         <Container size="xl">
-          <Box className="flex justify-between items-center">
+          <Button
+            className="hover:bg-transparent"
+            variant="subtle"
+            color="dark"
+            leftIcon={<FiArrowLeft />}
+            compact
+            to="/forms"
+          >
+            Back to forms
+          </Button>
+          <Box className="flex justify-between items-center mt-4">
             <Title order={1}>{form?.name}</Title>
             <Group spacing="xs">
               <Button to={`/forms/${query.id}/edit`} leftIcon={<FiEdit />}>
