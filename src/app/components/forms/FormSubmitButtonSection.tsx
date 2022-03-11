@@ -15,7 +15,7 @@ export default function FormSubmitButtonSection() {
   };
 
   return (
-    <Paper padding="lg" withBorder className={`border-gray-600 border-opacity-20 shadow-sm`}>
+    <Paper p="lg" withBorder className={`border-gray-600 border-opacity-20 shadow-sm`}>
       <Box className="space-y-3">
         <Button
           fullWidth

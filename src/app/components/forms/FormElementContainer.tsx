@@ -4,7 +4,7 @@ import { useUnmount } from 'react-use';
 import { useRecoilState } from 'recoil';
 import { Draggable } from 'react-beautiful-dnd';
 import { selectedElementState } from '@/app/store';
-import { BsGripHorizontal } from 'react-icons/bs';
+import { IconGripHorizontal } from '@tabler/icons';
 
 interface Props {
   children: React.ReactNode;
@@ -30,14 +30,14 @@ export default function FormElementContainer({ children, elementId, index }: Pro
             <Box ref={provided.innerRef} {...provided.draggableProps}>
               <Paper
                 onClick={handleSelect}
-                padding="lg"
+                p="lg"
                 withBorder
                 className={`relative border-gray-600 border-opacity-20 shadow-sm ${
                   isSelected && 'border-opacity-50 shadow-lg'
                 }`}
               >
                 <Box className="absolute -top-[2px] left-1/2" {...provided.dragHandleProps}>
-                  <BsGripHorizontal size="25px" className="text-gray-600" />
+                  <IconGripHorizontal className="text-gray-600" />
                 </Box>
                 {children}
               </Paper>
@@ -47,7 +47,7 @@ export default function FormElementContainer({ children, elementId, index }: Pro
             <Box ref={provided.innerRef} {...provided.draggableProps}>
               <Paper
                 onClick={handleSelect}
-                padding="lg"
+                p="lg"
                 withBorder
                 className={`relative border-gray-600 border-opacity-20 shadow-sm ${
                   isSelected && 'border-opacity-50 shadow-lg'
@@ -55,7 +55,7 @@ export default function FormElementContainer({ children, elementId, index }: Pro
               >
                 {hovered && (
                   <Box className="absolute -top-[2px] left-1/2" {...provided.dragHandleProps}>
-                    <BsGripHorizontal size="25px" className="text-gray-600" />
+                    <IconGripHorizontal className="text-gray-600" />
                   </Box>
                 )}
                 {children}

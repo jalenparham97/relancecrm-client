@@ -24,7 +24,7 @@ export const useForm = (id: string) => {
 export const useFormAddMutation = () => {
   const queryClient = useQueryClient();
 
-  return useMutation(async (data: Form) => await service.create<Form>(data), {
+  return useMutation(async (data?: Form) => await service.create<Form>(data), {
     onMutate: async () => {
       await queryClient.cancelQueries(queryKey);
       const previousQueryData = queryClient.getQueryData<ServiceResponse<Form>>(queryKey);

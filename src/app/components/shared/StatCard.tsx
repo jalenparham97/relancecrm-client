@@ -16,7 +16,7 @@ export default function StatCard({ icon, title, content, link, linkText = 'View 
   const user = useUser();
 
   return (
-    <Paper padding="lg" withBorder className="border-gray-600 border-opacity-20 shadow-sm">
+    <Paper p="lg" withBorder className="border-gray-600 border-opacity-20 shadow-sm">
       <Box className="space-y-3">
         <Box className="flex justify-between">
           <ThemeIcon size="xl">{icon}</ThemeIcon>

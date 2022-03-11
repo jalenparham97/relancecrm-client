@@ -16,7 +16,7 @@ export class Service<S> {
     return data;
   }
 
-  async create<T>(createData: S) {
+  async create<T>(createData?: S) {
     const { data } = await axios.post<T>(`/${this.service}`, createData);
     return data;
   }

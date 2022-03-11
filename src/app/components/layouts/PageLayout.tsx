@@ -1,14 +1,7 @@
 import { useState } from 'react';
 import { AppShell, Navbar, Header, MediaQuery, Burger, Box, Text, Group } from '@mantine/core';
-import {
-  UilBill,
-  UilFileQuestionAlt,
-  UilSuitcaseAlt,
-  UilEstate,
-  UilUsersAlt,
-  UilCheckCircle,
-  UilClipboardNotes,
-} from '@iconscout/react-unicons';
+import { UilClipboardNotes } from '@iconscout/react-unicons';
+import { IconHome, IconUsers, IconBriefcase, IconReceipt2, IconCircleCheck } from '@tabler/icons';
 import { useUser } from '@/app/api/auth';
 import { useIsDarkMode } from '@/app/hooks';
 import dayjs from 'dayjs';
@@ -28,7 +21,7 @@ const PageLayout = ({ children, ...otherProps }) => {
         navbarOffsetBreakpoint="sm"
         fixed
         header={
-          <Header height={65} padding="md">
+          <Header height={65} p="md">
             <Box className="flex justify-between items-center h-full">
               <Box>
                 <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
@@ -69,38 +62,14 @@ const PageLayout = ({ children, ...otherProps }) => {
           </Header>
         }
         navbar={
-          <Navbar padding="md" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 270, lg: 270 }}>
+          <Navbar p="md" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 270, lg: 270 }}>
             <Box className="w-full grid gap-1">
-              <NavListItem
-                href="/"
-                icon={<UilEstate className="w-[20px] h-[20px]" />}
-                text="Dashboard"
-              />
-              <NavListItem
-                href="/clients"
-                icon={<UilUsersAlt className="w-[20px] h-[20px]" />}
-                text="Clients"
-              />
-              <NavListItem
-                href="/projects"
-                icon={<UilSuitcaseAlt className="w-[20px] h-[20px]" />}
-                text="Projects"
-              />
-              <NavListItem
-                href="/invoices"
-                icon={<UilBill className="w-[20px] h-[20px]" />}
-                text="Invoices"
-              />
-              <NavListItem
-                href="/forms"
-                icon={<UilClipboardNotes className="w-[20px] h-[20px]" />}
-                text="Forms"
-              />
-              <NavListItem
-                href="/tasks"
-                icon={<UilCheckCircle className="w-[20px] h-[20px]" />}
-                text="Tasks"
-              />
+              <NavListItem href="/" icon={<IconHome size={20} />} text="Dashboard" />
+              <NavListItem href="/clients" icon={<IconUsers size={20} />} text="Clients" />
+              <NavListItem href="/projects" icon={<IconBriefcase size={20} />} text="Projects" />
+              <NavListItem href="/invoices" icon={<IconReceipt2 size={20} />} text="Invoices" />
+              <NavListItem href="/forms" icon={<UilClipboardNotes size={20} />} text="Forms" />
+              <NavListItem href="/tasks" icon={<IconCircleCheck size={20} />} text="Tasks" />
             </Box>
           </Navbar>
         }

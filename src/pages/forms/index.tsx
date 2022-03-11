@@ -1,7 +1,9 @@
 import { useMemo, useState } from 'react';
+import { useRouter } from 'next/router';
 import { useToggle } from 'react-use';
-import { Box, Container, Group, Paper, Title, Text, ActionIcon } from '@mantine/core';
-import { FiPlus, FiTrash2 } from 'react-icons/fi';
+import { Box, Container, Group, Paper, Title, Text } from '@mantine/core';
+import { FiPlus } from 'react-icons/fi';
+import { UilClipboardNotes } from '@iconscout/react-unicons';
 import {
   useFormAddMutation,
   useFormDeleteManyMutation,
@@ -21,6 +23,7 @@ import FormCreateModal from '@/app/components/forms/FormCreateModal';
 import FormActionMenu from '@/app/components/forms/FormActionMenu';
 
 export default function FormsPage() {
+  const router = useRouter();
   const [openDeleteDialog, toggleOpenDeleteDialog] = useToggle(false);
   const [openDeleteManyDialog, toggleOpenDeleteManyDialog] = useToggle(false);
   const [open, toggleOpen] = useToggle(false);
@@ -28,14 +31,18 @@ export default function FormsPage() {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [selectedId, setSelectedId] = useState('');
 
-  const handleFormSubmit = useFormAddMutation();
+  const handleAddFormSubmit = useFormAddMutation();
   const handleDeleteForm = useFormDeleteMutation();
   const handleDeleteForms = useFormDeleteManyMutation(selectedIds);
 
-  function openDeleteOneModal(id: string) {
-    setSelectedId(id);
-    toggleOpenDeleteDialog();
-  }
+  const onAddForm = async () => {
+    try {
+      const newForm = await handleAddFormSubmit.mutateAsync({});
+      router.push(`/forms/${newForm._id}/edit`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   async function onDeleteForm() {
     try {
@@ -105,7 +112,11 @@ export default function FormsPage() {
             <Box className="flex justify-between items-center">
               <Title order={1}>Forms</Title>
               <Group spacing="xs">
-                <Button leftIcon={<FiPlus fontSize="16px" />} onClick={toggleOpen}>
+                <Button
+                  leftIcon={<FiPlus fontSize="16px" />}
+                  onClick={onAddForm}
+                  loading={handleAddFormSubmit.isLoading}
+                >
                   Add form
                 </Button>
               </Group>
@@ -126,9 +137,9 @@ export default function FormsPage() {
                   <Box className="py-7">
                     <EmptyState
                       title="There are no forms yet"
-                      icon={<i className="fi fi-rr-form text-4xl" />}
+                      icon={<UilClipboardNotes size={50} />}
                       actionButton={
-                        <Button leftIcon={<FiPlus fontSize="16px" />} onClick={toggleOpen}>
+                        <Button leftIcon={<FiPlus fontSize="16px" />} onClick={onAddForm}>
                           Add form
                         </Button>
                       }
@@ -141,11 +152,10 @@ export default function FormsPage() {
         </Container>
       )}
 
-      <FormCreateModal
+      {/* <FormCreateModal
         opened={open}
         onClose={toggleOpen}
-        // submit={handleClientSubmit.mutateAsync}
-      />
+      /> */}
 
       <DeleteModal
         opened={openDeleteDialog}

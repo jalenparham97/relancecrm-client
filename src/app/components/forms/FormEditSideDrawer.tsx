@@ -169,7 +169,7 @@ export default function FormEditSideDrawer({ drawerWidth = 370 }: Props) {
   return (
     <Navbar
       fixed
-      padding="xs"
+      p="xs"
       className={`!border-l ${
         isDarkMode ? '!border-gray-800 !border-opacity-70' : '!border-gray-300'
       } !border-r-0`}

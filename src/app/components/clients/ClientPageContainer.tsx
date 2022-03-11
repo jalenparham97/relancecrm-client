@@ -59,7 +59,7 @@ export default function ClientPageContainer({ client, isLoading, children }: Pro
             </Button>
             <Paper
               mt={15}
-              padding="xl"
+              p="xl"
               withBorder
               className="border-gray-600 border-opacity-20 shadow-sm"
             >

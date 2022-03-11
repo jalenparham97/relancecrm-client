@@ -23,11 +23,7 @@ export default function InvoiceDetailsPage() {
               <InvoicePreview invoice={invoice} />
             </Col>
             <Col span={4}>
-              <Paper
-                padding="lg"
-                withBorder
-                className="border-gray-600 border-opacity-20 shadow-sm"
-              >
+              <Paper p="lg" withBorder className="border-gray-600 border-opacity-20 shadow-sm">
                 <Box className="space-y-3">
                   <Group position="apart">
                     <Title order={3}>Details</Title>

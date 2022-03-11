@@ -22,7 +22,7 @@ export default function ProjectItem({ project, client }: Props) {
   };
 
   return (
-    <Paper padding="md" withBorder className="border-gray-600 border-opacity-30">
+    <Paper p="md" withBorder className="border-gray-600 border-opacity-30">
       <Group position="apart">
         <Link to={`/projects/${project._id}`}>
           <Box className={project?.description && 'space-y-1'}>

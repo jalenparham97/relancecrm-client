@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { Box, Container, Group, Title, Paper, Text, ActionIcon } from '@mantine/core';
 import { FiPlus, FiEdit, FiEye } from 'react-icons/fi';
 import { IoReceiptOutline } from 'react-icons/io5';
+import { IconReceipt } from '@tabler/icons';
 import {
   useInvoiceAddMutation,
   useInvoiceDeleteManyMutation,
@@ -132,7 +133,7 @@ export default function InvoicesPage() {
                   <Box className="py-7">
                     <EmptyState
                       title="There are no invoices yet"
-                      icon={<IoReceiptOutline size="50px" />}
+                      icon={<IconReceipt size="50px" />}
                       actionButton={
                         <Button leftIcon={<FiPlus fontSize="16px" />} onClick={toggleOpenModal}>
                           Add invoice

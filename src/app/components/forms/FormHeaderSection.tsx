@@ -40,7 +40,7 @@ export default function FormHeaderSection({}: Props) {
 
   return (
     <Paper
-      padding={80}
+      p={80}
       withBorder
       className={`relative border-gray-300 shadow-sm border-t-8 ${isDarkMode && 'border-gray-800'}`}
       sx={{

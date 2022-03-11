@@ -97,7 +97,7 @@ export default function HeaderImagePicker({ opened, onClose, submit, form, isLoa
     <Modal
       opened={opened}
       onClose={handleFormClose}
-      hideCloseButton
+      withCloseButton={false}
       size="lg"
       classNames={{ modal: 'p-0', body: 'relative h-full' }}
     >

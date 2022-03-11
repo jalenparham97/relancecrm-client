@@ -63,7 +63,7 @@ export default function edit() {
 
                 {isEmpty(form?.content) && (
                   <Paper
-                    padding="lg"
+                    p="lg"
                     withBorder
                     className={`border-gray-600 border-opacity-20 shadow-sm`}
                   >

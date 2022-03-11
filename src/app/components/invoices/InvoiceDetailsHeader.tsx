@@ -37,7 +37,7 @@ export default function InvoiceDetailsHeader({ invoice }: Props) {
   return (
     <Header
       height={70}
-      padding="md"
+      p="md"
       fixed
       sx={(theme) => ({
         backgroundColor: theme.colorScheme === 'dark' ? '' : '',

@@ -44,7 +44,7 @@ export default function PaymentMethodCard({
 
   return (
     <Paper
-      padding="md"
+      p="md"
       withBorder
       className={`relative border-gray-600 ${!isPaymentEnabled && 'border-opacity-30'} ${
         isPaymentEnabled && 'border-indigo-500 border-opacity-60'
@@ -82,7 +82,7 @@ export default function PaymentMethodCard({
               </Link>
             )}
             {isConnected && appName === 'zelle' && (
-              <Paper padding="xs" withBorder className="border-gray-600 border-opacity-30">
+              <Paper p="xs" withBorder className="border-gray-600 border-opacity-30">
                 <Text className="text-sm leading-none text-center">
                   Zelle account: {user?.connectedPayments.zelle.accountId}
                 </Text>

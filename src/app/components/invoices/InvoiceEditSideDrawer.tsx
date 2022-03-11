@@ -73,7 +73,7 @@ export default function InvoiceEditSideDrawer({
   return (
     <Navbar
       fixed
-      padding="lg"
+      p="lg"
       className={`!border-l ${
         isDarkMode ? '!border-gray-800 !border-opacity-70' : '!border-gray-300'
       } !border-r-0`}
