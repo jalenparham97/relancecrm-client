@@ -10,11 +10,10 @@ import {
   Textarea,
   Title,
 } from '@mantine/core';
-import { FiCopy, FiTrash2 } from 'react-icons/fi';
-import { CgFormatHeading } from 'react-icons/cg';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { IconHeading, IconTrash, IconCopy } from '@tabler/icons';
+import { useRecoilState } from 'recoil';
 import { formState, selectedElementState } from '@/app/store';
-import { Form, FormElement } from '@/core/types';
+import { FormElement } from '@/core/types';
 import { nanoid } from 'nanoid';
 import FormElementContainer from '../FormElementContainer';
 
@@ -117,7 +116,7 @@ export default function HeadingElement({ element, index }: Props) {
           <Divider />
           <Box className="flex items-center justify-between">
             <Box className="flex items-center space-x-2">
-              <Box className="pt-[5px]">{<CgFormatHeading size="" />}</Box>
+              <Box className="pt-[5px]">{<IconHeading size={16} />}</Box>
               <Text className="font-medium text-sm">Heading</Text>
             </Box>
             <Box className="flex items-center space-x-2">
@@ -134,12 +133,12 @@ export default function HeadingElement({ element, index }: Props) {
               </Box>
               <Tooltip label="Duplicate" position="bottom">
                 <ActionIcon variant="default" onClick={duplicateElement}>
-                  <FiCopy />
+                  <IconCopy size={16} />
                 </ActionIcon>
               </Tooltip>
               <Tooltip label="Delete" position="bottom">
                 <ActionIcon variant="default" onClick={deleteElement}>
-                  <FiTrash2 className="text-red-600" />
+                  <IconTrash size={16} className="text-red-500" />
                 </ActionIcon>
               </Tooltip>
             </Box>

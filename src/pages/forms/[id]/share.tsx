@@ -4,7 +4,7 @@ import { config } from '@/core/config';
 import { useForm } from '@/app/api/forms';
 import { useCopyToClipboard } from 'react-use';
 import { useToasts } from '@/app/hooks';
-import { FiCopy } from 'react-icons/fi';
+import { IconCopy } from '@tabler/icons';
 import FormPageContainer from '@/app/components/forms/FormPageContainer';
 import Button from '@/app/components/shared/Button';
 
@@ -38,7 +38,7 @@ export default function share() {
           data-lpignore="true"
           data-form-type="other"
         />
-        <Button onClick={copyShareLink} leftIcon={<FiCopy />}>
+        <Button onClick={copyShareLink} leftIcon={<IconCopy size={16} />}>
           Copy
         </Button>
       </Box>

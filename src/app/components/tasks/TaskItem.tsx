@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Box, Checkbox, Divider, Group, Text, ActionIcon, Badge } from '@mantine/core';
-import { FiTrash2, FiEdit } from 'react-icons/fi';
+import { IconTrash, IconEdit } from '@tabler/icons';
 import { AxiosResponse } from 'axios';
 import { Task, TaskResponse } from '@/core/types';
 import { formatDate } from '@/app/utils';
-import { useDialog } from '@/app/hooks';
+import { useColors, useDialog } from '@/app/hooks';
 import DeleteModal from '@/app/components/shared/DeleteModal';
 import TaskEditModal from './TaskEditModal';
 
@@ -17,6 +17,7 @@ interface Props {
 }
 
 export default function TaskItem({ task, index, onUpdate, onDelete, loading = false }: Props) {
+  const colors = useColors();
   const [checked, setChecked] = useState(false);
   const [openEditModal, toggleOpenEditModal, closeEditModal] = useDialog();
   const [openDeleteModal, toggleOpenDeleteModal, closeDeleteModal] = useDialog();
@@ -53,12 +54,12 @@ export default function TaskItem({ task, index, onUpdate, onDelete, loading = fa
           )}
           {task.dueDate && <Badge variant="dot">{formatDate(task.dueDate, 'MMM, DD')}</Badge>}
           {!task.completed && (
-            <ActionIcon title="edit" color="green" onClick={toggleOpenEditModal}>
-              <FiEdit />
+            <ActionIcon title="edit" color="green" onClick={toggleOpenEditModal} variant="default">
+              <IconEdit size={16} />
             </ActionIcon>
           )}
-          <ActionIcon title="Delete" color="red" onClick={toggleOpenDeleteModal}>
-            <FiTrash2 />
+          <ActionIcon title="Delete" onClick={toggleOpenDeleteModal} variant="default">
+            <IconTrash size={16} color={colors.red[6]} />
           </ActionIcon>
         </Group>
       </Group>

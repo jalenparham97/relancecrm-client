@@ -9,7 +9,7 @@ import {
   Text,
   NumberInput,
 } from '@mantine/core';
-import { FiCopy, FiTrash2, FiPhone } from 'react-icons/fi';
+import { IconPhone, IconTrash, IconCopy } from '@tabler/icons';
 import { useRecoilState } from 'recoil';
 import { formState, selectedElementState } from '@/app/store';
 import { FormElement } from '@/core/types';
@@ -132,7 +132,7 @@ export default function PhoneNumberElement({ element, index }: Props) {
           <Divider />
           <Box className="flex items-center justify-between">
             <Box className="flex items-center space-x-2">
-              <Box className="pt-[5px]">{<FiPhone size="" />}</Box>
+              <Box className="pt-[5px]">{<IconPhone size={16} />}</Box>
               <Text className="font-medium text-sm">Phone number input</Text>
             </Box>
             <Box className="flex items-center space-x-2">
@@ -158,12 +158,12 @@ export default function PhoneNumberElement({ element, index }: Props) {
               </Box>
               <Tooltip label="Duplicate" position="bottom">
                 <ActionIcon variant="default" onClick={duplicateElement}>
-                  <FiCopy />
+                  <IconCopy size={16} />
                 </ActionIcon>
               </Tooltip>
               <Tooltip label="Delete" position="bottom">
                 <ActionIcon variant="default" onClick={deleteElement}>
-                  <FiTrash2 className="text-red-600" />
+                  <IconTrash size={16} className="text-red-500" />
                 </ActionIcon>
               </Tooltip>
             </Box>

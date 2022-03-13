@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ActionIcon, Box, Divider, TextInput, Tooltip, Chip, Text } from '@mantine/core';
-import { FiAtSign, FiCopy, FiTrash2 } from 'react-icons/fi';
+import { IconAt, IconTrash, IconCopy } from '@tabler/icons';
 import { useRecoilState } from 'recoil';
 import { FormElement } from '@/core/types';
 import { formState, selectedElementState } from '@/app/store';
@@ -124,7 +124,7 @@ export default function EmailElement({ element, index }: Props) {
           <Divider />
           <Box className="flex items-center justify-between">
             <Box className="flex items-center space-x-2">
-              <Box className="pt-[5px]">{<FiAtSign size="" />}</Box>
+              <Box className="pt-[5px]">{<IconAt size={16} />}</Box>
               <Text className="font-medium text-sm">Email input</Text>
             </Box>
             <Box className="flex items-center space-x-2">
@@ -150,12 +150,12 @@ export default function EmailElement({ element, index }: Props) {
               </Box>
               <Tooltip label="Duplicate" position="bottom">
                 <ActionIcon variant="default" onClick={duplicateElement}>
-                  <FiCopy />
+                  <IconCopy size={16} />
                 </ActionIcon>
               </Tooltip>
               <Tooltip label="Delete" position="bottom">
                 <ActionIcon variant="default" onClick={deleteElement}>
-                  <FiTrash2 className="text-red-600" />
+                  <IconTrash size={16} className="text-red-500" />
                 </ActionIcon>
               </Tooltip>
             </Box>

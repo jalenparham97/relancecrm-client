@@ -7,6 +7,7 @@ import {
 import { Box, Container, Group, Paper, Title, Text, ActionIcon } from '@mantine/core';
 import { useMemo, useState } from 'react';
 import { FiPlus, FiTrash2, FiEye, FiUsers } from 'react-icons/fi';
+import { IconUsers, IconPlus } from '@tabler/icons';
 import { useToggle } from 'react-use';
 import { formatClients } from '@/app/utils/formatters/formatClients';
 import { isEmpty } from 'lodash';
@@ -19,6 +20,7 @@ import Link from '@/app/components/shared/Link';
 import DeleteModal from '@/app/components/shared/DeleteModal';
 import LoadingLoader from '@/app/components/shared/LoadingLoader';
 import EmptyState from '@/app/components/shared/EmptyState';
+import ClientActionsMenu from '@/app/components/clients/ClientActionsMenu';
 
 export default function ClientsPage() {
   const [openDeleteDialog, toggleOpenDeleteDialog] = useToggle(false);
@@ -92,18 +94,7 @@ export default function ClientsPage() {
         accessor: 'updatedAt',
         Cell: ({ value, row }) => (
           <Box className="flex space-x-1">
-            <Link to={`/clients/${row.original.id}`}>
-              <ActionIcon title="View">
-                <FiEye />
-              </ActionIcon>
-            </Link>
-            <ActionIcon
-              title="Delete"
-              color="red"
-              onClick={() => openDeleteOneModal(row.original.id)}
-            >
-              <FiTrash2 />
-            </ActionIcon>
+            <ClientActionsMenu id={row.original.id} />
           </Box>
         ),
       },
@@ -121,7 +112,7 @@ export default function ClientsPage() {
             <Box className="flex justify-between items-center">
               <Title order={1}>Clients</Title>
               <Group spacing="xs">
-                <Button leftIcon={<FiPlus fontSize="16px" />} onClick={toggleOpen}>
+                <Button leftIcon={<IconPlus size={16} />} onClick={toggleOpen}>
                   Add client
                 </Button>
               </Group>
@@ -142,9 +133,9 @@ export default function ClientsPage() {
                   <Box className="py-7">
                     <EmptyState
                       title="There are no clients yet"
-                      icon={<FiUsers size="50px" />}
+                      icon={<IconUsers size="50px" />}
                       actionButton={
-                        <Button leftIcon={<FiPlus fontSize="16px" />} onClick={toggleOpen}>
+                        <Button leftIcon={<IconPlus size={16} />} onClick={toggleOpen}>
                           Add Client
                         </Button>
                       }

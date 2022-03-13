@@ -1,6 +1,7 @@
 import { Menu } from '@mantine/core';
+import { NextLink } from '@mantine/next';
 import { useToggle } from 'react-use';
-import { FiTrash2, FiCheck, FiZap } from 'react-icons/fi';
+import { IconBolt, IconTrash, IconCheck, IconEdit } from '@tabler/icons';
 import { ProjectStatus } from '@/core/types';
 import { useProjectDeleteMutation, useProjectUpdateStatusMutation } from '@/app/api/projects';
 import DeleteModal from '@/app/components/shared/DeleteModal';
@@ -32,9 +33,12 @@ export default function ProjectActionsMenu({ id, status }: Props) {
   return (
     <>
       <Menu closeOnItemClick={false}>
+        <Menu.Item component={NextLink} href={`/projects/${id}`} icon={<IconEdit size={16} />}>
+          Edit
+        </Menu.Item>
         {status === ProjectStatus.ACTIVE && (
           <Menu.Item
-            icon={<FiCheck />}
+            icon={<IconCheck size={16} />}
             component="button"
             disabled={handleUpdateProjectStatus.isLoading}
             onClick={onMarkAsDone}
@@ -44,7 +48,7 @@ export default function ProjectActionsMenu({ id, status }: Props) {
         )}
         {status === ProjectStatus.DONE && (
           <Menu.Item
-            icon={<FiZap />}
+            icon={<IconBolt size={16} />}
             disabled={handleUpdateProjectStatus.isLoading}
             component="button"
             onClick={onMarkAsActive}
@@ -52,7 +56,7 @@ export default function ProjectActionsMenu({ id, status }: Props) {
             Mark as active
           </Menu.Item>
         )}
-        <Menu.Item icon={<FiTrash2 />} color="red" onClick={toggleOpenDeleteDialog}>
+        <Menu.Item icon={<IconTrash size={16} />} color="red" onClick={toggleOpenDeleteDialog}>
           Delete
         </Menu.Item>
       </Menu>

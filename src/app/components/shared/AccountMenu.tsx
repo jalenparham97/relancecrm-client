@@ -1,9 +1,8 @@
 import { Menu, UnstyledButton, Avatar, Divider, useMantineColorScheme } from '@mantine/core';
-import { FiDollarSign, FiLogOut, FiSun, FiUser, FiMoon } from 'react-icons/fi';
+import { NextLink } from '@mantine/next';
+import { IconCurrencyDollar, IconUser, IconLogout, IconLifebuoy } from '@tabler/icons';
 import { useLogout, useUser } from '@/app/api/auth';
 import { useColors, useIsDarkMode } from '@/app/hooks';
-import Link from './Link';
-import { HiOutlineSupport } from 'react-icons/hi';
 
 interface Props {
   [x: string]: any;
@@ -32,27 +31,20 @@ export default function AccountMenu({ ...otherProps }: Props) {
         </UnstyledButton>
       }
     >
-      <Menu.Item
-        component={Link}
-        to="/settings/account"
-        icon={<FiUser />}
-        className="hover:bg-gray-500 hover:bg-opacity-20"
-      >
+      <Menu.Item component={NextLink} href="/settings/account" icon={<IconUser size={16} />}>
         Account
       </Menu.Item>
       <Menu.Item
-        component={Link}
-        to="/settings/billing"
-        icon={<FiDollarSign />}
-        className="hover:bg-gray-500 hover:bg-opacity-20"
+        component={NextLink}
+        href="/settings/billing"
+        icon={<IconCurrencyDollar size={16} />}
       >
         Billing
       </Menu.Item>
       <Menu.Item
         // component={Link}
         // to="/settings/billing"
-        icon={<HiOutlineSupport />}
-        className="hover:bg-gray-500 hover:bg-opacity-20"
+        icon={<IconLifebuoy size={16} />}
       >
         Support
       </Menu.Item>
@@ -60,15 +52,11 @@ export default function AccountMenu({ ...otherProps }: Props) {
       {/* <Menu.Item
         icon={isDarkMode ? <FiSun /> : <FiMoon />}
         onClick={() => toggleColorScheme()}
-        className="hover:bg-gray-500 hover:bg-opacity-20"
+        
       >
         {isDarkMode ? 'Light' : 'Dark'} mode
       </Menu.Item> */}
-      <Menu.Item
-        icon={<FiLogOut />}
-        onClick={logout}
-        className="hover:bg-gray-500 hover:bg-opacity-20"
-      >
+      <Menu.Item icon={<IconLogout size={16} />} onClick={logout}>
         Logout
       </Menu.Item>
     </Menu>

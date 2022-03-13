@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { AppShell, Navbar, Header, MediaQuery, Burger, Box, Text, Group } from '@mantine/core';
 import { UilClipboardNotes } from '@iconscout/react-unicons';
-import { IconHome, IconUsers, IconBriefcase, IconReceipt2, IconCircleCheck } from '@tabler/icons';
+import { IconHome, IconUsers, IconBriefcase, IconReceipt2, IconSquareCheck } from '@tabler/icons';
 import { useUser } from '@/app/api/auth';
 import { useIsDarkMode } from '@/app/hooks';
 import dayjs from 'dayjs';
@@ -69,7 +69,7 @@ const PageLayout = ({ children, ...otherProps }) => {
               <NavListItem href="/projects" icon={<IconBriefcase size={20} />} text="Projects" />
               <NavListItem href="/invoices" icon={<IconReceipt2 size={20} />} text="Invoices" />
               <NavListItem href="/forms" icon={<UilClipboardNotes size={20} />} text="Forms" />
-              <NavListItem href="/tasks" icon={<IconCircleCheck size={20} />} text="Tasks" />
+              <NavListItem href="/tasks" icon={<IconSquareCheck size={20} />} text="Tasks" />
             </Box>
           </Navbar>
         }

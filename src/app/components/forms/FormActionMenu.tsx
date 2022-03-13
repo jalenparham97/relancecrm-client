@@ -1,14 +1,14 @@
 import { useRouter } from 'next/router';
 import { Menu } from '@mantine/core';
+import { NextLink } from '@mantine/next';
 import { useCopyToClipboard, useToggle } from 'react-use';
-import { FiTrash2, FiEdit, FiFileText, FiCopy, FiLink } from 'react-icons/fi';
+import { IconTrash, IconEdit, IconCopy, IconLink, IconInbox } from '@tabler/icons';
 import { Form, ProjectStatus } from '@/core/types';
 import { useForm, useFormAddMutation, useFormDeleteMutation } from '@/app/api/forms';
 import { config } from '@/core/config';
 import { useToasts } from '@/app/hooks';
-import DeleteModal from '@/app/components/shared/DeleteModal';
-import Link from '../shared/Link';
 import { omitObjProperty } from '@/core/utils';
+import DeleteModal from '@/app/components/shared/DeleteModal';
 
 interface Props {
   id: string;
@@ -54,38 +54,28 @@ export default function FormActionMenu({ id, status }: Props) {
   return (
     <>
       <Menu closeOnItemClick={false}>
-        <Menu.Item
-          component={Link}
-          to={`/forms/${id}/edit`}
-          icon={<FiEdit />}
-          className="hover:bg-gray-500 hover:bg-opacity-20"
-        >
+        <Menu.Item component={NextLink} href={`/forms/${id}/edit`} icon={<IconEdit size={16} />}>
           Edit
         </Menu.Item>
-        <Menu.Item
-          component={Link}
-          to={`/forms/${id}`}
-          icon={<FiFileText />}
-          className="hover:bg-gray-500 hover:bg-opacity-20"
-        >
+        <Menu.Item component={NextLink} href={`/forms/${id}`} icon={<IconInbox size={16} />}>
           Responses
         </Menu.Item>
         <Menu.Item
-          icon={<FiCopy />}
-          className="hover:bg-gray-500 hover:bg-opacity-20"
+          icon={<IconCopy size={16} />}
+          //
           onClick={handleDuplicateForm}
           disabled={handleDuplicateFormSubmit.isLoading}
         >
           Duplicate
         </Menu.Item>
         <Menu.Item
-          icon={<FiLink />}
-          className="hover:bg-gray-500 hover:bg-opacity-20"
+          icon={<IconLink size={16} />}
+          //
           onClick={copyShareLink}
         >
           Copy link to share
         </Menu.Item>
-        <Menu.Item icon={<FiTrash2 />} color="red" onClick={toggleOpenDeleteDialog}>
+        <Menu.Item icon={<IconTrash size={16} />} color="red" onClick={toggleOpenDeleteDialog}>
           Delete
         </Menu.Item>
       </Menu>

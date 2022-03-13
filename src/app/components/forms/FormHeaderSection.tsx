@@ -3,7 +3,7 @@ import { useToggle } from 'react-use';
 import { useHover, useInputState } from '@mantine/hooks';
 import { useDialog, useIsDarkMode, useToasts } from '@/app/hooks';
 import { ActionIcon, Box, Divider, Paper, TextInput, Title, Tooltip } from '@mantine/core';
-import { FiImage, FiSave, FiX } from 'react-icons/fi';
+import { IconDeviceFloppy, IconPhoto, IconX } from '@tabler/icons';
 import { useFormUpdateMutation } from '@/app/api/forms';
 import { useRecoilState } from 'recoil';
 import { formState } from '@/app/store';
@@ -59,7 +59,7 @@ export default function FormHeaderSection({}: Props) {
           size="xs"
           variant={'default'}
           className={`absolute top-2 right-3`}
-          leftIcon={<FiImage size="15px" />}
+          leftIcon={<IconPhoto size="16px" />}
           onClick={openImagePicker}
         >
           {form?.headerImage?.url ? 'Change' : 'Add'} cover
@@ -86,11 +86,11 @@ export default function FormHeaderSection({}: Props) {
                     onClick={updateHeader}
                     loading={handleUpdateForm.isLoading}
                   >
-                    <FiSave />
+                    <IconDeviceFloppy size={16} />
                   </ActionIcon>
                 </Tooltip>
                 <ActionIcon variant="default" onClick={toggleEditMode} className="ml-1">
-                  <FiX />
+                  <IconX size={16} />
                 </ActionIcon>
               </Box>
             }

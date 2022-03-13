@@ -15,7 +15,7 @@ import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 import * as yup from 'yup';
 import { Form } from '@/core/types';
 import { useDialog, useIsDarkMode, useYupResolver } from '@/app/hooks';
-import { FiAlertCircle, FiTrash2, FiUpload } from 'react-icons/fi';
+import { IconAlertCircle, IconTrash, IconUpload } from '@tabler/icons';
 import { useForm } from 'react-hook-form';
 import { useStorage } from '@/app/api/storage';
 import Tabs from '@/app/components/shared/Tabs';
@@ -118,7 +118,7 @@ export default function HeaderImagePicker({ opened, onClose, submit, form, isLoa
               title="Error"
               color="red"
               className="mb-3"
-              icon={<FiAlertCircle />}
+              icon={<IconAlertCircle size={16} />}
               withCloseButton
               onClose={() => setError('')}
             >
@@ -140,7 +140,7 @@ export default function HeaderImagePicker({ opened, onClose, submit, form, isLoa
                     style={{ pointerEvents: 'none' }}
                   >
                     <Box className="text-center space-y-5">
-                      <FiUpload size="50px" />
+                      <IconUpload size="50px" />
                       <Box>
                         <Text size="xl">Click to choose a file or drag here</Text>
                         <Text size="sm" color="dimmed" mt={7}>
@@ -167,7 +167,7 @@ export default function HeaderImagePicker({ opened, onClose, submit, form, isLoa
         className="absolute top-[6px] right-2"
         compact
         variant="default"
-        leftIcon={<FiTrash2 />}
+        leftIcon={<IconTrash size={14} />}
         onClick={handleRemoveSubmit}
       >
         Remove

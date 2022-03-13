@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ActionIcon, Box, Divider, TextInput, Textarea, Tooltip, Chip, Text } from '@mantine/core';
-import { FiCopy, FiTrash2 } from 'react-icons/fi';
+import { IconCopy, IconTrash } from '@tabler/icons';
 import { CgDetailsMore } from 'react-icons/cg';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { FormElement } from '@/core/types';
@@ -150,12 +150,12 @@ export default function ParagraphText({ element, index }: Props) {
               </Box>
               <Tooltip label="Duplicate" position="bottom">
                 <ActionIcon variant="default" onClick={duplicateElement}>
-                  <FiCopy />
+                  <IconCopy size={16} />
                 </ActionIcon>
               </Tooltip>
               <Tooltip label="Delete" position="bottom">
                 <ActionIcon variant="default" onClick={deleteElement}>
-                  <FiTrash2 className="text-red-600" />
+                  <IconTrash size={16} className="text-red-500" />
                 </ActionIcon>
               </Tooltip>
             </Box>

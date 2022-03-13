@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useToggle } from 'react-use';
 import { Box, Container, Group, Paper, Title, Text } from '@mantine/core';
-import { FiPlus } from 'react-icons/fi';
+import { IconPlus } from '@tabler/icons';
 import { UilClipboardNotes } from '@iconscout/react-unicons';
 import {
   useFormAddMutation,
@@ -21,6 +21,7 @@ import LoadingLoader from '@/app/components/shared/LoadingLoader';
 import EmptyState from '@/app/components/shared/EmptyState';
 import FormCreateModal from '@/app/components/forms/FormCreateModal';
 import FormActionMenu from '@/app/components/forms/FormActionMenu';
+import FormStatusBadge from '@/app/components/forms/FormStatusBadge';
 
 export default function FormsPage() {
   const router = useRouter();
@@ -88,6 +89,7 @@ export default function FormsPage() {
       {
         Header: 'Status',
         accessor: 'status',
+        Cell: ({ value }) => <FormStatusBadge status={value} />,
       },
       {
         Header: 'Actions',
@@ -113,7 +115,7 @@ export default function FormsPage() {
               <Title order={1}>Forms</Title>
               <Group spacing="xs">
                 <Button
-                  leftIcon={<FiPlus fontSize="16px" />}
+                  leftIcon={<IconPlus size={16} />}
                   onClick={onAddForm}
                   loading={handleAddFormSubmit.isLoading}
                 >
@@ -139,7 +141,7 @@ export default function FormsPage() {
                       title="There are no forms yet"
                       icon={<UilClipboardNotes size={50} />}
                       actionButton={
-                        <Button leftIcon={<FiPlus fontSize="16px" />} onClick={onAddForm}>
+                        <Button leftIcon={<IconPlus size={16} />} onClick={onAddForm}>
                           Add form
                         </Button>
                       }

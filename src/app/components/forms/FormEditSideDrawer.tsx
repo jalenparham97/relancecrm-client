@@ -2,16 +2,17 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Box, Text, Navbar, Title, Group, ScrollArea } from '@mantine/core';
 import {
-  FiHash,
-  FiSave,
-  FiEye,
-  FiCheckCircle,
-  FiCheckSquare,
-  FiAtSign,
-  FiPhone,
-} from 'react-icons/fi';
-import { CgFormatHeading, CgDetailsLess, CgDetailsMore } from 'react-icons/cg';
-import { useIsDarkMode, useToasts } from '@/app/hooks';
+  IconDeviceFloppy,
+  IconEye,
+  IconCircleCheck,
+  IconSquareCheck,
+  IconAt,
+  IconPhone,
+  IconHash,
+  IconHeading,
+} from '@tabler/icons';
+import { CgDetailsLess, CgDetailsMore } from 'react-icons/cg';
+import { useIsDarkMode } from '@/app/hooks';
 import { useRecoilState } from 'recoil';
 import { useForm, useFormUpdateMutation } from '@/app/api/forms';
 import { formState, selectedElementState } from '@/app/store';
@@ -38,9 +39,8 @@ interface Props {
   drawerWidth?: number;
 }
 
-export default function FormEditSideDrawer({ drawerWidth = 370 }: Props) {
+export default function FormEditSideDrawer({ drawerWidth = 350 }: Props) {
   const isDarkMode = useIsDarkMode();
-  const toasts = useToasts();
   const { query } = useRouter();
   const { data: formData } = useForm(query.id as string);
   const [form, setForm] = useRecoilState(formState);
@@ -52,7 +52,6 @@ export default function FormEditSideDrawer({ drawerWidth = 370 }: Props) {
   const saveForm = async () => {
     try {
       await handleUpdateFormSubmit.mutateAsync(form);
-      // toasts.success('Form updated');
     } catch (error) {
       console.log(error);
     }
@@ -95,6 +94,8 @@ export default function FormEditSideDrawer({ drawerWidth = 370 }: Props) {
     }
 
     setNewId(elementId);
+
+    console.log({ newContent });
 
     return newContent;
   };
@@ -184,17 +185,17 @@ export default function FormEditSideDrawer({ drawerWidth = 370 }: Props) {
         mr={-10}
         sx={{ paddingLeft: 20, paddingRight: 10 }}
       >
-        <Box className="pt-[75px] pb-14 w-[97.5%]">
+        <Box className="pt-[10px] pb-14 w-[97.5%]">
           <Group direction="column" spacing="lg" grow>
             <Box className="flex w-full justify-between space-x-3">
               <Link href={`/forms/${form?._id}/preview`}>
-                <Button variant="default" fullWidth leftIcon={<FiEye />}>
+                <Button variant="default" fullWidth leftIcon={<IconEye size={16} />}>
                   Preview
                 </Button>
               </Link>
               <Button
                 fullWidth
-                leftIcon={<FiSave />}
+                leftIcon={<IconDeviceFloppy size={16} />}
                 onClick={saveForm}
                 loading={handleUpdateFormSubmit.isLoading}
                 disabled={isEqual(formData, form)}
@@ -202,14 +203,14 @@ export default function FormEditSideDrawer({ drawerWidth = 370 }: Props) {
                 Save changes
               </Button>
             </Box>
-            <Box className="space-y-2">
+            <Box className="space-y-2 w-full">
               <Box>
                 <Title order={2}>Form elements</Title>
                 <Text>Select a new form element type</Text>
               </Box>
               <Box className="space-y-2">
                 <FormElementType
-                  icon={<CgFormatHeading size="20px" />}
+                  icon={<IconHeading size="20px" />}
                   name="Heading"
                   onClick={addHeadingElement}
                 />
@@ -224,27 +225,27 @@ export default function FormEditSideDrawer({ drawerWidth = 370 }: Props) {
                   onClick={addParagraphElement}
                 />
                 <FormElementType
-                  icon={<FiAtSign size="20px" />}
+                  icon={<IconAt size="20px" />}
                   name="Email input"
                   onClick={addEmailElement}
                 />
                 <FormElementType
-                  icon={<FiPhone size="20px" />}
+                  icon={<IconPhone size="20px" />}
                   name="Phone number input"
                   onClick={addPhoneNumberElement}
                 />
                 <FormElementType
-                  icon={<FiHash size="20px" />}
+                  icon={<IconHash size="20px" />}
                   name="Number input"
                   onClick={addNumberElement}
                 />
                 <FormElementType
-                  icon={<FiCheckCircle size="20px" />}
+                  icon={<IconCircleCheck size="20px" />}
                   name="Single choice selection"
                   onClick={addSingleChoiceElement}
                 />
                 <FormElementType
-                  icon={<FiCheckSquare size="20px" />}
+                  icon={<IconSquareCheck size="20px" />}
                   name="Multiple choice selection"
                   onClick={addMultipleChoiceElement}
                 />

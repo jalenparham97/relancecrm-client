@@ -1,8 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Box, Container, Group, Title, Paper, Text, ActionIcon } from '@mantine/core';
-import { FiPlus, FiEdit, FiEye } from 'react-icons/fi';
-import { IoReceiptOutline } from 'react-icons/io5';
-import { IconReceipt } from '@tabler/icons';
+import { IconPlus, IconReceipt } from '@tabler/icons';
 import {
   useInvoiceAddMutation,
   useInvoiceDeleteManyMutation,
@@ -80,20 +78,6 @@ export default function InvoicesPage() {
         accessor: 'updatedAt',
         Cell: ({ value, row }) => (
           <Box className="flex items-center space-x-1">
-            {row.original.status === InvoiceStatus.DRAFT && (
-              <Link to={`/invoices/${row.original.id}/edit`}>
-                <ActionIcon color="green" title="Edit">
-                  <FiEdit />
-                </ActionIcon>
-              </Link>
-            )}
-            {row.original.status !== InvoiceStatus.DRAFT && (
-              <Link to={`/invoices/${row.original.id}/details`}>
-                <ActionIcon title="View details">
-                  <FiEye />
-                </ActionIcon>
-              </Link>
-            )}
             <InvoiceActionsMenu id={row.original.id} status={row.original.status} />
           </Box>
         ),
@@ -112,7 +96,7 @@ export default function InvoicesPage() {
             <Box className="flex justify-between items-center">
               <Title order={1}>Invoices</Title>
               <Group spacing="xs">
-                <Button leftIcon={<FiPlus fontSize="16px" />} onClick={toggleOpenModal}>
+                <Button leftIcon={<IconPlus size={16} />} onClick={toggleOpenModal}>
                   Add invoice
                 </Button>
               </Group>
@@ -135,7 +119,7 @@ export default function InvoicesPage() {
                       title="There are no invoices yet"
                       icon={<IconReceipt size="50px" />}
                       actionButton={
-                        <Button leftIcon={<FiPlus fontSize="16px" />} onClick={toggleOpenModal}>
+                        <Button leftIcon={<IconPlus size={16} />} onClick={toggleOpenModal}>
                           Add invoice
                         </Button>
                       }

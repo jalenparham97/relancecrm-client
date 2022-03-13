@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { ActionIcon, Box, Divider, TextInput, Tooltip, Chip, Text, Checkbox } from '@mantine/core';
-import { FiCopy, FiTrash2, FiPlus, FiX, FiCheckSquare } from 'react-icons/fi';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { IconPlus, IconX, IconTrash, IconSquareCheck, IconCopy } from '@tabler/icons';
+import { useRecoilState } from 'recoil';
 import { formState, selectedElementState } from '@/app/store';
-import { FormElement, FormOption } from '@/core/types';
+import { FormElement } from '@/core/types';
+import { nanoid } from 'nanoid';
 import Button from '@/app/components/shared/Button';
 import CheckboxGroup from '@/app/components/shared/CheckboxGroup';
 import FormElementContainer from '../FormElementContainer';
-import { nanoid } from 'nanoid';
 
 interface Props {
   element: FormElement;
@@ -188,20 +188,20 @@ export default function MultipleChoiceElement({ element, index }: Props) {
                     onChange={updateOption}
                   />
                   <ActionIcon variant="default" size="lg" onClick={() => deleteOption(option.id)}>
-                    <FiX />
+                    <IconX size={16} />
                   </ActionIcon>
                 </Box>
               ))}
             </Box>
 
-            <Button compact variant="default" leftIcon={<FiPlus />} onClick={addOption}>
+            <Button compact variant="default" leftIcon={<IconPlus size={14} />} onClick={addOption}>
               Add option
             </Button>
           </Box>
           <Divider />
           <Box className="flex items-center justify-between">
             <Box className="flex items-center space-x-2">
-              <Box className="pt-[5px]">{<FiCheckSquare />}</Box>
+              <Box className="pt-[5px]">{<IconSquareCheck size={18} />}</Box>
               <Text className="font-medium text-sm">Multiple choice selection</Text>
             </Box>
             <Box className="flex items-center space-x-2">
@@ -227,12 +227,12 @@ export default function MultipleChoiceElement({ element, index }: Props) {
               </Box>
               <Tooltip label="Duplicate" position="bottom">
                 <ActionIcon variant="default" onClick={duplicateElement}>
-                  <FiCopy />
+                  <IconCopy size={16} />
                 </ActionIcon>
               </Tooltip>
               <Tooltip label="Delete" position="bottom">
                 <ActionIcon variant="default" onClick={deleteElement}>
-                  <FiTrash2 className="text-red-600" />
+                  <IconTrash size={16} className="text-red-500" />
                 </ActionIcon>
               </Tooltip>
             </Box>

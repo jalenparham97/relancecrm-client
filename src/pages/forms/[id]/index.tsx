@@ -4,8 +4,8 @@ import { useForm } from '@/app/api/forms';
 import { useResponseDeleteMutation, useResponses } from '@/app/api/responses';
 import { Box, Title, Table, Paper, ActionIcon, Modal, Text } from '@mantine/core';
 import { isEmpty } from 'lodash';
-import { FiMaximize2, FiTrash2, FiInbox } from 'react-icons/fi';
-import { useDialog } from '@/app/hooks';
+import { IconTrash, IconInbox, IconArrowsDiagonal } from '@tabler/icons';
+import { useDialog, useColors } from '@/app/hooks';
 import { FormResponse } from '@/core/types';
 import { formatDate } from '@/core/utils';
 import FormPageContainer from '@/app/components/forms/FormPageContainer';
@@ -15,6 +15,7 @@ import Button from '@/app/components/shared/Button';
 import EmptyState from '@/app/components/shared/EmptyState';
 
 export default function index() {
+  const colors = useColors();
   const location = useLocation();
   const formId = location.pathname?.split('/')[2];
   const [deleteModal, openDeleteModal, closeDeleteModal] = useDialog();
@@ -74,7 +75,7 @@ export default function index() {
                                   variant="default"
                                   onClick={() => openDeleteResponseModal(response._id)}
                                 >
-                                  <FiTrash2 className="text-red-500" />
+                                  <IconTrash size={16} color={colors.red[6]} />
                                 </ActionIcon>
                               </Box>
                             </td>
@@ -100,7 +101,7 @@ export default function index() {
               <EmptyState
                 title="No completed submissions yet"
                 subtitle="Share your form with the world to start receiving submittions."
-                icon={<FiInbox size="50px" />}
+                icon={<IconInbox size="50px" />}
                 actionButton={<Button to={`/forms/${formId}/share`}>Share</Button>}
               />
             </Box>
@@ -120,7 +121,7 @@ function ExpandActionButton({ response }: ExpandActionButtonProps) {
   return (
     <>
       <ActionIcon variant="default" onClick={openExpand}>
-        <FiMaximize2 />
+        <IconArrowsDiagonal size={16} />
       </ActionIcon>
       <Modal opened={expandOpen} onClose={closeExpand} title="Response" size="xl">
         <Box className="space-y-4">

@@ -10,6 +10,7 @@ import {
   NumberInput,
 } from '@mantine/core';
 import { FiCopy, FiTrash2, FiHash } from 'react-icons/fi';
+import { IconHash, IconTrash, IconCopy } from '@tabler/icons';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { formState, selectedElementState } from '@/app/store';
 import { FormElement } from '@/core/types';
@@ -132,7 +133,7 @@ export default function NumberText({ element, index }: Props) {
           <Divider />
           <Box className="flex items-center justify-between">
             <Box className="flex items-center space-x-2">
-              <Box className="pt-[5px]">{<FiHash size="" />}</Box>
+              <Box className="pt-[5px]">{<IconHash size={16} />}</Box>
               <Text className="font-medium text-sm">Number input</Text>
             </Box>
             <Box className="flex items-center space-x-2">
@@ -158,12 +159,12 @@ export default function NumberText({ element, index }: Props) {
               </Box>
               <Tooltip label="Duplicate" position="bottom">
                 <ActionIcon variant="default" onClick={duplicateElement}>
-                  <FiCopy />
+                  <IconCopy size={16} />
                 </ActionIcon>
               </Tooltip>
               <Tooltip label="Delete" position="bottom">
                 <ActionIcon variant="default" onClick={deleteElement}>
-                  <FiTrash2 className="text-red-600" />
+                  <IconTrash size={16} className="text-red-500" />
                 </ActionIcon>
               </Tooltip>
             </Box>

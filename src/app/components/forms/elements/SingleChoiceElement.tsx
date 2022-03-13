@@ -11,6 +11,7 @@ import {
   Radio,
 } from '@mantine/core';
 import { FiCopy, FiTrash2, FiPlus, FiX, FiCheckCircle } from 'react-icons/fi';
+import { IconPlus, IconX, IconTrash, IconCircleCheck, IconCopy } from '@tabler/icons';
 import { useRecoilState } from 'recoil';
 import { formState, selectedElementState } from '@/app/store';
 import { FormElement } from '@/core/types';
@@ -202,20 +203,20 @@ export default function SingleChoiceElement({ element, index }: Props) {
                     size="lg"
                     onClick={() => deleteOption(option.id)}
                   >
-                    <FiX />
+                    <IconX size={16} />
                   </ActionIcon>
                 </Box>
               ))}
             </Box>
 
-            <Button compact variant="default" leftIcon={<FiPlus />} onClick={addOption}>
+            <Button compact variant="default" leftIcon={<IconPlus size={14} />} onClick={addOption}>
               Add option
             </Button>
           </Box>
           <Divider />
           <Box className="flex items-center justify-between">
             <Box className="flex items-center space-x-2">
-              <Box className="pt-[5px]">{<FiCheckCircle />}</Box>
+              <Box className="pt-[5px]">{<IconCircleCheck size={18} />}</Box>
               <Text className="font-medium text-sm">Single choice selection</Text>
             </Box>
             <Box className="flex items-center space-x-2">
@@ -241,12 +242,12 @@ export default function SingleChoiceElement({ element, index }: Props) {
               </Box>
               <Tooltip label="Duplicate" position="bottom">
                 <ActionIcon variant="default" onClick={duplicateElement}>
-                  <FiCopy />
+                  <IconCopy size={16} />
                 </ActionIcon>
               </Tooltip>
               <Tooltip label="Delete" position="bottom">
                 <ActionIcon variant="default" onClick={deleteElement}>
-                  <FiTrash2 className="text-red-600" />
+                  <IconTrash size={16} className="text-red-500" />
                 </ActionIcon>
               </Tooltip>
             </Box>
@@ -259,7 +260,7 @@ export default function SingleChoiceElement({ element, index }: Props) {
             label={element?.label || 'Single choice selection'}
             description={element?.showDescription && element?.description}
             required={element.required}
-            variant="vertical"
+            orientation="vertical"
             classNames={{ radio: '!text-dark-800' }}
           >
             {element?.options?.map((option) => (
@@ -267,15 +268,14 @@ export default function SingleChoiceElement({ element, index }: Props) {
                 key={option.id}
                 disabled
                 value={option.option}
+                label={option.option}
                 sx={(theme) => ({
                   '& span': {
                     color: theme.colors.dark[8],
                     fontSize: '14px',
                   },
                 })}
-              >
-                {option.option}
-              </Radio>
+              />
             ))}
           </RadioGroup>
         </Box>

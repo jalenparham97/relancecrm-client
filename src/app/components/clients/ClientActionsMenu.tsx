@@ -1,34 +1,37 @@
 import { Menu } from '@mantine/core';
+import { NextLink } from '@mantine/next';
 import { useToggle } from 'react-use';
-import { Client } from '@/core/types';
+import { IconTrash, IconEdit } from '@tabler/icons';
 import { useClientDeleteMutation } from '@/app/api/clients';
 import DeleteModal from '@/app/components/shared/DeleteModal';
 
 interface Props {
-  client?: Client;
+  id?: string;
 }
 
-export default function ClientActionsMenu({ client }: Props) {
+export default function ClientActionsMenu({ id }: Props) {
   const [openDeleteModal, toggleOpenDeleteModal] = useToggle(false);
 
   const handleDelete = useClientDeleteMutation();
 
   const onDelete = async () => {
-    await handleDelete.mutateAsync(client?._id);
+    await handleDelete.mutateAsync(id);
     toggleOpenDeleteModal();
   };
 
   return (
     <>
       <Menu>
-        <Menu.Item>Edit client</Menu.Item>
-        <Menu.Item color="red" onClick={toggleOpenDeleteModal}>
-          Delete client
+        <Menu.Item component={NextLink} href={`/clients/${id}`} icon={<IconEdit size={16} />}>
+          Edit
+        </Menu.Item>
+        <Menu.Item icon={<IconTrash size={16} />} color="red" onClick={toggleOpenDeleteModal}>
+          Delete
         </Menu.Item>
       </Menu>
 
       <DeleteModal
-        title="Candidate"
+        title="Client"
         size="md"
         opened={openDeleteModal}
         onClose={toggleOpenDeleteModal}

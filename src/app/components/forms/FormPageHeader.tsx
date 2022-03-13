@@ -1,19 +1,17 @@
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { isEqual } from 'lodash';
 import { useForm, useFormUpdateMutation } from '@/app/api/forms';
 import { ActionIcon, Box, Header, TextInput, Title, Tooltip } from '@mantine/core';
-import { FiArrowLeft, FiEdit2, FiFileText, FiSend, FiSave, FiX } from 'react-icons/fi';
-import { useDialog, useToasts } from '@/app/hooks';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { IconDeviceFloppy, IconInbox, IconSend, IconX, IconArrowLeft } from '@tabler/icons';
+import { useDialog } from '@/app/hooks';
+import { useRecoilState } from 'recoil';
 import { formState } from '@/app/store';
+import { useToggle } from 'react-use';
 import NavButton from '../shared/NavButton';
 import UnsavedDataModal from '@/app/components/shared/UnsavedDataModal';
-import { useInputState } from '@mantine/hooks';
-import React, { useEffect } from 'react';
-import { useToggle } from 'react-use';
 
 export default function FormPageHeader() {
-  const toasts = useToasts();
   const [form, setForm] = useRecoilState(formState);
   const { query, push } = useRouter();
   const { data: formData } = useForm(query.id as string);
@@ -25,7 +23,6 @@ export default function FormPageHeader() {
   const updateFormName = async () => {
     await handleUpdateForm.mutateAsync({ name: form?.name });
     toggleEditMode(false);
-    // toasts.success('Form updated');
   };
 
   const onFormNameChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
@@ -56,7 +53,7 @@ export default function FormPageHeader() {
       <Box className="flex justify-between items-center h-full">
         <Box className="flex items-center space-x-5">
           <ActionIcon size="lg" onClick={handleBack}>
-            <FiArrowLeft size="20px" />
+            <IconArrowLeft size="20px" />
           </ActionIcon>
 
           {!editMode && (
@@ -79,11 +76,11 @@ export default function FormPageHeader() {
                       onClick={updateFormName}
                       loading={handleUpdateForm.isLoading}
                     >
-                      <FiSave />
+                      <IconDeviceFloppy size={16} />
                     </ActionIcon>
                   </Tooltip>
                   <ActionIcon variant="default" onClick={toggleEditMode} className="ml-1">
-                    <FiX />
+                    <IconX size={16} />
                   </ActionIcon>
                 </Box>
               }
@@ -91,10 +88,10 @@ export default function FormPageHeader() {
           )}
         </Box>
         <Box className="flex items-center space-x-3">
-          <NavButton to={`/forms/${query.id}/share`} leftIcon={<FiSend />}>
+          <NavButton to={`/forms/${query.id}/share`} leftIcon={<IconSend size={14} />}>
             Share
           </NavButton>
-          <NavButton to={`/forms/${query.id}`} leftIcon={<FiFileText />}>
+          <NavButton to={`/forms/${query.id}`} leftIcon={<IconInbox size={16} />}>
             Responses
           </NavButton>
         </Box>

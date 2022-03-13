@@ -37,7 +37,7 @@ export default function SingleChoicePreviewElement({
         label={element?.label}
         description={element?.showDescription && element?.description}
         required={element.required}
-        variant="vertical"
+        orientation="vertical"
         color="blue"
         value={value}
         onChange={handleChange}
@@ -48,15 +48,14 @@ export default function SingleChoicePreviewElement({
             key={option.id}
             disabled={isPreview}
             value={option.option}
+            label={option.option}
             sx={(theme) => ({
               '& span': {
                 color: isPreview && theme.colors.dark[8],
                 fontSize: '14px',
               },
             })}
-          >
-            {option.option}
-          </Radio>
+          />
         ))}
       </RadioGroup>
     </Box>

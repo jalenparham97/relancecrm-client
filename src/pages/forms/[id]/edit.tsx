@@ -22,7 +22,7 @@ import LoadingLoader from '@/app/components/shared/LoadingLoader';
 import EmailElement from '@/app/components/forms/elements/EmailElement';
 import PhoneNumberElement from '@/app/components/forms/elements/PhoneNumberElement';
 
-const drawerWidth = 370;
+const drawerWidth = 350;
 
 const reorder = (list: FormElement[], startIndex: number, endIndex: number) => {
   const result = Array.from(list);
@@ -57,7 +57,7 @@ export default function edit() {
       {!isLoading && (
         <Box>
           <Box sx={{ width: `calc(100% - ${drawerWidth}px)` }}>
-            <Container className="pt-[80px]" size={750}>
+            <Container className="pt-[10px]" size={750}>
               <Box className="space-y-3">
                 <FormHeaderSection form={form} />
 

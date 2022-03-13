@@ -1,5 +1,6 @@
 import { Menu } from '@mantine/core';
-import { FiTrash2, FiSend, FiDollarSign } from 'react-icons/fi';
+import { NextLink } from '@mantine/next';
+import { IconCurrencyDollar, IconTrash, IconSend, IconEdit, IconEye } from '@tabler/icons';
 import { InvoiceStatus } from '@/core/types';
 import { useInvoiceDeleteMutation, useInvoiceUpdatePopoverMutation } from '@/app/api/invoices';
 import DeleteModal from '@/app/components/shared/DeleteModal';
@@ -51,9 +52,27 @@ export default function InvoiceActionsMenu({ id, status }: Props) {
   return (
     <>
       <Menu closeOnItemClick={false}>
+        {status === InvoiceStatus.DRAFT && (
+          <Menu.Item
+            component={NextLink}
+            href={`/invoices/${id}/edit`}
+            icon={<IconEdit size={16} />}
+          >
+            Edit
+          </Menu.Item>
+        )}
+        {status !== InvoiceStatus.DRAFT && (
+          <Menu.Item
+            component={NextLink}
+            href={`/invoices/${id}/details`}
+            icon={<IconEye size={16} />}
+          >
+            Details
+          </Menu.Item>
+        )}
         {status !== InvoiceStatus.SENT && status !== InvoiceStatus.PAID && (
           <Menu.Item
-            icon={<FiSend />}
+            icon={<IconSend size={16} />}
             component="button"
             disabled={handleUpdateInvoiceSubmit.isLoading}
             onClick={markInvoiceAsSent}
@@ -63,7 +82,7 @@ export default function InvoiceActionsMenu({ id, status }: Props) {
         )}
         {status !== InvoiceStatus.PAID && (
           <Menu.Item
-            icon={<FiDollarSign />}
+            icon={<IconCurrencyDollar size={16} />}
             component="button"
             disabled={handleUpdateInvoiceSubmit.isLoading}
             onClick={toggleMPModal}
@@ -71,7 +90,7 @@ export default function InvoiceActionsMenu({ id, status }: Props) {
             Mark as paid
           </Menu.Item>
         )}
-        <Menu.Item icon={<FiTrash2 />} color="red" onClick={toggleOpenDeleteModal}>
+        <Menu.Item icon={<IconTrash size={16} />} color="red" onClick={toggleOpenDeleteModal}>
           Delete
         </Menu.Item>
       </Menu>

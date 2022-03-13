@@ -14,6 +14,7 @@ import {
   Title,
 } from '@mantine/core';
 import { FiSave, FiTrash2 } from 'react-icons/fi';
+import { IconDeviceFloppy } from '@tabler/icons';
 import { Form } from '@/core/types';
 import { isEqual } from 'lodash';
 import FormPageContainer from '@/app/components/forms/FormPageContainer';
@@ -73,7 +74,7 @@ export default function settings() {
           </List.Item>
         </List>
         <Button
-          leftIcon={<FiSave />}
+          leftIcon={<IconDeviceFloppy size={16} />}
           disabled={isEqual(formData, form)}
           onClick={handleSettingsSave}
           loading={handleUpdateFormSubmit.isLoading}

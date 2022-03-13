@@ -9,7 +9,7 @@ import DataTable from '@/app/components/shared/DataTable';
 import { Box, Container, Group, Loader, Paper, Title, Text, ActionIcon } from '@mantine/core';
 import { isEmpty } from 'lodash';
 import { useMemo, useState } from 'react';
-import { FiPlus, FiEye, FiBriefcase } from 'react-icons/fi';
+import { IconBriefcase, IconPlus } from '@tabler/icons';
 import { useToggle } from 'react-use';
 import { formatProjects } from '@/app/utils';
 import Avatar from '@/app/components/shared/Avatar';
@@ -70,11 +70,6 @@ export default function ProjectsPage() {
         accessor: 'updatedAt',
         Cell: ({ row }) => (
           <Box className="flex items-center space-x-1">
-            <Link to={`/projects/${row.original.id}`}>
-              <ActionIcon title="View">
-                <FiEye />
-              </ActionIcon>
-            </Link>
             <ProjectActionsMenu id={row.original.id} status={row.original.status} />
           </Box>
         ),
@@ -97,7 +92,7 @@ export default function ProjectsPage() {
             <Box className="flex justify-between items-center">
               <Title order={1}>Projects</Title>
               <Group spacing="xs">
-                <Button leftIcon={<FiPlus fontSize="16px" />} onClick={toggleOpen}>
+                <Button leftIcon={<IconPlus size={16} />} onClick={toggleOpen}>
                   Add project
                 </Button>
               </Group>
@@ -118,9 +113,9 @@ export default function ProjectsPage() {
                   <Box className="py-7">
                     <EmptyState
                       title="There are no projects yet"
-                      icon={<FiBriefcase size="50px" />}
+                      icon={<IconBriefcase size="50px" />}
                       actionButton={
-                        <Button leftIcon={<FiPlus fontSize="16px" />} onClick={toggleOpen}>
+                        <Button leftIcon={<IconPlus size={16} />} onClick={toggleOpen}>
                           Add project
                         </Button>
                       }

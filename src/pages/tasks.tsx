@@ -6,8 +6,7 @@ import {
   useTaskDeleteMutation,
   useTaskUpdateMutation,
 } from '@/app/api/tasks';
-import { FiCheckCircle, FiPlus } from 'react-icons/fi';
-import { BsListCheck } from 'react-icons/bs';
+import { IconPlus, IconListCheck, IconSquareCheck } from '@tabler/icons';
 import { isEmpty } from 'lodash';
 import { useDialog } from '@/app/hooks';
 import PageLayout from '@/app/components/layouts/PageLayout';
@@ -56,7 +55,7 @@ export default function TasksPage() {
                   searchValue={searchInput}
                   onSearchChange={handleSearchChange}
                 />
-                <Button leftIcon={<FiPlus fontSize="16px" />} onClick={toggleTaskCreateModal}>
+                <Button leftIcon={<IconPlus size={16} />} onClick={toggleTaskCreateModal}>
                   Add Task
                 </Button>
               </Group>
@@ -92,12 +91,9 @@ export default function TasksPage() {
                     <Box className="py-4">
                       <EmptyState
                         title="There are no active tasks yet"
-                        icon={<BsListCheck size="50px" />}
+                        icon={<IconListCheck size="50px" />}
                         actionButton={
-                          <Button
-                            leftIcon={<FiPlus fontSize="16px" />}
-                            onClick={toggleTaskCreateModal}
-                          >
+                          <Button leftIcon={<IconPlus size={16} />} onClick={toggleTaskCreateModal}>
                             Add Task
                           </Button>
                         }
@@ -122,7 +118,7 @@ export default function TasksPage() {
                     <Box className="py-4">
                       <EmptyState
                         title="There are no completed tasks yet"
-                        icon={<FiCheckCircle size="50px" />}
+                        icon={<IconSquareCheck size="50px" />}
                       />
                     </Box>
                   )}
