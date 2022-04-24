@@ -10,7 +10,7 @@ export const useResponses = (formId: string) => {
     const data = await service.findResponses<FormResponse>(formId);
     return data;
   };
-  return useQuery(queryKey, fetchData);
+  return useQuery(`${queryKey}/${formId}`, fetchData);
 };
 
 export const useResponse = (id: string) => {
@@ -27,7 +27,8 @@ export const useResponseAddMutation = () => {
   return useMutation(async (data: FormResponse) => await service.create(data), {
     onMutate: async () => {
       await queryClient.cancelQueries(queryKey);
-      const previousQueryData = queryClient.getQueryData<ServiceResponse<FormResponse>>(queryKey);
+      const previousQueryData =
+        queryClient.getQueryData<ServiceResponse<FormResponse>>(queryKey);
       return { previousQueryData };
     },
     onError: (error, _, context) => {
@@ -51,13 +52,17 @@ export const useResponseDeleteManyMutation = (ids: string[]) => {
   return useMutation(async () => await service.removeMany(ids), {
     onMutate: async () => {
       await queryClient.cancelQueries(queryKey);
-      const previousQueryData = queryClient.getQueryData<FormResponse[]>(queryKey);
+      const previousQueryData =
+        queryClient.getQueryData<FormResponse[]>(queryKey);
       return { previousQueryData };
     },
     onError: (error, _, context) => {
       console.log(error);
       if (context?.previousQueryData) {
-        queryClient.setQueryData<FormResponse[]>(queryKey, context.previousQueryData);
+        queryClient.setQueryData<FormResponse[]>(
+          queryKey,
+          context.previousQueryData
+        );
       }
     },
     onSettled: () => {
@@ -72,13 +77,17 @@ export const useResponseDeleteMutation = () => {
   return useMutation(async (id: string) => await service.remove(id), {
     onMutate: async () => {
       await queryClient.cancelQueries(queryKey);
-      const previousQueryData = queryClient.getQueryData<FormResponse[]>(queryKey);
+      const previousQueryData =
+        queryClient.getQueryData<FormResponse[]>(queryKey);
       return { previousQueryData };
     },
     onError: (error, _, context) => {
       console.log(error);
       if (context?.previousQueryData) {
-        queryClient.setQueryData<FormResponse[]>(queryKey, context.previousQueryData);
+        queryClient.setQueryData<FormResponse[]>(
+          queryKey,
+          context.previousQueryData
+        );
       }
     },
     onSettled: () => {

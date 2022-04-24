@@ -4,7 +4,9 @@ import mongoose from 'mongoose';
 const DB_URI = config.database.uri;
 
 if (!DB_URI) {
-  throw new Error('Please define the DB_URI environment variable inside .env.local');
+  throw new Error(
+    'Please define the DB_URI environment variable inside .env.local'
+  );
 }
 
 /**
@@ -12,10 +14,10 @@ if (!DB_URI) {
  * in development. This prevents connections growing exponentially
  * during API Route usage.
  */
-let cached = global.mongoose;
+let cached = globalThis.mongoose;
 
 if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
+  cached = globalThis.mongoose = { conn: null, promise: null };
 }
 
 export async function dbConnect() {

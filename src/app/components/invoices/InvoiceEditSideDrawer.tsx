@@ -1,9 +1,20 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { Box, Text, Navbar, Title, Group, ActionIcon, Badge } from '@mantine/core';
+import {
+  Box,
+  Text,
+  Navbar,
+  Title,
+  Group,
+  ActionIcon,
+  Badge,
+} from '@mantine/core';
 import { FiPlus, FiX } from 'react-icons/fi';
 import Button from '@/app/components/shared/Button';
-import { useInvoiceRemoveProjectMutation, useInvoiceUpdateMutation } from '@/app/api/invoices';
+import {
+  useInvoiceRemoveProjectMutation,
+  useInvoiceUpdateMutation,
+} from '@/app/api/invoices';
 import { useDialog, useIsDarkMode } from '@/app/hooks';
 import { Client, Project } from '@/core/types';
 import InvoiceProjectPickerModal from './InvoiceProjectPickerModal';
@@ -15,13 +26,11 @@ import InvoiceRecipientItem from './InvoiceRecipientItem';
 import InvoicePaymentsModal from './InvoicePaymentsModal';
 
 interface Props {
-  drawerWidth?: number;
   updateInvoiceSubmit?: () => Promise<void>;
   updateLoading?: boolean;
 }
 
 export default function InvoiceEditSideDrawer({
-  drawerWidth = 370,
   updateInvoiceSubmit,
   updateLoading,
 }: Props) {
@@ -33,8 +42,12 @@ export default function InvoiceEditSideDrawer({
   const [paymentsModal, openPaymentsModal, closePaymentsModal] = useDialog();
   const [project, setProject] = useState<Project>({});
 
-  const handleUpdateInvoiceSubmit = useInvoiceUpdateMutation(query.id as string);
-  const handleRemoveInvoiceProjectSubmit = useInvoiceRemoveProjectMutation(query.id as string);
+  const handleUpdateInvoiceSubmit = useInvoiceUpdateMutation(
+    query.id as string
+  );
+  const handleRemoveInvoiceProjectSubmit = useInvoiceRemoveProjectMutation(
+    query.id as string
+  );
 
   const updateInvoice = async () => {
     try {
@@ -63,118 +76,124 @@ export default function InvoiceEditSideDrawer({
 
   const removeRecipient = async (recipient: Client) => {
     try {
-      const updatedRecipients = invoice.recipients.filter((client) => client._id !== recipient._id);
-      await handleUpdateInvoiceSubmit.mutateAsync({ recipients: updatedRecipients });
+      const updatedRecipients = invoice.recipients.filter(
+        (client) => client._id !== recipient._id
+      );
+      await handleUpdateInvoiceSubmit.mutateAsync({
+        recipients: updatedRecipients,
+      });
     } catch (error) {
       console.log(error);
     }
   };
 
   return (
-    <Navbar
-      fixed
-      p="lg"
-      className={`!border-l ${
-        isDarkMode ? '!border-gray-800 !border-opacity-70' : '!border-gray-300'
-      } !border-r-0`}
-      sx={{ borderLeft: '1px solid' }}
-      width={{ base: drawerWidth }}
-      position={{ top: 0, right: 0 }}
-    >
-      <Box className="pt-[75px]">
-        <Group direction="column" spacing="lg" grow>
-          <Title order={2}>Settings</Title>
-          <Box className="space-y-3">
-            <Title order={4}>Connected Project</Title>
-            {invoice?.project && (
-              <Group position="apart">
-                <Group noWrap spacing="xs">
-                  <Avatar size={30} backgroundColor={invoice?.project.backgroundColor} radius="xl">
-                    {invoice?.project.initials}
-                  </Avatar>
+    <Box>
+      <Box>
+        <Box>
+          <Group direction="column" spacing="lg" grow>
+            <Title order={2}>Settings</Title>
+            <Box className="space-y-3">
+              <Title order={4}>Connected Project</Title>
+              {invoice?.project && (
+                <Group position="apart">
+                  <Group noWrap spacing="xs">
+                    <Avatar
+                      size={30}
+                      backgroundColor={invoice?.project.backgroundColor}
+                      radius="xl"
+                    >
+                      {invoice?.project.initials}
+                    </Avatar>
 
-                  <Box>
-                    <Text>{invoice?.project.projectName}</Text>
-                  </Box>
+                    <Box>
+                      <Text>{invoice?.project.projectName}</Text>
+                    </Box>
+                  </Group>
+                  <ActionIcon onClick={deleteProjectFromInvoice}>
+                    <FiX />
+                  </ActionIcon>
                 </Group>
-                <ActionIcon onClick={deleteProjectFromInvoice}>
-                  <FiX />
-                </ActionIcon>
-              </Group>
-            )}
-            {!invoice?.project && (
+              )}
+              {!invoice?.project && (
+                <Button
+                  fullWidth
+                  variant="default"
+                  leftIcon={<FiPlus size="16px" />}
+                  onClick={openProjectPicker}
+                >
+                  Add invoice to a project
+                </Button>
+              )}
+            </Box>
+            <Box className="space-y-3">
+              <Title order={4}>Recipients</Title>
+              {invoice?.recipients?.map((recipient) => (
+                <InvoiceRecipientItem
+                  key={recipient._id}
+                  client={recipient}
+                  showEmail={false}
+                  onCancel={() => removeRecipient(recipient)}
+                />
+              ))}
               <Button
                 fullWidth
                 variant="default"
                 leftIcon={<FiPlus size="16px" />}
-                onClick={openProjectPicker}
+                onClick={openRecipientModal}
               >
-                Add invoice to a project
+                Add additional recipients
               </Button>
-            )}
-          </Box>
-          <Box className="space-y-3">
-            <Title order={4}>Recipients</Title>
-            {invoice?.recipients?.map((recipient) => (
-              <InvoiceRecipientItem
-                key={recipient._id}
-                client={recipient}
-                showEmail={false}
-                onCancel={() => removeRecipient(recipient)}
-              />
-            ))}
-            <Button
-              fullWidth
-              variant="default"
-              leftIcon={<FiPlus size="16px" />}
-              onClick={openRecipientModal}
-            >
-              Add additional recipients
-            </Button>
-          </Box>
-          <Box className="space-y-2">
-            <Title order={4}>Payment Methods</Title>
-            <Group>
-              {invoice?.paymentMethods?.stripe?.connected && (
-                <Badge size="lg" className="bg-[#635bff] text-white">
-                  Stripe
-                </Badge>
-              )}
-              {invoice?.paymentMethods?.paypal?.connected && <Badge size="lg">Paypal</Badge>}
-              {invoice?.paymentMethods?.zelle?.connected && (
-                <Badge size="lg" className="bg-[#6d1ed4] text-white">
-                  Zelle
-                </Badge>
-              )}
-            </Group>
-            <Button
-              fullWidth
-              variant="default"
-              leftIcon={<FiPlus size="16px" />}
-              onClick={openPaymentsModal}
-            >
-              Update payment methods
-            </Button>
-          </Box>
-        </Group>
+            </Box>
+            <Box className="space-y-2">
+              <Title order={4}>Payment Methods</Title>
+              <Group>
+                {invoice?.paymentMethods?.stripe?.connected && (
+                  <Badge size="lg" className="bg-[#635bff] text-white">
+                    Stripe
+                  </Badge>
+                )}
+                {invoice?.paymentMethods?.paypal?.connected && (
+                  <Badge size="lg">Paypal</Badge>
+                )}
+                {invoice?.paymentMethods?.zelle?.connected && (
+                  <Badge size="lg" className="bg-[#6d1ed4] text-white">
+                    Zelle
+                  </Badge>
+                )}
+              </Group>
+              <Button
+                fullWidth
+                variant="default"
+                leftIcon={<FiPlus size="16px" />}
+                onClick={openPaymentsModal}
+              >
+                Update payment methods
+              </Button>
+            </Box>
+          </Group>
+        </Box>
+
+        <InvoiceProjectPickerModal
+          opened={projectPicker}
+          onClose={closeProjectPicker}
+          setProject={setProject}
+          submit={saveProjectToInvoice}
+          isLoading={handleUpdateInvoiceSubmit.isLoading}
+        />
+
+        <InvoiceRecipientModal
+          opened={recipientModal}
+          onClose={closeRecipientModal}
+          submit={updateInvoice}
+          isLoading={updateLoading}
+        />
+
+        <InvoicePaymentsModal
+          opened={paymentsModal}
+          onClose={closePaymentsModal}
+        />
       </Box>
-
-      <InvoiceProjectPickerModal
-        opened={projectPicker}
-        onClose={closeProjectPicker}
-        setProject={setProject}
-        submit={saveProjectToInvoice}
-        isLoading={handleUpdateInvoiceSubmit.isLoading}
-      />
-
-      <InvoiceRecipientModal
-        opened={recipientModal}
-        onClose={closeRecipientModal}
-        submit={updateInvoice}
-        isLoading={updateLoading}
-      />
-
-      <InvoicePaymentsModal opened={paymentsModal} onClose={closePaymentsModal} />
-    </Navbar>
+    </Box>
   );
 }

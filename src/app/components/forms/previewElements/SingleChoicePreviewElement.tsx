@@ -31,6 +31,23 @@ export default function SingleChoicePreviewElement({
     setValue(val);
   };
 
+  const updateValue = (val: string) => {
+    setChoiceValues((prevValues: any[]) => {
+      const values = [...prevValues];
+      if (values.find((value) => value.id === element.id)) {
+        const index = values.findIndex((value) => value.id === element.id);
+        values.splice(index, 1, { id: element.id, value: val });
+      } else {
+        return [...values, { id: element.id, value: val }];
+      }
+      return values;
+    });
+  };
+
+  useEffect(() => {
+    updateValue(value);
+  }, [value]);
+
   return (
     <Box>
       <RadioGroup
@@ -42,6 +59,7 @@ export default function SingleChoicePreviewElement({
         value={value}
         onChange={handleChange}
         error={error}
+        classNames={{ label: '!text-dark-800 !text-[14px]' }}
       >
         {element?.options.map((option) => (
           <Radio
@@ -49,12 +67,6 @@ export default function SingleChoicePreviewElement({
             disabled={isPreview}
             value={option.option}
             label={option.option}
-            sx={(theme) => ({
-              '& span': {
-                color: isPreview && theme.colors.dark[8],
-                fontSize: '14px',
-              },
-            })}
           />
         ))}
       </RadioGroup>

@@ -11,4 +11,5 @@ const schema = new mongoose.Schema<FormResponseDocument>(
 
 schema.set('toJSON', { virtuals: true });
 
-export const responsesModel = mongoose.models.Response || mongoose.model('Response', schema);
+export const responsesModel =
+  mongoose.models.Response || mongoose.model('Response', schema);

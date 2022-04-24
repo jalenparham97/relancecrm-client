@@ -5,10 +5,17 @@
  * @param {Number} initialLength - the length of the initials
  * @returns {String} the initials of the project or client
  */
-export const getInitials = (string: string, initialLength: number = 2): string => {
-  const initials = string.split(' ');
+export const getInitials = (
+  string: string,
+  initialLength: number = 2
+): string => {
+  if (string) {
+    const initials = string.split(' ');
 
-  if (initialLength === 1) return `${initials[0].charAt(0)}`;
+    if (initialLength === 1) return `${initials[0].charAt(0)}`;
 
-  return `${initials[0].charAt(0)}${initials[1].charAt(0)}`;
+    return `${initials[0].charAt(0)}${initials[1].charAt(0)}`;
+  }
+
+  return '';
 };

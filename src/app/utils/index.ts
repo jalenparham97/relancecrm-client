@@ -14,3 +14,4 @@ export * from './formatters/formatProjects';
 export * from './formatters/formatInvoices';
 export * from './formatters/formatForms';
 export * from './formatters/formatResponses';
+export * from './formatters/formatProposals';

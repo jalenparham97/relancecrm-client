@@ -1,9 +1,21 @@
-import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { isEqual } from 'lodash';
 import { useForm, useFormUpdateMutation } from '@/app/api/forms';
-import { ActionIcon, Box, Header, TextInput, Title, Tooltip } from '@mantine/core';
-import { IconDeviceFloppy, IconInbox, IconSend, IconX, IconArrowLeft } from '@tabler/icons';
+import {
+  ActionIcon,
+  Box,
+  Header,
+  TextInput,
+  Title,
+  Tooltip,
+} from '@mantine/core';
+import {
+  IconDeviceFloppy,
+  IconInbox,
+  IconSend,
+  IconX,
+  IconArrowLeft,
+} from '@tabler/icons';
 import { useDialog } from '@/app/hooks';
 import { useRecoilState } from 'recoil';
 import { formState } from '@/app/store';
@@ -13,7 +25,7 @@ import UnsavedDataModal from '@/app/components/shared/UnsavedDataModal';
 
 export default function FormPageHeader() {
   const [form, setForm] = useRecoilState(formState);
-  const { query, push } = useRouter();
+  const { query, back } = useRouter();
   const { data: formData } = useForm(query.id as string);
   const [unsavedModal, openUnsavedModal, closeUnsavedModal] = useDialog();
   const [editMode, toggleEditMode] = useToggle(false);
@@ -34,7 +46,7 @@ export default function FormPageHeader() {
 
   const handleBack = () => {
     if (isEqual(formData, form)) {
-      push('/forms');
+      back();
     } else {
       openUnsavedModal();
     }
@@ -79,7 +91,11 @@ export default function FormPageHeader() {
                       <IconDeviceFloppy size={16} />
                     </ActionIcon>
                   </Tooltip>
-                  <ActionIcon variant="default" onClick={toggleEditMode} className="ml-1">
+                  <ActionIcon
+                    variant="default"
+                    onClick={toggleEditMode}
+                    className="ml-1"
+                  >
                     <IconX size={16} />
                   </ActionIcon>
                 </Box>
@@ -88,10 +104,16 @@ export default function FormPageHeader() {
           )}
         </Box>
         <Box className="flex items-center space-x-3">
-          <NavButton to={`/forms/${query.id}/share`} leftIcon={<IconSend size={14} />}>
+          <NavButton
+            to={`/forms/${query.id}/share`}
+            leftIcon={<IconSend size={14} />}
+          >
             Share
           </NavButton>
-          <NavButton to={`/forms/${query.id}`} leftIcon={<IconInbox size={16} />}>
+          <NavButton
+            to={`/forms/${query.id}`}
+            leftIcon={<IconInbox size={16} />}
+          >
             Responses
           </NavButton>
         </Box>

@@ -57,7 +57,10 @@ export default function FormEditSideDrawer({ drawerWidth = 350 }: Props) {
     }
   };
 
-  const insertElement = (content: FormElement[], subtype: FormElementSubTypeType) => {
+  const insertElement = (
+    content: FormElement[],
+    subtype: FormElementSubTypeType
+  ) => {
     const newContent = [...content];
     const elementId = nanoid(8);
     const element: FormElement = {
@@ -88,7 +91,11 @@ export default function FormEditSideDrawer({ drawerWidth = 350 }: Props) {
     }
 
     if (selectedId) {
-      newContent.splice(newContent.findIndex((el) => el.id === selectedId) + 1, 0, element);
+      newContent.splice(
+        newContent.findIndex((el) => el.id === selectedId) + 1,
+        0,
+        element
+      );
     } else {
       newContent.push(element);
     }
@@ -189,7 +196,11 @@ export default function FormEditSideDrawer({ drawerWidth = 350 }: Props) {
           <Group direction="column" spacing="lg" grow>
             <Box className="flex w-full justify-between space-x-3">
               <Link href={`/forms/${form?._id}/preview`}>
-                <Button variant="default" fullWidth leftIcon={<IconEye size={16} />}>
+                <Button
+                  variant="default"
+                  fullWidth
+                  leftIcon={<IconEye size={16} />}
+                >
                   Preview
                 </Button>
               </Link>

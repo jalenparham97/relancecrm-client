@@ -30,7 +30,9 @@ export default function InvoicePreview({ invoice }: Props) {
       <Group position="right" className="pt-4 px-4">
         <Text>
           <span>INVOICE #</span>{' '}
-          <span className="font-semibold text-lg">{invoice?.invoiceNumber}</span>
+          <span className="font-semibold text-lg">
+            {invoice?.invoiceNumber}
+          </span>
         </Text>
       </Group>
 
@@ -106,8 +108,12 @@ export default function InvoicePreview({ invoice }: Props) {
                 <td className="!px-0 text-right">
                   {item.units} {item.unitsType}
                 </td>
-                <td className="!px-0 text-right">{formatCurrency(item.rate)}</td>
-                <td className="!px-0 text-right">{formatCurrency(item.subtotal)}</td>
+                <td className="!px-0 text-right">
+                  {formatCurrency(item.rate)}
+                </td>
+                <td className="!px-0 text-right">
+                  {formatCurrency(item.subtotal)}
+                </td>
               </tr>
             ))}
           </tbody>
@@ -126,13 +132,17 @@ export default function InvoicePreview({ invoice }: Props) {
           {invoice?.tax !== 0 && (
             <Box className="flex justify-between">
               <Text className="font-semibold text-sm">{invoice?.taxLabel}</Text>
-              <Text className="font-semibold text-sm">-{formatCurrency(invoice?.tax)}</Text>
+              <Text className="font-semibold text-sm">
+                -{formatCurrency(invoice?.tax)}
+              </Text>
             </Box>
           )}
           {invoice?.discount !== 0 && (
             <Box className="flex justify-between">
               <Text className="font-semibold text-sm">Subtotal</Text>
-              <Text className="font-semibold text-sm">{formatCurrency(invoice?.discount)}</Text>
+              <Text className="font-semibold text-sm">
+                {formatCurrency(invoice?.discount)}
+              </Text>
             </Box>
           )}
         </Box>
@@ -140,7 +150,9 @@ export default function InvoicePreview({ invoice }: Props) {
         <Box className="py-4 space-y-2">
           <Box className="flex justify-between">
             <Text className="font-semibold text-lg">Total amount</Text>
-            <Text className="font-semibold">{formatCurrency(getInvoiceTotal(invoice))}</Text>
+            <Text className="font-semibold">
+              {formatCurrency(getInvoiceTotal(invoice))}
+            </Text>
           </Box>
         </Box>
       </Box>

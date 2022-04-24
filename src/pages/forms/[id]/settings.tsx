@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useForm, useFormUpdateMutation } from '@/app/api/forms';
 import {
@@ -7,15 +7,15 @@ import {
   Divider,
   Group,
   List,
+  NumberInput,
   Switch,
   Tabs,
   Text,
   TextInput,
   Title,
 } from '@mantine/core';
-import { FiSave, FiTrash2 } from 'react-icons/fi';
 import { IconDeviceFloppy } from '@tabler/icons';
-import { Form } from '@/core/types';
+import { Form, FormStatus } from '@/core/types';
 import { isEqual } from 'lodash';
 import FormPageContainer from '@/app/components/forms/FormPageContainer';
 import Button from '@/app/components/shared/Button';
@@ -38,9 +38,50 @@ export default function settings() {
     }));
   };
 
+  const handleEmailNotificationChange = () => {
+    setForm((prevForm) => ({
+      ...prevForm,
+      settings: {
+        ...prevForm.settings,
+        sendEmailNotification: !prevForm.settings?.sendEmailNotification,
+      },
+    }));
+  };
+
+  const handleResponsesLimitChange = () => {
+    setForm((prevForm) => ({
+      ...prevForm,
+      settings: {
+        ...prevForm.settings,
+        limitResponses: !prevForm.settings?.limitResponses,
+      },
+    }));
+  };
+  const handleMaxResponsesChange = (maxResponses: number) => {
+    setForm((prevForm) => ({
+      ...prevForm,
+      settings: {
+        ...prevForm.settings,
+        maxResponses,
+      },
+    }));
+  };
+
   const handleSettingsSave = async () => {
     try {
-      await handleUpdateFormSubmit.mutateAsync({ settings: form.settings });
+      if (form.settings.isClosed === true) {
+        const update: Form = {
+          settings: form.settings,
+          status: FormStatus.CLOSED,
+        };
+        await handleUpdateFormSubmit.mutateAsync(update);
+      } else {
+        const update: Form = {
+          settings: form.settings,
+          status: FormStatus.OPEN,
+        };
+        await handleUpdateFormSubmit.mutateAsync(update);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -55,8 +96,30 @@ export default function settings() {
       </Box>
       <Box className="mt-6 space-y-5">
         <List listStyleType="none">
-          <List.Item className="w-[700px] cursor-pointer" onClick={handleCloseForm}>
+          <List.Item
+            className="w-[700px] cursor-pointer"
+            onClick={handleEmailNotificationChange}
+          >
             <Divider />
+            <Box className="py-3">
+              <Box className="space-y-1">
+                <Box className="flex items-center justify-between">
+                  <Title order={5}>Email notifications</Title>
+                  <Box>
+                    <Switch checked={form?.settings?.sendEmailNotification} />
+                  </Box>
+                </Box>
+                <Text className="text-sm text-gray-700">
+                  Get an email for new form submissions.
+                </Text>
+              </Box>
+            </Box>
+            <Divider />
+          </List.Item>
+          <List.Item
+            className="w-[700px] cursor-pointer"
+            onClick={handleCloseForm}
+          >
             <Box className="py-3">
               <Box className="space-y-1">
                 <Box className="flex items-center justify-between">
@@ -72,6 +135,37 @@ export default function settings() {
             </Box>
             <Divider />
           </List.Item>
+          <Box className="w-[700px]">
+            <List.Item
+              className="w-full cursor-pointer"
+              onClick={handleResponsesLimitChange}
+            >
+              <Box className="py-3">
+                <Box className="space-y-4">
+                  <Box className="space-y-1">
+                    <Box className="flex items-center justify-between">
+                      <Title order={5}>Limit the number of responses</Title>
+                      <Box>
+                        <Switch checked={form?.settings?.limitResponses} />
+                      </Box>
+                    </Box>
+                    <Text className="text-sm text-gray-700">
+                      Set how many responses you want to receive in total.
+                    </Text>
+                  </Box>
+                </Box>
+              </Box>
+            </List.Item>
+            {form?.settings?.limitResponses && (
+              <NumberInput
+                placeholder="Max responses"
+                className="pb-3"
+                onChange={handleMaxResponsesChange}
+                defaultValue={form?.settings?.maxResponses}
+              />
+            )}
+            <Divider />
+          </Box>
         </List>
         <Button
           leftIcon={<IconDeviceFloppy size={16} />}

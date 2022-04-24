@@ -1,5 +1,5 @@
 import { atom } from 'recoil';
-import { CreateInvoice, Invoice, User } from '@/core/types';
+import { Invoice, User } from '@/core/types';
 import { DefaultInvoice } from './defaultData';
 
 export const userState = atom<Partial<User>>({

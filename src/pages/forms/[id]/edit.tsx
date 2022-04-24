@@ -46,7 +46,11 @@ export default function edit() {
     if (!result.destination) {
       return;
     }
-    const content = reorder(form?.content, result.source.index, result.destination.index);
+    const content = reorder(
+      form?.content,
+      result.source.index,
+      result.destination.index
+    );
     setForm((prevForm) => ({ ...prevForm, content }));
     setSelectedElement(result.draggableId);
   };
@@ -57,7 +61,7 @@ export default function edit() {
       {!isLoading && (
         <Box>
           <Box sx={{ width: `calc(100% - ${drawerWidth}px)` }}>
-            <Container className="pt-[10px]" size={750}>
+            <Container size={750}>
               <Box className="space-y-3">
                 <FormHeaderSection form={form} />
 
@@ -69,7 +73,10 @@ export default function edit() {
                   >
                     <Box className="py-2 text-center space-y-2">
                       <Title order={4}>Start building!</Title>
-                      <Text>Select elements from the right panel to add them to your form.</Text>
+                      <Text>
+                        Select elements from the right panel to add them to your
+                        form.
+                      </Text>
                     </Box>
                   </Paper>
                 )}
@@ -106,14 +113,26 @@ export default function edit() {
 
 function renderElement(element: FormElement, index: number) {
   const elementsMap = {
-    heading: <HeadingElement element={element} index={index} key={element.id} />,
-    single_line: <SingleText element={element} index={index} key={element.id} />,
-    paragraph: <ParagraphText element={element} index={index} key={element.id} />,
-    multiple_choice: <MultipleChoiceElement element={element} index={index} key={element.id} />,
-    single_choice: <SingleChoiceElement element={element} index={index} key={element.id} />,
+    heading: (
+      <HeadingElement element={element} index={index} key={element.id} />
+    ),
+    single_line: (
+      <SingleText element={element} index={index} key={element.id} />
+    ),
+    paragraph: (
+      <ParagraphText element={element} index={index} key={element.id} />
+    ),
+    multiple_choice: (
+      <MultipleChoiceElement element={element} index={index} key={element.id} />
+    ),
+    single_choice: (
+      <SingleChoiceElement element={element} index={index} key={element.id} />
+    ),
     number: <NumberText element={element} index={index} key={element.id} />,
     email: <EmailElement element={element} index={index} key={element.id} />,
-    phone: <PhoneNumberElement element={element} index={index} key={element.id} />,
+    phone: (
+      <PhoneNumberElement element={element} index={index} key={element.id} />
+    ),
   };
 
   return elementsMap[element.subtype];

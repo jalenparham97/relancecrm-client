@@ -10,8 +10,13 @@ import {
   RadioGroup,
   Radio,
 } from '@mantine/core';
-import { FiCopy, FiTrash2, FiPlus, FiX, FiCheckCircle } from 'react-icons/fi';
-import { IconPlus, IconX, IconTrash, IconCircleCheck, IconCopy } from '@tabler/icons';
+import {
+  IconPlus,
+  IconX,
+  IconTrash,
+  IconCircleCheck,
+  IconCopy,
+} from '@tabler/icons';
 import { useRecoilState } from 'recoil';
 import { formState, selectedElementState } from '@/app/store';
 import { FormElement } from '@/core/types';
@@ -31,7 +36,9 @@ export default function SingleChoiceElement({ element, index }: Props) {
 
   const isSelected = element.id === selectedId;
 
-  const updateLabelOrDescription = (e: React.SyntheticEvent<HTMLInputElement>) => {
+  const updateLabelOrDescription = (
+    e: React.SyntheticEvent<HTMLInputElement>
+  ) => {
     const { value, name } = e.currentTarget;
 
     const updatedContent = form.content.map((el) => {
@@ -81,7 +88,11 @@ export default function SingleChoiceElement({ element, index }: Props) {
     const newElement = { ...element, id: elementId };
 
     if (selectedId) {
-      newContent.splice(newContent.findIndex((el) => el.id === selectedId) + 1, 0, newElement);
+      newContent.splice(
+        newContent.findIndex((el) => el.id === selectedId) + 1,
+        0,
+        newElement
+      );
     } else {
       newContent.push(newElement);
     }
@@ -152,7 +163,9 @@ export default function SingleChoiceElement({ element, index }: Props) {
   const deleteOption = (id: string) => {
     const updatedElement = { ...element };
 
-    updatedElement.options = element.options.filter((option) => option.id !== id);
+    updatedElement.options = element.options.filter(
+      (option) => option.id !== id
+    );
 
     setForm((prevForm) => ({
       ...prevForm,
@@ -192,7 +205,7 @@ export default function SingleChoiceElement({ element, index }: Props) {
                   <Radio disabled value="" />
                   <TextInput
                     id={option.id}
-                    className="w-full"
+                    className="w-full ml-3"
                     placeholder="Enter and option"
                     defaultValue={option.option}
                     onChange={updateOption}
@@ -209,7 +222,12 @@ export default function SingleChoiceElement({ element, index }: Props) {
               ))}
             </Box>
 
-            <Button compact variant="default" leftIcon={<IconPlus size={14} />} onClick={addOption}>
+            <Button
+              compact
+              variant="default"
+              leftIcon={<IconPlus size={14} />}
+              onClick={addOption}
+            >
               Add option
             </Button>
           </Box>
@@ -217,7 +235,9 @@ export default function SingleChoiceElement({ element, index }: Props) {
           <Box className="flex items-center justify-between">
             <Box className="flex items-center space-x-2">
               <Box className="pt-[5px]">{<IconCircleCheck size={18} />}</Box>
-              <Text className="font-medium text-sm">Single choice selection</Text>
+              <Text className="font-medium text-sm">
+                Single choice selection
+              </Text>
             </Box>
             <Box className="flex items-center space-x-2">
               <Box className="flex items-center space-x-2 mr-4">
@@ -261,7 +281,7 @@ export default function SingleChoiceElement({ element, index }: Props) {
             description={element?.showDescription && element?.description}
             required={element.required}
             orientation="vertical"
-            classNames={{ radio: '!text-dark-800' }}
+            classNames={{ label: '!text-dark-800 !text-sm' }}
           >
             {element?.options?.map((option) => (
               <Radio
@@ -269,12 +289,6 @@ export default function SingleChoiceElement({ element, index }: Props) {
                 disabled
                 value={option.option}
                 label={option.option}
-                sx={(theme) => ({
-                  '& span': {
-                    color: theme.colors.dark[8],
-                    fontSize: '14px',
-                  },
-                })}
               />
             ))}
           </RadioGroup>

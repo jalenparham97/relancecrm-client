@@ -23,7 +23,9 @@ export type FormSettings = {
   closeMessageDescription?: string;
   closeMessageTitle?: string;
   hasClosedMessage?: boolean;
-  responsesLimit?: number;
+  sendEmailNotification?: boolean;
+  maxResponses?: number;
+  limitResponses?: boolean;
 };
 
 export type FormResponse = {

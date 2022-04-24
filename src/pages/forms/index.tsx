@@ -2,12 +2,10 @@ import { useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useToggle } from 'react-use';
 import { Box, Container, Group, Paper, Title, Text } from '@mantine/core';
-import { IconPlus } from '@tabler/icons';
-import { UilClipboardNotes } from '@iconscout/react-unicons';
+import { IconPlus, IconClipboardText } from '@tabler/icons';
 import {
   useFormAddMutation,
   useFormDeleteManyMutation,
-  useFormDeleteMutation,
   useForms,
 } from '@/app/api/forms';
 import { formatForms } from '@/app/utils';
@@ -22,18 +20,15 @@ import EmptyState from '@/app/components/shared/EmptyState';
 import FormCreateModal from '@/app/components/forms/FormCreateModal';
 import FormActionMenu from '@/app/components/forms/FormActionMenu';
 import FormStatusBadge from '@/app/components/forms/FormStatusBadge';
+import { FormStatus } from '@/core/types';
 
 export default function FormsPage() {
   const router = useRouter();
-  const [openDeleteDialog, toggleOpenDeleteDialog] = useToggle(false);
   const [openDeleteManyDialog, toggleOpenDeleteManyDialog] = useToggle(false);
-  const [open, toggleOpen] = useToggle(false);
   const { isLoading, data: forms } = useForms();
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
-  const [selectedId, setSelectedId] = useState('');
 
   const handleAddFormSubmit = useFormAddMutation();
-  const handleDeleteForm = useFormDeleteMutation();
   const handleDeleteForms = useFormDeleteManyMutation(selectedIds);
 
   const onAddForm = async () => {
@@ -45,21 +40,19 @@ export default function FormsPage() {
     }
   };
 
-  async function onDeleteForm() {
-    try {
-      await handleDeleteForm.mutateAsync(selectedId);
-      setSelectedId('');
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   async function onDeleteForms() {
     await handleDeleteForms.mutateAsync();
     setSelectedIds([]);
   }
 
   const data = useMemo(() => formatForms(forms?.data), [forms?.data]);
+
+  const isFormClosed = (row: any) => {
+    return (
+      row.original.settings?.limitResponses &&
+      row.original.responsesCount === row.original?.settings?.maxResponses
+    );
+  };
 
   const columns = useMemo(
     () => [
@@ -89,7 +82,11 @@ export default function FormsPage() {
       {
         Header: 'Status',
         accessor: 'status',
-        Cell: ({ value }) => <FormStatusBadge status={value} />,
+        Cell: ({ value, row }) => (
+          <FormStatusBadge
+            status={isFormClosed(row) ? FormStatus.CLOSED : value}
+          />
+        ),
       },
       {
         Header: 'Actions',
@@ -135,13 +132,19 @@ export default function FormsPage() {
                 />
               )}
               {isEmpty(forms?.data) && (
-                <Paper withBorder className="p-0 border-gray-600 border-opacity-20 shadow-sm">
+                <Paper
+                  withBorder
+                  className="p-0 border-gray-600 border-opacity-20 shadow-sm"
+                >
                   <Box className="py-7">
                     <EmptyState
                       title="There are no forms yet"
-                      icon={<UilClipboardNotes size={50} />}
+                      icon={<IconClipboardText size={50} />}
                       actionButton={
-                        <Button leftIcon={<IconPlus size={16} />} onClick={onAddForm}>
+                        <Button
+                          leftIcon={<IconPlus size={16} />}
+                          onClick={onAddForm}
+                        >
                           Add form
                         </Button>
                       }
@@ -158,14 +161,6 @@ export default function FormsPage() {
         opened={open}
         onClose={toggleOpen}
       /> */}
-
-      <DeleteModal
-        opened={openDeleteDialog}
-        onClose={toggleOpenDeleteDialog}
-        isLoading={handleDeleteForm.isLoading}
-        onDelete={onDeleteForm}
-        title="Form"
-      />
 
       <DeleteModal
         opened={openDeleteManyDialog}

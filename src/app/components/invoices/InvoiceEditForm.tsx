@@ -22,13 +22,17 @@ import { FiTrash2, FiPlus } from 'react-icons/fi';
 import { Client, CreateInvoice, Invoice, InvoiceItem } from '@/core/types';
 import { useClients } from '@/app/api/clients';
 import { createInvoiceState, createInvoiceItem } from '@/app/store';
-import { formatCurrency, getInvoiceSubtotal, getInvoiceTotal } from '@/app/utils';
+import { useInvoice } from '@/app/api/invoices';
+import {
+  formatCurrency,
+  getInvoiceSubtotal,
+  getInvoiceTotal,
+} from '@/app/utils';
 import { DatePicker } from '@mantine/dates';
 import Button from '@/app/components/shared/Button';
 import TextField from '@/app/components/shared/TextField';
 import ClientPicker from '@/app/components/clients/ClientPicker';
 import Link from '@/app/components/shared/Link';
-import { useInvoice } from '@/app/api/invoices';
 
 interface Props {
   invoice: Invoice | CreateInvoice;
@@ -40,7 +44,9 @@ export default function InvoiceEditForm({ invoice }: Props) {
   const { data: clients } = useClients();
   const { data: invoiceData } = useInvoice(invoice?._id);
 
-  const handleChange = (e: React.ChangeEvent<{ value: string; name: string }>) => {
+  const handleChange = (
+    e: React.ChangeEvent<{ value: string; name: string }>
+  ) => {
     const { name, value } = e.target;
     setInvoice((prevState) => ({ ...prevState, [name]: value }));
   };
@@ -92,7 +98,10 @@ export default function InvoiceEditForm({ invoice }: Props) {
 
   const handleAddItem = () => {
     const newItem = createItem();
-    setInvoice((prevState) => ({ ...prevState, items: [...prevState.items, newItem] }));
+    setInvoice((prevState) => ({
+      ...prevState,
+      items: [...prevState.items, newItem],
+    }));
   };
 
   const handleDeleteItem = (itemId: string) => {
@@ -100,7 +109,9 @@ export default function InvoiceEditForm({ invoice }: Props) {
       const items = [createItem()];
       setInvoice((prevState) => ({ ...prevState, items }));
     } else {
-      const updatedInvoiceItems = invoice?.items.filter((item) => item._id !== itemId);
+      const updatedInvoiceItems = invoice?.items.filter(
+        (item) => item._id !== itemId
+      );
       setInvoice((prevState) => ({ ...prevState, items: updatedInvoiceItems }));
     }
   };
@@ -116,7 +127,10 @@ export default function InvoiceEditForm({ invoice }: Props) {
     });
     setInvoice((prevState) => ({
       ...prevState,
-      items: updatedInvoiceItems.map((item) => ({ ...item, subtotal: getItemSubtotal(item) })),
+      items: updatedInvoiceItems.map((item) => ({
+        ...item,
+        subtotal: getItemSubtotal(item),
+      })),
     }));
   };
 
@@ -132,7 +146,10 @@ export default function InvoiceEditForm({ invoice }: Props) {
     });
     setInvoice((prevState) => ({
       ...prevState,
-      items: updatedInvoiceItems.map((item) => ({ ...item, subtotal: getItemSubtotal(item) })),
+      items: updatedInvoiceItems.map((item) => ({
+        ...item,
+        subtotal: getItemSubtotal(item),
+      })),
     }));
   };
 
@@ -144,7 +161,11 @@ export default function InvoiceEditForm({ invoice }: Props) {
     <Box>
       <Group direction="column" spacing="sm" grow>
         <SimpleGrid cols={3}>
-          <Paper p="md" withBorder className="border-gray-600 border-opacity-20 shadow-sm">
+          <Paper
+            p="md"
+            withBorder
+            className="border-gray-600 border-opacity-20 shadow-sm"
+          >
             <Group direction="column" spacing="sm" grow>
               <Title order={2}>Invoice details</Title>
               <TextField
@@ -171,7 +192,11 @@ export default function InvoiceEditForm({ invoice }: Props) {
               />
             </Group>
           </Paper>
-          <Paper p="md" withBorder className="border-gray-600 border-opacity-20 shadow-sm">
+          <Paper
+            p="md"
+            withBorder
+            className="border-gray-600 border-opacity-20 shadow-sm"
+          >
             <Group direction="column" spacing="sm" grow>
               <Title order={2}>Bill from</Title>
               <TextField
@@ -197,7 +222,11 @@ export default function InvoiceEditForm({ invoice }: Props) {
               />
             </Group>
           </Paper>
-          <Paper p="md" withBorder className="border-gray-600 border-opacity-20 shadow-sm">
+          <Paper
+            p="md"
+            withBorder
+            className="border-gray-600 border-opacity-20 shadow-sm"
+          >
             <Group direction="column" spacing="sm" grow>
               <Title order={2}>Bill to</Title>
               {isEmpty(invoice?.toName) ? (
@@ -239,7 +268,11 @@ export default function InvoiceEditForm({ invoice }: Props) {
           </Paper>
         </SimpleGrid>
 
-        <Paper p="md" withBorder className="border-gray-600 border-opacity-20 shadow-sm">
+        <Paper
+          p="md"
+          withBorder
+          className="border-gray-600 border-opacity-20 shadow-sm"
+        >
           <Title order={2}>Items</Title>
           <Grid mt={5}>
             <Col span={5}>
@@ -299,11 +332,16 @@ export default function InvoiceEditForm({ invoice }: Props) {
                 />
               </Col>
               <Col span={1}>
-                <Text className="flex justify-end items-center h-full w-full">{item.subtotal}</Text>
+                <Text className="flex justify-end items-center h-full w-full">
+                  {item.subtotal}
+                </Text>
               </Col>
               <Col span={1}>
                 <Box className="flex justify-end items-center h-full w-full">
-                  <ActionIcon color="red" onClick={() => handleDeleteItem(item._id)}>
+                  <ActionIcon
+                    color="red"
+                    onClick={() => handleDeleteItem(item._id)}
+                  >
                     <FiTrash2 />
                   </ActionIcon>
                 </Box>
@@ -311,7 +349,11 @@ export default function InvoiceEditForm({ invoice }: Props) {
             </Grid>
           ))}
           <Box mt={12}>
-            <Button variant="default" leftIcon={<FiPlus />} onClick={handleAddItem}>
+            <Button
+              variant="default"
+              leftIcon={<FiPlus />}
+              onClick={handleAddItem}
+            >
               Add item
             </Button>
           </Box>
@@ -319,7 +361,11 @@ export default function InvoiceEditForm({ invoice }: Props) {
 
         <Grid>
           <Col span={8}>
-            <Paper p="md" withBorder className="border-gray-600 border-opacity-20 shadow-sm">
+            <Paper
+              p="md"
+              withBorder
+              className="border-gray-600 border-opacity-20 shadow-sm"
+            >
               <Title order={2}>Notes</Title>
               <Textarea
                 className="mt-2"
@@ -332,11 +378,17 @@ export default function InvoiceEditForm({ invoice }: Props) {
             </Paper>
           </Col>
           <Col span={4}>
-            <Paper p="md" withBorder className="border-gray-600 border-opacity-20 shadow-sm">
+            <Paper
+              p="md"
+              withBorder
+              className="border-gray-600 border-opacity-20 shadow-sm"
+            >
               <Group direction="column" grow>
                 <Group position="apart" align="center">
                   <Text className="font-medium">Subtotal</Text>
-                  <Text>{formatCurrency(getInvoiceSubtotal(invoice?.items))}</Text>
+                  <Text>
+                    {formatCurrency(getInvoiceSubtotal(invoice?.items))}
+                  </Text>
                 </Group>
                 <Group position="apart" align="center" grow>
                   <Input

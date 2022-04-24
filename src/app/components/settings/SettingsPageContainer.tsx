@@ -17,7 +17,7 @@ export default function SettingsPageContainer({ children }: Props) {
       {isEmpty(user) && <LoadingLoader />}
 
       {!isEmpty(user) && (
-        <Box className="space-y-2">
+        <Box className="space-y-8">
           <Title order={1}>Settings</Title>
 
           <NavTabs>

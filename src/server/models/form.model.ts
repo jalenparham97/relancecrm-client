@@ -19,7 +19,13 @@ const schema = new mongoose.Schema<FormDocument>(
     type: { type: String, default: FormType.USER },
     settings: {
       type: Object,
-      default: { isClosed: false, closeMessageTitle: '', closeMessageDescription: '' },
+      default: {
+        isClosed: false,
+        closeMessageTitle: '',
+        closeMessageDescription: '',
+        sendEmailNotification: true,
+        limitResponses: false,
+      },
     },
   },
   { timestamps: true }
@@ -27,4 +33,5 @@ const schema = new mongoose.Schema<FormDocument>(
 
 schema.set('toJSON', { virtuals: true });
 
-export const formsModel = mongoose.models.Form || mongoose.model('Form', schema);
+export const formsModel =
+  mongoose.models.Form || mongoose.model('Form', schema);

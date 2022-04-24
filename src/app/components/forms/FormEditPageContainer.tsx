@@ -7,20 +7,27 @@ interface Props {
   children?: React.ReactNode;
 }
 
-export default function FormEditPageContainer({ header, children, ...otherProps }: Props) {
+export default function FormEditPageContainer({
+  header,
+  children,
+  ...otherProps
+}: Props) {
   useAuth();
 
   return (
     <AuthGuard>
       <AppShell
-        navbarOffsetBreakpoint="sm"
         fixed
         header={header}
         styles={(theme) => ({
           main: {
-            backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[9] : '#fbfcfc',
+            backgroundColor:
+              theme.colorScheme === 'dark' ? theme.colors.dark[9] : '#fbfcfc',
             paddingRight: '16px',
             paddingBottom: '40px',
+          },
+          root: {
+            '--mantine-navbar-width': '0px',
           },
         })}
       >

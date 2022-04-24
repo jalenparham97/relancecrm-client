@@ -1,3 +1,43 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+* {
+  border-width: 0;
+  border-style: solid;
+}
+
+.ProseMirror {
+  line-height: 1.5;
+}
+
+.ProseMirror:focus {
+  outline: none;
+}
+
+.ProseMirror h1,
+.ProseMirror h2,
+.ProseMirror h3,
+.ProseMirror h4,
+.ProseMirror h5,
+.ProseMirror h6 {
+  margin: 0px 0px 10px 0px !important;
+}
+
+.ProseMirror p {
+  margin: 0px 0px 10px 0px !important;
+}
+
+.ql-editor {
+  font-size: 16px;
+}
+
+.ql-editor h1,
+.ql-editor h2,
+.ql-editor h3,
+.ql-editor h4,
+.ql-editor h5,
+.ql-editor h6,
+.ql-editor p {
+  margin: 16px 0px !important;
+}

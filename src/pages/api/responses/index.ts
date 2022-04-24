@@ -8,14 +8,16 @@ import { formsService } from '@/server/services/forms.service';
 const handler = nc<ExtendedApiRequest, NextApiResponse>();
 
 handler.use(requireAuth).get(async (req, res) => {
-  const response = await formsService.findAllResponses(req.query.formId as string);
+  const response = await formsService.findAllResponses(
+    req.query.formId as string
+  );
   return res.status(HttpStatus.OK).json(response);
 });
 
 handler.post(async (req, res) => {
   const createData: FormResponse = req.body;
   try {
-    const data = await formsService.createResponse(createData);
+    const data = await formsService.createResponse(createData, req.user);
     return res.status(HttpStatus.OK).json(data);
   } catch (error) {
     throw new Error(error.message);

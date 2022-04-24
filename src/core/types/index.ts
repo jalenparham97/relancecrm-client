@@ -8,6 +8,7 @@ export * from './project.types';
 export * from './task.types';
 export * from './form.types';
 export * from './http.types';
+export * from './proposal.types';
 
 export type UpdateParams<T> = {
   id: string;

@@ -1,3 +1,6 @@
-export const getFullName = (entity: { firstName?: string; lastName?: string }) => {
-  return `${entity.firstName} ${entity.lastName}`;
+export const getFullName = (entity: {
+  firstName?: string;
+  lastName?: string;
+}) => {
+  return entity ? `${entity?.firstName} ${entity?.lastName}` : '';
 };

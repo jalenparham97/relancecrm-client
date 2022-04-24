@@ -1,7 +1,15 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useToggle } from 'react-use';
-import { Box, Text, Container, Title, Loader, Group } from '@mantine/core';
+import {
+  Box,
+  Text,
+  Container,
+  Title,
+  Loader,
+  Group,
+  Aside,
+} from '@mantine/core';
 import { useInvoice, useInvoiceUpdateMutation } from '@/app/api/invoices';
 import { createInvoiceState, useRecoilState } from '@/app/store/store';
 import { getInvoiceSubtotal, getInvoiceTotal } from '@/app/utils';
@@ -28,7 +36,9 @@ export default function InvoiceEditPage() {
     // eslint-disable-next-line react-@/hooks/exhaustive-deps
   }, [invoiceData]);
 
-  const handleUpdateInvoiceSubmit = useInvoiceUpdateMutation<CreateInvoice>(query.id as string);
+  const handleUpdateInvoiceSubmit = useInvoiceUpdateMutation<CreateInvoice>(
+    query.id as string
+  );
 
   const updateInvoice = async () => {
     try {
@@ -59,26 +69,33 @@ export default function InvoiceEditPage() {
           />
         )
       }
+      aside={
+        <>
+          {!isLoading && (
+            <Aside p="md" hiddenBreakpoint="sm" width={{ sm: drawerWidth }}>
+              <InvoiceEditSideDrawer
+                updateInvoiceSubmit={updateInvoice}
+                updateLoading={handleUpdateInvoiceSubmit.isLoading}
+              />
+            </Aside>
+          )}
+        </>
+      }
     >
       {isLoading && <LoadingLoader height="90vh" />}
       {!isLoading && (
         <Box className="flex">
           <Box sx={{ width: `calc(100% - ${drawerWidth}px)` }}>
             {openPreview ? (
-              <Container className="pt-[80px]" size={750}>
+              <Container size={750}>
                 <InvoicePreview invoice={invoice} />
               </Container>
             ) : (
-              <Container className="pt-[80px]" size={1000}>
+              <Container size={1000}>
                 <InvoiceEditForm invoice={invoice} />
               </Container>
             )}
           </Box>
-          <InvoiceEditSideDrawer
-            drawerWidth={drawerWidth}
-            updateInvoiceSubmit={updateInvoice}
-            updateLoading={handleUpdateInvoiceSubmit.isLoading}
-          />
         </Box>
       )}
     </InvoicePageShell>

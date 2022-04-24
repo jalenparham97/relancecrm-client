@@ -4,5 +4,6 @@ export * from './client.types';
 export * from './invoice.types';
 export * from './email.types';
 export * from './form.types';
+export * from './proposal.types';
 export * from './http.types';
 export * from './webhook-event.types';
