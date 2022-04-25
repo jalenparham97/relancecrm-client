@@ -23,7 +23,8 @@ export default function InvoicePaymentMethodCard({
 }: Props) {
   const user = useUser();
   const colors = useColors();
-  const isConnected = (paymentMethods && paymentMethods[appName]?.connected) || false;
+  const isConnected =
+    (paymentMethods && paymentMethods[appName]?.connected) || false;
 
   const handleUpdate = () => {
     onUpdate((prev) => ({
@@ -37,7 +38,7 @@ export default function InvoicePaymentMethodCard({
 
   return (
     <Paper
-      padding={5}
+      p={5}
       withBorder
       className={`border-gray-600 ${!isConnected && 'border-opacity-30'} ${
         isConnected && 'border-indigo-500 border-opacity-60'
