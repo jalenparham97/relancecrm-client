@@ -8,7 +8,12 @@ import {
   microsoftAuthProvider,
 } from '@/app/libs/firebase';
 import { queryClient } from '@/app/libs/react-query';
-import { FirebaseUser, User, UserLoginData, UserSignupData } from '@/core/types';
+import {
+  FirebaseUser,
+  User,
+  UserLoginData,
+  UserSignupData,
+} from '@/core/types';
 
 class AuthService {
   async authenticate() {
@@ -56,12 +61,14 @@ class AuthService {
 
   async login(loginUserData: UserLoginData) {
     const { email, password } = loginUserData;
-    const { user: firebaseUser } = await signInWithEmailAndPassword(firebaseAuth, email, password);
+    const { user: firebaseUser } = await signInWithEmailAndPassword(
+      firebaseAuth,
+      email,
+      password
+    );
     let user: User;
     if (firebaseUser) {
-      console.log({ firebaseUser });
       user = await this.authenticate();
-      console.log({ user });
     }
     return user;
   }

@@ -9,6 +9,7 @@
 
 .ProseMirror {
   line-height: 1.5;
+  font-size: 15px;
 }
 
 .ProseMirror:focus {
@@ -21,11 +22,15 @@
 .ProseMirror h4,
 .ProseMirror h5,
 .ProseMirror h6 {
-  margin: 0px 0px 10px 0px !important;
+  margin: 0px 0px 10px 0px;
 }
 
 .ProseMirror p {
-  margin: 0px 0px 10px 0px !important;
+  margin: 0px 0px 16px 0px;
+}
+
+.ProseMirror li p {
+  margin: 0px 0px 10px 0px;
 }
 
 .ql-editor {
@@ -39,5 +44,5 @@
 .ql-editor h5,
 .ql-editor h6,
 .ql-editor p {
-  margin: 16px 0px !important;
+  margin: 16px 0px;
 }

@@ -1,4 +1,3 @@
-import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import {
   ActionIcon,
@@ -18,18 +17,14 @@ import { useProposalUpdateMutation } from '@/app/api/proposals';
 import { IconDeviceFloppy, IconPhoto, IconX } from '@tabler/icons';
 import Button from '../shared/Button';
 import ProposalHeaderImagePicker from './ProposalHeaderImagePicker';
-import Editor from '../shared/Editor';
 import BubbleEditor from '../shared/BubbleEditor';
-
-// interface Props {
-//   proposal: Proposal;
-// }
+import { useHover } from '@mantine/hooks';
+import ProposalBlock from './ProposalBlock';
 
 export default function ProposalEditForm() {
   const [proposal, setProposal] = useRecoilState(proposalState);
   const [imagePickerOpen, openImagePicker, closeImagePicker] = useDialog();
   const [editMode, toggleEditMode] = useToggle(false);
-  const [editor, setEditor] = useState(null);
 
   const handleUpdateProposal = useProposalUpdateMutation(proposal?._id);
 
@@ -56,8 +51,7 @@ export default function ProposalEditForm() {
         }}
       >
         <Box
-          p={80}
-          className="flex justify-center items-center"
+          className="flex justify-center items-center px-[80px] py-[150px]"
           sx={{
             backgroundImage: `url("${proposal?.headerImgUrl}")`,
             backgroundPosition: 'center',
@@ -121,7 +115,7 @@ export default function ProposalEditForm() {
         </Box>
 
         <Box
-          p={30}
+          p={50}
           className="flex justify-between space-x-10 border-t border-t-gray-300"
         >
           <Box className="w-1/2 space-y-2">
@@ -138,15 +132,7 @@ export default function ProposalEditForm() {
           </Box>
         </Box>
         {proposal?.content.map((block) => (
-          <Box
-            key={block.id}
-            className="px-[30px] py-[40px] border-transparent border-y-[1px] border-solid border-x-0 hover:border-gray-300 hover:shadow-xl"
-          >
-            <BubbleEditor
-              defaultContent={block.content as JSONContent[]}
-              block={block}
-            />
-          </Box>
+          <ProposalBlock block={block} key={block.id} />
         ))}
       </Paper>
 

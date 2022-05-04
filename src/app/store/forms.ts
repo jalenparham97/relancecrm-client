@@ -6,6 +6,11 @@ export const selectedElementState = atom<string | number>({
   default: '',
 });
 
+export const selectedBlockState = atom<string | number>({
+  key: 'selectedElementState',
+  default: '',
+});
+
 export const formState = atom<Form>({
   key: 'formState',
   default: {},

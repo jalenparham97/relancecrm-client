@@ -1,14 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import {
-  Box,
-  Text,
-  Navbar,
-  Title,
-  Group,
-  ActionIcon,
-  Badge,
-} from '@mantine/core';
+import { Box, Title, Group } from '@mantine/core';
 import {
   IconLetterT,
   IconPhoto,
@@ -23,16 +15,17 @@ import {
   ProposalContent,
   ProposalContentBlocksType,
 } from '@/core/types';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { SetterOrUpdater, useRecoilState } from 'recoil';
 import Button from '@/app/components/shared/Button';
 import Avatar from '@/app/components/shared/Avatar';
 import ProposalContentBlock from './ProposalContentBlock';
 import BrandColorPicker from '@/app/components/shared/BrandColorPicker';
-import { proposalState } from '@/app/store';
+import { proposalState, selectedBlockState } from '@/app/store';
 import { nanoid } from 'nanoid';
 import { isEqual } from 'lodash';
-import { JSONContent } from '@tiptap/react';
 import { useProposal } from '@/app/api/proposals';
+import { estimateContent, textContent, timelineContent } from '@/app/utils';
+import { useToggle } from 'react-use';
 
 interface Props {
   updateProposalSubmit?: () => Promise<void>;
@@ -44,9 +37,18 @@ export default function ProposalEditSideDrawer({
   updateLoading,
 }: Props) {
   const { query } = useRouter();
-  const isDarkMode = useIsDarkMode();
   const { data: proposalData } = useProposal(query.id as string);
   const [proposal, setProposal] = useRecoilState(proposalState);
+  const [selectedId, setSelectedId] = useRecoilState(selectedBlockState);
+  const [addingElement, toggleAddingElement] = useToggle(false);
+
+  // useEffect(() => {
+  //   window.scrollTo({
+  //     left: 0,
+  //     top: document.getElementById('proposal-edit-page').scrollHeight,
+  //     behavior: 'smooth',
+  //   });
+  // }, [addingElement]);
 
   const insertBlock = (
     content: ProposalContent[],
@@ -57,50 +59,73 @@ export default function ProposalEditSideDrawer({
     const block: ProposalContent = {
       id: nanoid(8),
       type,
-      content: [
-        {
-          type: 'heading',
-          attrs: {
-            textAlign: 'left',
-            level: 1,
-          },
-          content: [
-            {
-              type: 'text',
-              marks: [
-                {
-                  type: 'bold',
-                },
-              ],
-              text: 'Text section title',
-            },
-          ],
-        },
-        {
-          type: 'paragraph',
-          attrs: {
-            textAlign: 'left',
-          },
-          content: [
-            {
-              type: 'text',
-              text: 'Enter details for the text section...',
-            },
-          ],
-        },
-      ],
     };
 
-    newContent.push(block);
+    switch (type) {
+      case 'text':
+        block.content = textContent;
+        break;
+      case 'timeline':
+        block.content = timelineContent;
+        break;
+      case 'estimate':
+        block.discount = 0;
+        block.subtotal = 0;
+        block.total = 0;
+        block.items = [
+          {
+            id: nanoid(8),
+            description: '',
+            rate: 0,
+            units: 0,
+            unitsType: 'units',
+          },
+        ];
+        block.content = estimateContent;
+        break;
+      default:
+        break;
+    }
 
+    // const insertIndex = newContent.findIndex((el) => el.id === selectedId);
+
+    // if (selectedId) {
+    //   newContent.splice(insertIndex, 0, block);
+    // } else {
+    // }
+
+    newContent.push(block);
     return newContent;
   };
 
   const addTextBlock = () => {
-    return setProposal((preProposal) => ({
-      ...preProposal,
-      content: insertBlock(preProposal.content, 'text'),
+    setProposal((prevProposal) => ({
+      ...prevProposal,
+      content: insertBlock(prevProposal.content, 'text'),
     }));
+    setSelectedId('');
+    // if (!selectedId) {
+    //   toggleAddingElement();
+    // }
+  };
+
+  const addTimelineBlock = () => {
+    setProposal((prevProposal) => ({
+      ...prevProposal,
+      content: insertBlock(prevProposal.content, 'timeline'),
+    }));
+    // if (!selectedId) {
+    //   toggleAddingElement();
+    // }
+  };
+  const addEstimateBlock = () => {
+    setProposal((prevProposal) => ({
+      ...prevProposal,
+      content: insertBlock(prevProposal.content, 'estimate'),
+    }));
+    // if (!selectedId) {
+    //   toggleAddingElement();
+    // }
   };
 
   const setTextColor = (color: string) => {
@@ -152,12 +177,17 @@ export default function ProposalEditSideDrawer({
                 <ProposalContentBlock
                   icon={<IconClock size="20px" />}
                   name="Timeline"
-                  // onClick={addHeadingElement}
+                  onClick={addTimelineBlock}
                 />
                 <ProposalContentBlock
+                  disabled={
+                    !!proposal?.content.find(
+                      (block) => block.type === 'estimate'
+                    )
+                  }
                   icon={<IconReceipt size="20px" />}
                   name="Estimate"
-                  // onClick={addHeadingElement}
+                  onClick={addEstimateBlock}
                 />
               </Box>
             </Box>

@@ -48,7 +48,7 @@ type BaseInvoice = {
   toCompany?: string;
   toEmail?: string;
   toName?: string;
-  items?: Array<InvoiceItem>;
+  items?: InvoiceItem[];
   taxLabel?: string;
   notes?: string;
   discount?: number;

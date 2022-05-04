@@ -28,6 +28,18 @@ export type ProposalContent = {
   id?: string;
   type?: ProposalContentBlocksType;
   content?: string | JSONContent | JSONContent[];
+  items?: ProposalEstimateItem[];
+  subtotal?: number;
+  discount?: number;
+  total?: number;
+};
+
+export type ProposalEstimateItem = {
+  id: string;
+  rate: number;
+  description: string;
+  units: number;
+  unitsType: 'units' | 'hrs';
 };
 
 export type ProposalContentBlocksType =

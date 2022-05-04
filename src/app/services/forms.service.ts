@@ -11,7 +11,9 @@ class FormsService extends Service<Form> {
   }
 
   async getResponse<FormResponse>(formId: string) {
-    const { data } = await axios.get<FormResponse>(`/${this.service}/${formId}/responses`);
+    const { data } = await axios.get<FormResponse>(
+      `/${this.service}/${formId}/responses`
+    );
     return data;
   }
 
@@ -24,7 +26,9 @@ class FormsService extends Service<Form> {
   }
 
   async removeManyResponses(ids: string[], formId: string) {
-    return await axios.delete(`/${this.service}/${formId}/responses`, { params: { ids } });
+    return await axios.delete(`/${this.service}/${formId}/responses`, {
+      params: { ids },
+    });
   }
 
   async removeResponse(formId: string, id: string) {

@@ -1,5 +1,8 @@
 module.exports = {
-  content: ['./src/pages/**/*.{js,ts,jsx,tsx}', './src/app/components/**/*.{js,ts,jsx,tsx}'],
+  content: [
+    './src/pages/**/*.{js,ts,jsx,tsx}',
+    './src/app/components/**/*.{js,ts,jsx,tsx}',
+  ],
   theme: {
     extend: {
       colors: {
@@ -50,6 +53,18 @@ module.exports = {
           700: '#495057',
           800: '#343A40',
           900: '#212529',
+        },
+        red: {
+          50: '#FFF5F5',
+          100: '#FFE3E3',
+          200: '#FFC9C9',
+          300: '#FFA8A8',
+          400: '#FF8787',
+          500: '#FF6B6B',
+          600: '#FA5252',
+          700: '#4263EB',
+          800: '#F03E3E',
+          900: '#E03131',
         },
       },
     },

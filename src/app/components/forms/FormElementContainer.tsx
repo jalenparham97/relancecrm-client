@@ -12,7 +12,11 @@ interface Props {
   index?: number;
 }
 
-export default function FormElementContainer({ children, elementId, index }: Props) {
+export default function FormElementContainer({
+  children,
+  elementId,
+  index,
+}: Props) {
   const { hovered, ref } = useHover();
   const [selectedId, setSelectedId] = useRecoilState(selectedElementState);
 
@@ -36,7 +40,10 @@ export default function FormElementContainer({ children, elementId, index }: Pro
                   isSelected && 'border-opacity-50 shadow-lg'
                 }`}
               >
-                <Box className="absolute -top-[2px] left-1/2" {...provided.dragHandleProps}>
+                <Box
+                  className="absolute -top-[2px] left-1/2"
+                  {...provided.dragHandleProps}
+                >
                   <IconGripHorizontal className="text-gray-600" />
                 </Box>
                 {children}
@@ -54,7 +61,10 @@ export default function FormElementContainer({ children, elementId, index }: Pro
                 }`}
               >
                 {hovered && (
-                  <Box className="absolute -top-[2px] left-1/2" {...provided.dragHandleProps}>
+                  <Box
+                    className="absolute -top-[2px] left-1/2"
+                    {...provided.dragHandleProps}
+                  >
                     <IconGripHorizontal className="text-gray-600" />
                   </Box>
                 )}

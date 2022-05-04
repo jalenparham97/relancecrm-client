@@ -1,8 +1,16 @@
 import { useEffect, useState } from 'react';
-import { ActionIcon, Box, Divider, TextInput, Tooltip, Chip, Text } from '@mantine/core';
+import {
+  ActionIcon,
+  Box,
+  Divider,
+  TextInput,
+  Tooltip,
+  Chip,
+  Text,
+} from '@mantine/core';
 import { IconCopy, IconTrash } from '@tabler/icons';
 import { CgDetailsLess } from 'react-icons/cg';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { FormElement } from '@/core/types';
 import { formState, selectedElementState } from '@/app/store';
 import FormElementContainer from '../FormElementContainer';
@@ -20,7 +28,9 @@ export default function SingleText({ element, index }: Props) {
 
   const isSelected = element.id === selectedId;
 
-  const updateLabelOrDescription = (e: React.SyntheticEvent<HTMLInputElement>) => {
+  const updateLabelOrDescription = (
+    e: React.SyntheticEvent<HTMLInputElement>
+  ) => {
     const { value, name } = e.currentTarget;
 
     const updatedContent = form.content.map((el) => {
@@ -70,7 +80,11 @@ export default function SingleText({ element, index }: Props) {
     const newElement = { ...element, id: elementId };
 
     if (selectedId) {
-      newContent.splice(newContent.findIndex((el) => el.id === selectedId) + 1, 0, newElement);
+      newContent.splice(
+        newContent.findIndex((el) => el.id === selectedId) + 1,
+        0,
+        newElement
+      );
     } else {
       newContent.push(newElement);
     }
