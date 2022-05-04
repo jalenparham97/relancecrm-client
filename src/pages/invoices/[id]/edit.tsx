@@ -27,7 +27,7 @@ const drawerWidth = 370;
 export default function InvoiceEditPage() {
   const { query, push } = useRouter();
   const isDarkMode = useIsDarkMode();
-  const { data: invoiceData, isLoading } = useInvoice(query.id as string);
+  const { data: invoiceData, isLoading } = useInvoice(query?.id as string);
   const [openPreview, toggleOpenPreview] = useToggle(false);
   const [invoice, setInvoice] = useRecoilState(createInvoiceState);
 

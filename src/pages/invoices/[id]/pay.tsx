@@ -15,7 +15,7 @@ import InvoiceZellePayModal from '@/app/components/invoices/InvoiceZellePayModal
 export default function InvoicePayPage() {
   const { query } = useRouter();
   const [openZelleDialog, toggleOpenZelleDialog] = useToggle(false);
-  const { data: invoice, isLoading } = useInvoicePay(query.id as string);
+  const { data: invoice, isLoading } = useInvoicePay(query?.id as string);
   const { initiateCheckoutSession, isLoading: isStripeLoading } =
     useCreateInvoiceCheckoutSession();
 

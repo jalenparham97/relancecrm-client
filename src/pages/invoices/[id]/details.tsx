@@ -19,7 +19,7 @@ import LoadingLoader from '@/app/components/shared/LoadingLoader';
 
 export default function InvoiceDetailsPage() {
   const { query } = useRouter();
-  const { data: invoice, isLoading } = useInvoice(query.id as string);
+  const { data: invoice, isLoading } = useInvoice(query?.id as string);
 
   return (
     <InvoicePageShell
