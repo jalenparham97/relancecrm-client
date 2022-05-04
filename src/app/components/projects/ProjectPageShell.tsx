@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useToggle } from 'react-use';
 import {
@@ -12,15 +11,11 @@ import {
   Menu,
   Divider,
   Grid,
-  Col,
-  Tabs as MantineTabs,
 } from '@mantine/core';
 import { FiArrowLeft, FiEdit2, FiTrash2, FiCheck, FiZap } from 'react-icons/fi';
 import {
-  useProject,
   useProjectDeleteMutation,
   useProjectUpdateMutation,
-  useProjectUpdateStatusMutation,
 } from '@/app/api/projects';
 import { Project, ProjectStatus } from '@/core/types';
 import { formatDate } from '@/app/utils';
@@ -43,22 +38,29 @@ interface Props {
   children: React.ReactNode;
 }
 
-export default function ProjectPageShell({ project, isLoading, children }: Props) {
+export default function ProjectPageShell({
+  project,
+  isLoading,
+  children,
+}: Props) {
   const router = useRouter();
   const query = router.query;
   const [openProjectEditDialog, toggleOpenProjectEditDialog] = useToggle(false);
   const [openDeleteDialog, toggleOpenDeleteDialog] = useToggle(false);
-  const [activeTab, setActiveTab] = useState(0);
 
   const handleDeleteProject = useProjectDeleteMutation();
-  const handleUpdateProjectSubmit = useProjectUpdateMutation(query.id as string);
+  const handleUpdateProjectSubmit = useProjectUpdateMutation(
+    query.id as string
+  );
 
   const onMarkAsDone = async () => {
     await handleUpdateProjectSubmit.mutateAsync({ status: ProjectStatus.DONE });
   };
 
   const onMarkAsActive = async () => {
-    await handleUpdateProjectSubmit.mutateAsync({ status: ProjectStatus.ACTIVE });
+    await handleUpdateProjectSubmit.mutateAsync({
+      status: ProjectStatus.ACTIVE,
+    });
   };
 
   const onDeleteProject = async () => {
@@ -88,10 +90,18 @@ export default function ProjectPageShell({ project, isLoading, children }: Props
             >
               Back to projects
             </Button>
-            <Paper p="xl" withBorder className="mt-4 border-gray-600 border-opacity-20 shadow-sm">
+            <Paper
+              p="xl"
+              withBorder
+              className="mt-4 border-gray-600 border-opacity-20 shadow-sm"
+            >
               <Group position="apart">
                 <Group spacing={20}>
-                  <Avatar radius="xl" size="lg" backgroundColor={project?.backgroundColor}>
+                  <Avatar
+                    radius="xl"
+                    size="lg"
+                    backgroundColor={project?.backgroundColor}
+                  >
                     {project?.initials}
                   </Avatar>
                   <Title order={2}>{project?.projectName}</Title>
@@ -99,7 +109,10 @@ export default function ProjectPageShell({ project, isLoading, children }: Props
                 </Group>
                 <Group>
                   <Menu placement="end" closeOnItemClick={false}>
-                    <Menu.Item icon={<FiEdit2 />} onClick={toggleOpenProjectEditDialog}>
+                    <Menu.Item
+                      icon={<FiEdit2 />}
+                      onClick={toggleOpenProjectEditDialog}
+                    >
                       Edit
                     </Menu.Item>
                     {project?.status === ProjectStatus.ACTIVE && (
@@ -122,7 +135,11 @@ export default function ProjectPageShell({ project, isLoading, children }: Props
                         Mark as active
                       </Menu.Item>
                     )}
-                    <Menu.Item color="red" icon={<FiTrash2 />} onClick={toggleOpenDeleteDialog}>
+                    <Menu.Item
+                      color="red"
+                      icon={<FiTrash2 />}
+                      onClick={toggleOpenDeleteDialog}
+                    >
                       Delete
                     </Menu.Item>
                   </Menu>
@@ -137,26 +154,33 @@ export default function ProjectPageShell({ project, isLoading, children }: Props
 
               <Box className="mt-4">
                 <Grid justify="space-between" align="center">
-                  <Col span={6}>
+                  <Grid.Col span={6}>
                     {project.endDate && (
                       <Box>
                         <Text className="font-semibold">Project dates:</Text>
                         <Text>
-                          {formatDate(project?.createdAt)} - {formatDate(project?.endDate)}
+                          {formatDate(project?.createdAt)} -{' '}
+                          {formatDate(project?.endDate)}
                         </Text>
                       </Box>
                     )}
                     {!project.endDate && (
-                      <Button variant="default" onClick={toggleOpenProjectEditDialog}>
+                      <Button
+                        variant="default"
+                        onClick={toggleOpenProjectEditDialog}
+                      >
                         Add end date
                       </Button>
                     )}
-                  </Col>
-                  <Col span={6}>
+                  </Grid.Col>
+                  <Grid.Col span={6}>
                     {!isEmpty(project?.client) && (
                       <Group direction="column" position="right" spacing={0}>
                         <Link to={`/clients/${project.client._id}`}>
-                          <Avatar backgroundColor={project.client.backgroundColor} radius="xl">
+                          <Avatar
+                            backgroundColor={project.client.backgroundColor}
+                            radius="xl"
+                          >
                             {project.client.initials}
                           </Avatar>
                         </Link>
@@ -164,20 +188,30 @@ export default function ProjectPageShell({ project, isLoading, children }: Props
                     )}
                     {isEmpty(project?.client) && (
                       <Group direction="column" position="right" spacing={0}>
-                        <Button variant="default" onClick={toggleOpenProjectEditDialog}>
+                        <Button
+                          variant="default"
+                          onClick={toggleOpenProjectEditDialog}
+                        >
                           Add client
                         </Button>
                       </Group>
                     )}
-                  </Col>
+                  </Grid.Col>
                 </Grid>
               </Box>
             </Paper>
 
-            <Paper mt={20} withBorder className="border-gray-600 border-opacity-20 shadow-sm">
+            <Paper
+              mt={20}
+              withBorder
+              className="border-gray-600 border-opacity-20 shadow-sm"
+            >
               <NavTabs className="ml-[12px] px-2">
                 <NavTab to={`/projects/${query.id}`} label="Tasks" />
-                <NavTab to={`/projects/${query.id}/invoices`} label="Invoices" />
+                <NavTab
+                  to={`/projects/${query.id}/invoices`}
+                  label="Invoices"
+                />
               </NavTabs>
 
               <Box className="p-5">{children}</Box>

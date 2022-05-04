@@ -1,5 +1,13 @@
 import { useRouter } from 'next/router';
-import { Box, Container, Paper, Title, Grid, Col, Group, Divider } from '@mantine/core';
+import {
+  Box,
+  Container,
+  Paper,
+  Title,
+  Grid,
+  Group,
+  Divider,
+} from '@mantine/core';
 import { useInvoice } from '@/app/api/invoices';
 import { InvoiceStatus } from '@/core/types';
 import InvoiceDetailsHeader from '@/app/components/invoices/InvoiceDetailsHeader';
@@ -14,21 +22,31 @@ export default function InvoiceDetailsPage() {
   const { data: invoice, isLoading } = useInvoice(query.id as string);
 
   return (
-    <InvoicePageShell header={!isLoading && <InvoiceDetailsHeader invoice={invoice} />}>
+    <InvoicePageShell
+      header={!isLoading && <InvoiceDetailsHeader invoice={invoice} />}
+    >
       {isLoading && <LoadingLoader height="90vh" />}
       {!isLoading && (
         <Container className="pt-[80px]" size={1220}>
           <Grid gutter={20}>
-            <Col span={8}>
+            <Grid.Col span={8}>
               <InvoicePreview invoice={invoice} />
-            </Col>
-            <Col span={4}>
-              <Paper p="lg" withBorder className="border-gray-600 border-opacity-20 shadow-sm">
+            </Grid.Col>
+            <Grid.Col span={4}>
+              <Paper
+                p="lg"
+                withBorder
+                className="border-gray-600 border-opacity-20 shadow-sm"
+              >
                 <Box className="space-y-3">
                   <Group position="apart">
                     <Title order={3}>Details</Title>
                     {invoice?.status !== InvoiceStatus.PAID && (
-                      <Button variant="default" size="xs" to={`/invoices/${query.id}/edit`}>
+                      <Button
+                        variant="default"
+                        size="xs"
+                        to={`/invoices/${query.id}/edit`}
+                      >
                         Edit
                       </Button>
                     )}
@@ -39,7 +57,7 @@ export default function InvoiceDetailsPage() {
                   </Box>
                 </Box>
               </Paper>
-            </Col>
+            </Grid.Col>
           </Grid>
         </Container>
       )}

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
-import { isEmpty, isEqual } from 'lodash';
+import { isEmpty } from 'lodash';
 import { nanoid } from 'nanoid';
 import {
   Box,
@@ -8,11 +8,9 @@ import {
   Paper,
   SimpleGrid,
   Grid,
-  Col,
   Input,
   Title,
   Text,
-  Select,
   NativeSelect,
   ActionIcon,
   Textarea,
@@ -275,31 +273,31 @@ export default function InvoiceEditForm({ invoice }: Props) {
         >
           <Title order={2}>Items</Title>
           <Grid mt={5}>
-            <Col span={5}>
+            <Grid.Col span={5}>
               <Text className="font-medium">Description</Text>
-            </Col>
-            <Col span={3}>
+            </Grid.Col>
+            <Grid.Col span={3}>
               <Text className="font-medium">Units/hrs</Text>
-            </Col>
-            <Col span={2}>
+            </Grid.Col>
+            <Grid.Col span={2}>
               <Text className="font-medium">Rate</Text>
-            </Col>
-            <Col span={1}>
+            </Grid.Col>
+            <Grid.Col span={1}>
               <Text className="font-medium">Subtotal</Text>
-            </Col>
+            </Grid.Col>
           </Grid>
 
           {invoice?.items.map((item) => (
             <Grid key={item?._id}>
-              <Col span={5}>
+              <Grid.Col span={5}>
                 <Input
                   id={`${item._id}--description`}
                   name="description"
                   defaultValue={item.description}
                   onChange={handleItemChange}
                 />
-              </Col>
-              <Col span={3}>
+              </Grid.Col>
+              <Grid.Col span={3}>
                 <Group spacing="xs" grow>
                   <Input
                     type="number"
@@ -320,8 +318,8 @@ export default function InvoiceEditForm({ invoice }: Props) {
                     ]}
                   />
                 </Group>
-              </Col>
-              <Col span={2}>
+              </Grid.Col>
+              <Grid.Col span={2}>
                 <Input
                   type="number"
                   id={`${item._id}--rate`}
@@ -330,13 +328,13 @@ export default function InvoiceEditForm({ invoice }: Props) {
                   onChange={handleItemChange}
                   min={0}
                 />
-              </Col>
-              <Col span={1}>
+              </Grid.Col>
+              <Grid.Col span={1}>
                 <Text className="flex justify-end items-center h-full w-full">
                   {item.subtotal}
                 </Text>
-              </Col>
-              <Col span={1}>
+              </Grid.Col>
+              <Grid.Col span={1}>
                 <Box className="flex justify-end items-center h-full w-full">
                   <ActionIcon
                     color="red"
@@ -345,7 +343,7 @@ export default function InvoiceEditForm({ invoice }: Props) {
                     <FiTrash2 />
                   </ActionIcon>
                 </Box>
-              </Col>
+              </Grid.Col>
             </Grid>
           ))}
           <Box mt={12}>
@@ -360,7 +358,7 @@ export default function InvoiceEditForm({ invoice }: Props) {
         </Paper>
 
         <Grid>
-          <Col span={8}>
+          <Grid.Col span={8}>
             <Paper
               p="md"
               withBorder
@@ -376,8 +374,8 @@ export default function InvoiceEditForm({ invoice }: Props) {
                 onChange={handleChange}
               />
             </Paper>
-          </Col>
-          <Col span={4}>
+          </Grid.Col>
+          <Grid.Col span={4}>
             <Paper
               p="md"
               withBorder
@@ -424,7 +422,7 @@ export default function InvoiceEditForm({ invoice }: Props) {
                 </Group>
               </Group>
             </Paper>
-          </Col>
+          </Grid.Col>
         </Grid>
       </Group>
     </Box>

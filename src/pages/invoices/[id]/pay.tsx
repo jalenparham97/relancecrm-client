@@ -6,7 +6,7 @@ import { InvoiceStatus, PaymentTypes } from '@/core/types';
 import InvoicePageShell from '@/app/components/invoices/InvoicePageShell';
 import InvoicePayHeader from '@/app/components/invoices/InvoicePayHeader';
 import LoadingLoader from '@/app/components/shared/LoadingLoader';
-import { Box, Col, Container, Grid, Paper, Title, Text } from '@mantine/core';
+import { Box, Container, Grid, Paper, Title, Text } from '@mantine/core';
 import InvoicePreview from '@/app/components/invoices/InvoicePreview';
 import Button from '@/app/components/shared/Button';
 import Link from '@/app/components/shared/Link';
@@ -16,7 +16,8 @@ export default function InvoicePayPage() {
   const { query } = useRouter();
   const [openZelleDialog, toggleOpenZelleDialog] = useToggle(false);
   const { data: invoice, isLoading } = useInvoicePay(query.id as string);
-  const { initiateCheckoutSession, isLoading: isStripeLoading } = useCreateInvoiceCheckoutSession();
+  const { initiateCheckoutSession, isLoading: isStripeLoading } =
+    useCreateInvoiceCheckoutSession();
 
   const createCheckoutSession = async () => {
     await initiateCheckoutSession({
@@ -40,15 +41,17 @@ export default function InvoicePayPage() {
   };
 
   return (
-    <InvoicePageShell header={!isLoading && <InvoicePayHeader invoice={invoice} />}>
+    <InvoicePageShell
+      header={!isLoading && <InvoicePayHeader invoice={invoice} />}
+    >
       {isLoading && <LoadingLoader height="90vh" />}
       {!isLoading && (
         <Container className="pt-[80px]" size="lg">
           <Grid gutter="lg">
-            <Col span={8}>
+            <Grid.Col span={8}>
               <InvoicePreview invoice={invoice} />
-            </Col>
-            <Col span={4}>
+            </Grid.Col>
+            <Grid.Col span={4}>
               <Box className="space-y-4">
                 {!isInvoicePaid && (
                   <>
@@ -110,7 +113,10 @@ export default function InvoicePayPage() {
                             Zelle payments are processed outside of Relance.{' '}
                             <Link>Learn what this means</Link>
                           </Text>
-                          <Button className="w-full" onClick={toggleOpenZelleDialog}>
+                          <Button
+                            className="w-full"
+                            onClick={toggleOpenZelleDialog}
+                          >
                             Pay now
                           </Button>
                         </Box>
@@ -119,7 +125,7 @@ export default function InvoicePayPage() {
                   </>
                 )}
               </Box>
-            </Col>
+            </Grid.Col>
           </Grid>
         </Container>
       )}
