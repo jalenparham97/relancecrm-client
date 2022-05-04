@@ -82,22 +82,24 @@ export default function InvoiceEditPage() {
         </>
       }
     >
-      {isLoading && <LoadingLoader height="90vh" />}
-      {!isLoading && (
-        <Box className="flex">
-          <Box sx={{ width: `calc(100% - ${drawerWidth}px)` }}>
-            {openPreview ? (
-              <Container size={750}>
-                <InvoicePreview invoice={invoice} />
-              </Container>
-            ) : (
-              <Container size={1000}>
-                <InvoiceEditForm invoice={invoice} />
-              </Container>
-            )}
+      <>
+        {isLoading && <LoadingLoader height="90vh" />}
+        {!isLoading && (
+          <Box className="flex">
+            <Box sx={{ width: `calc(100% - ${drawerWidth}px)` }}>
+              {openPreview ? (
+                <Container size={750}>
+                  <InvoicePreview invoice={invoice} />
+                </Container>
+              ) : (
+                <Container size={1000}>
+                  <InvoiceEditForm invoice={invoice} />
+                </Container>
+              )}
+            </Box>
           </Box>
-        </Box>
-      )}
+        )}
+      </>
     </InvoicePageShell>
   );
 }
