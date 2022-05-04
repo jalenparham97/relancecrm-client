@@ -32,7 +32,7 @@ export default function InvoicePageShell({
         })}
         aside={
           <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
-            {aside}
+            <>{aside}</>
           </MediaQuery>
         }
       >

@@ -44,99 +44,97 @@ export default function InvoicePayPage() {
     <InvoicePageShell
       header={!isLoading && <InvoicePayHeader invoice={invoice} />}
     >
-      <>
-        {isLoading && <LoadingLoader height="90vh" />}
-        {!isLoading && (
-          <Container className="pt-[80px]" size="lg">
-            <Grid gutter="lg">
-              <Grid.Col span={8}>
-                <InvoicePreview invoice={invoice} />
-              </Grid.Col>
-              <Grid.Col span={4}>
-                <Box className="space-y-4">
-                  {!isInvoicePaid && (
-                    <>
-                      <Title order={2}>Pay now with</Title>
-                      {invoice?.paymentMethods?.stripe?.connected && (
-                        <Paper p="lg" shadow="md">
-                          <Box className="space-y-3">
-                            <Text>Credit & Debit cards</Text>
-                            <Box className="flex justify-between items-center">
-                              <img
-                                alt="Visa Logo"
-                                src="/assets/logos/visa-logo.svg"
-                                style={{ width: '50px', height: '20px' }}
-                              />
-                              <img
-                                alt="Mastercard Logo"
-                                src="/assets/logos/mastercard-logo.svg"
-                                style={{ width: '50px', height: '30px' }}
-                              />
-                              <img
-                                alt="American Express Logo"
-                                src="/assets/logos/aexpress-logo.svg"
-                                style={{ width: '50px', height: '30px' }}
-                              />
-                              <img
-                                alt="Apple Pay Logo"
-                                src="/assets/logos/applepay-logo.svg"
-                                style={{ width: '50px', height: '40px' }}
-                              />
-                              <img
-                                alt="Google Pay Logo"
-                                src="/assets/logos/gpay-logo.svg"
-                                style={{ width: '50px', height: '40px' }}
-                              />
-                            </Box>
-                            <Button
-                              className="w-full"
-                              onClick={createCheckoutSession}
-                              loading={isStripeLoading}
-                            >
-                              Pay now
-                            </Button>
-                          </Box>
-                        </Paper>
-                      )}
-                      {invoice?.paymentMethods?.zelle?.connected && (
-                        <Paper p="lg" shadow="md">
-                          <Box className="space-y-3">
+      {isLoading && <LoadingLoader height="90vh" />}
+      {!isLoading && (
+        <Container size="lg">
+          <Grid gutter="lg">
+            <Grid.Col span={8}>
+              <InvoicePreview invoice={invoice} />
+            </Grid.Col>
+            <Grid.Col span={4}>
+              <Box className="space-y-4">
+                {!isInvoicePaid && (
+                  <>
+                    <Title order={2}>Pay now with</Title>
+                    {invoice?.paymentMethods?.stripe?.connected && (
+                      <Paper p="lg" shadow="md">
+                        <Box className="space-y-3">
+                          <Text>Credit & Debit cards</Text>
+                          <Box className="flex justify-between items-center">
                             <img
-                              src="/assets/logos/zelle-logo.svg"
-                              alt="Zelle Logo"
-                              style={{
-                                width: '80px',
-                                height: '35px',
-                                marginLeft: '-13px',
-                              }}
+                              alt="Visa Logo"
+                              src="/assets/logos/visa-logo.svg"
+                              style={{ width: '50px', height: '20px' }}
                             />
-                            <Text>
-                              Zelle payments are processed outside of Relance.{' '}
-                              <Link>Learn what this means</Link>
-                            </Text>
-                            <Button
-                              className="w-full"
-                              onClick={toggleOpenZelleDialog}
-                            >
-                              Pay now
-                            </Button>
+                            <img
+                              alt="Mastercard Logo"
+                              src="/assets/logos/mastercard-logo.svg"
+                              style={{ width: '50px', height: '30px' }}
+                            />
+                            <img
+                              alt="American Express Logo"
+                              src="/assets/logos/aexpress-logo.svg"
+                              style={{ width: '50px', height: '30px' }}
+                            />
+                            <img
+                              alt="Apple Pay Logo"
+                              src="/assets/logos/applepay-logo.svg"
+                              style={{ width: '50px', height: '40px' }}
+                            />
+                            <img
+                              alt="Google Pay Logo"
+                              src="/assets/logos/gpay-logo.svg"
+                              style={{ width: '50px', height: '40px' }}
+                            />
                           </Box>
-                        </Paper>
-                      )}
-                    </>
-                  )}
-                </Box>
-              </Grid.Col>
-            </Grid>
-          </Container>
-        )}
+                          <Button
+                            className="w-full"
+                            onClick={createCheckoutSession}
+                            loading={isStripeLoading}
+                          >
+                            Pay now
+                          </Button>
+                        </Box>
+                      </Paper>
+                    )}
+                    {invoice?.paymentMethods?.zelle?.connected && (
+                      <Paper p="lg" shadow="md">
+                        <Box className="space-y-3">
+                          <img
+                            src="/assets/logos/zelle-logo.svg"
+                            alt="Zelle Logo"
+                            style={{
+                              width: '80px',
+                              height: '35px',
+                              marginLeft: '-13px',
+                            }}
+                          />
+                          <Text>
+                            Zelle payments are processed outside of Relance.{' '}
+                            <Link>Learn what this means</Link>
+                          </Text>
+                          <Button
+                            className="w-full"
+                            onClick={toggleOpenZelleDialog}
+                          >
+                            Pay now
+                          </Button>
+                        </Box>
+                      </Paper>
+                    )}
+                  </>
+                )}
+              </Box>
+            </Grid.Col>
+          </Grid>
+        </Container>
+      )}
 
-        <InvoiceZellePayModal
-          opened={openZelleDialog}
-          onClose={toggleOpenZelleDialog}
-          accountId={invoice?.paymentMethods?.zelle?.accountId || ''}
-        />
-      </>
+      <InvoiceZellePayModal
+        opened={openZelleDialog}
+        onClose={toggleOpenZelleDialog}
+        accountId={invoice?.paymentMethods?.zelle?.accountId || ''}
+      />
     </InvoicePageShell>
   );
 }
