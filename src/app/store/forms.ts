@@ -7,7 +7,7 @@ export const selectedElementState = atom<string | number>({
 });
 
 export const selectedBlockState = atom<string | number>({
-  key: 'selectedElementState',
+  key: 'selectedBlockState',
   default: '',
 });
 

@@ -7,8 +7,6 @@ import {
   Input,
   Group,
   ActionIcon,
-  Title,
-  Paper,
   NativeSelect,
   Divider,
 } from '@mantine/core';
