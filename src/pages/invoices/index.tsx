@@ -1,5 +1,13 @@
 import { useMemo, useState } from 'react';
-import { Box, Container, Group, Title, Paper, Text, ActionIcon } from '@mantine/core';
+import {
+  Box,
+  Container,
+  Group,
+  Title,
+  Paper,
+  Text,
+  ActionIcon,
+} from '@mantine/core';
 import { IconPlus, IconReceipt } from '@tabler/icons';
 import {
   useInvoiceAddMutation,
@@ -23,7 +31,8 @@ import EmptyState from '@/app/components/shared/EmptyState';
 
 export default function InvoicesPage() {
   const [openModal, toggleOpenModal, closeModal] = useDialog();
-  const [openDeleteManyModal, toggleOpenDeleteManyModal, closeDeleteManyModal] = useDialog();
+  const [openDeleteManyModal, toggleOpenDeleteManyModal, closeDeleteManyModal] =
+    useDialog();
   const { data: invoices, isLoading } = useInvoices();
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
@@ -48,7 +57,9 @@ export default function InvoicesPage() {
               row.original.status === InvoiceStatus.DRAFT ? 'edit' : 'details'
             }`}
           >
-            <Text className="font-semibold hover:text-indigo-700">{value}</Text>
+            <Text className="text-sm font-semibold hover:text-indigo-700">
+              {value}
+            </Text>
           </Link>
         ),
       },
@@ -78,7 +89,10 @@ export default function InvoicesPage() {
         accessor: 'updatedAt',
         Cell: ({ value, row }) => (
           <Box className="flex items-center space-x-1">
-            <InvoiceActionsMenu id={row.original.id} status={row.original.status} />
+            <InvoiceActionsMenu
+              id={row.original.id}
+              status={row.original.status}
+            />
           </Box>
         ),
       },
@@ -96,7 +110,10 @@ export default function InvoicesPage() {
             <Box className="flex justify-between items-center">
               <Title order={1}>Invoices</Title>
               <Group spacing="xs">
-                <Button leftIcon={<IconPlus size={16} />} onClick={toggleOpenModal}>
+                <Button
+                  leftIcon={<IconPlus size={16} />}
+                  onClick={toggleOpenModal}
+                >
                   Add invoice
                 </Button>
               </Group>
@@ -113,13 +130,19 @@ export default function InvoicesPage() {
                 />
               )}
               {isEmpty(invoices?.data) && (
-                <Paper withBorder className="p-0 border-gray-600 border-opacity-20 shadow-sm">
+                <Paper
+                  withBorder
+                  className="p-0 border-gray-600 border-opacity-20 shadow-sm"
+                >
                   <Box className="py-7">
                     <EmptyState
                       title="There are no invoices yet"
                       icon={<IconReceipt size="50px" />}
                       actionButton={
-                        <Button leftIcon={<IconPlus size={16} />} onClick={toggleOpenModal}>
+                        <Button
+                          leftIcon={<IconPlus size={16} />}
+                          onClick={toggleOpenModal}
+                        >
                           Add invoice
                         </Button>
                       }

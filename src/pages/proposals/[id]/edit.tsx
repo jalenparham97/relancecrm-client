@@ -1,25 +1,18 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useToggle } from 'react-use';
-import {
-  Box,
-  Text,
-  Container,
-  Title,
-  Loader,
-  Group,
-  Aside,
-} from '@mantine/core';
+import { Box, Container, Aside } from '@mantine/core';
 import { useRecoilState } from 'recoil';
 import { CreateProposal, ProposalStatus } from '@/core/types';
 import { useProposal, useProposalUpdateMutation } from '@/app/api/proposals';
 import { proposalState } from '@/app/store';
+import { getProposalTotalAmount } from '@/app/utils';
 import LoadingLoader from '@/app/components/shared/LoadingLoader';
 import ProposalEditHeader from '@/app/components/proposals/ProposalEditHeader';
 import ProposalEditPageContainer from '@/app/components/proposals/ProposalEditPageContainer';
 import ProposalEditSideDrawer from '@/app/components/proposals/ProposalEditSideDrawer';
 import ProposalEditForm from '@/app/components/proposals/ProposalEditForm';
-import { getProposalTotalAmount } from '@/app/utils';
+import ProposalPreview from '@/app/components/proposals/ProposalPreview';
 
 const drawerWidth = 370;
 
@@ -88,8 +81,7 @@ export default function ProposalEditPage() {
             <Box sx={{ width: `calc(100% - ${drawerWidth}px)` }}>
               {openPreview ? (
                 <Container size={850}>
-                  {/* <InvoicePreview invoice={invoice} /> */}
-                  <Box>Proposal Preview</Box>
+                  <ProposalPreview proposal={proposal} />
                 </Container>
               ) : (
                 <Container size={850}>

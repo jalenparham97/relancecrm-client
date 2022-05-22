@@ -6,7 +6,12 @@ interface Props extends ModalProps {
   onSubmit?: () => Promise<void>;
 }
 
-export default function InvoiceMarkAsPaidModal({ opened, onClose, onSubmit, isLoading }: Props) {
+export default function InvoiceMarkAsPaidModal({
+  opened,
+  onClose,
+  onSubmit,
+  isLoading,
+}: Props) {
   const isDarkMode = useIsDarkMode();
   const colors = useColors();
 
@@ -30,11 +35,11 @@ export default function InvoiceMarkAsPaidModal({ opened, onClose, onSubmit, isLo
         </Box>
 
         <Box mt={15}>
-          <Group spacing="sm" position="right">
+          <Group spacing="sm" position="apart" grow>
             <Button variant="default" onClick={onClose}>
               Cancel
             </Button>
-            <Button loading={isLoading} onClick={handleSubmit}>
+            <Button loading={isLoading} onClick={handleSubmit} color="green">
               Mark as paid
             </Button>
           </Group>

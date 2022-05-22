@@ -33,6 +33,18 @@
   margin: 0px 0px 10px 0px;
 }
 
+.ProseMirror img {
+  width: 100%;
+}
+
+.ProseMirror img.ProseMirror-selectednode {
+  outline: 3px solid #68cef8;
+}
+
+[data-tippy-root] {
+  z-index: 200 !important;
+}
+
 .ql-editor {
   font-size: 16px;
 }

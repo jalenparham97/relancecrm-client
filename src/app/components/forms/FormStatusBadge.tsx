@@ -11,9 +11,5 @@ interface Props {
 }
 
 export default function FormStatusBadge({ status }: Props) {
-  return (
-    <Badge color={colors[status].color} variant="filled">
-      {status}
-    </Badge>
-  );
+  return <Badge color={colors[status].color}>{status}</Badge>;
 }

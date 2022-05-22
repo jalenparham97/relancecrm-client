@@ -5,6 +5,7 @@ import {
   Divider,
   Text,
   Group,
+  Box,
 } from '@mantine/core';
 import { NextLink } from '@mantine/next';
 import {
@@ -13,6 +14,7 @@ import {
   IconLogout,
   IconLifebuoy,
   IconChevronRight,
+  IconChevronDown,
 } from '@tabler/icons';
 import { useLogout, useUser } from '@/app/api/auth';
 import { useColors } from '@/app/hooks';
@@ -53,7 +55,7 @@ export default function AccountMenu({ ...otherProps }: Props) {
             },
           })}
         >
-          <Group spacing="xs">
+          <Box className="flex items-center space-x-2">
             <Avatar
               src={user?.photoUrl}
               styles={{
@@ -66,17 +68,8 @@ export default function AccountMenu({ ...otherProps }: Props) {
             >
               {user.initials}
             </Avatar>
-
-            <div style={{ flex: 1 }}>
-              <Text size="sm" weight={500}>
-                {user?.fullName}
-              </Text>
-              <Text color="dimmed" size="xs">
-                {getUserName(user?.email)}
-              </Text>
-            </div>
-            <IconChevronRight size={16} />
-          </Group>
+            <IconChevronDown size={16} />
+          </Box>
         </UnstyledButton>
       }
     >

@@ -36,6 +36,7 @@ import {
   IconClock,
   IconReceipt,
 } from '@tabler/icons';
+import { Draggable } from 'react-beautiful-dnd';
 import { JSONContent } from '@tiptap/react';
 import { nanoid } from 'nanoid';
 import React, { useEffect } from 'react';
@@ -47,9 +48,10 @@ import Button from '../shared/Button';
 
 interface Props {
   block?: ProposalContent;
+  index?: number;
 }
 
-export default function ProposalBlock({ block }: Props) {
+export default function ProposalBlock({ block, index }: Props) {
   const { hovered, ref } = useHover();
   const { hovered: addBlockHovered, ref: addBlockRef } = useHover();
   const [proposal, setProposal] = useRecoilState(proposalState);
@@ -283,237 +285,248 @@ export default function ProposalBlock({ block }: Props) {
   const showButton = addBlockHovered || isSelected;
 
   return (
-    <Box>
-      <Box
-        ref={ref}
-        key={block.id}
-        className={`px-[50px] py-[40px] border-transparent border-y-[1px] border-solid border-x-0 hover:border-gray-300 hover:shadow-xl relative ${
-          isSelected && 'border-t border-t-gray-300 border-solid border-x-0'
-        }`}
-      >
+    <Draggable key={block.id} draggableId={block.id} index={index}>
+      {(provided, snapshot) => (
         <Box
-          ref={addBlockRef}
-          className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-[60px]"
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          className="bg-white"
         >
-          {showButton && (
-            <Box>
-              {!isSelected ? (
-                <UnstyledButton
-                  onClick={handleSelect}
-                  className="absolute top-[30px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-[8px] bg-indigo-600 text-white font-medium rounded text-sm hover:bg-indigo-700 shadow-lg"
-                >
-                  <IconPlus
-                    size={20}
-                    className="flex items-center justify-center"
-                  />
-                </UnstyledButton>
-              ) : (
+          <Box
+            ref={ref}
+            key={block.id}
+            className={`px-[50px] py-[40px] border-transparent border-y-[1px] border-solid border-x-0 hover:border-gray-300 hover:shadow-xl relative ${
+              isSelected && 'border-t border-t-gray-300 border-solid border-x-0'
+            } ${
+              snapshot.isDragging && '!border !border-gray-300 !border-solid'
+            }`}
+          >
+            <Box
+              ref={addBlockRef}
+              className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-[60px]"
+            >
+              {showButton && (
+                <Box>
+                  {!isSelected ? (
+                    <UnstyledButton
+                      onClick={handleSelect}
+                      className="absolute top-[30px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-[8px] bg-indigo-600 text-white font-medium rounded text-sm hover:bg-indigo-700 shadow-lg"
+                    >
+                      <IconPlus
+                        size={20}
+                        className="flex items-center justify-center"
+                      />
+                    </UnstyledButton>
+                  ) : (
+                    <Box>
+                      <UnstyledButton
+                        onClick={resetSelectedId}
+                        className="absolute top-[30px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-[8px] bg-white text-red-600 font-medium rounded-full text-sm border border-red-600 border-solid shadow-lg"
+                      >
+                        <IconX
+                          size={20}
+                          className="flex items-center justify-center"
+                        />
+                      </UnstyledButton>
+                    </Box>
+                  )}
+                </Box>
+              )}
+            </Box>
+            <Collapse in={openedCollapse} className="mb-[20px]">
+              <Box className="grid grid-cols-3 gap-4">
+                <ProposalContentBlock
+                  icon={<IconLetterT size="20px" />}
+                  name="Text"
+                  onClick={addTextBlock}
+                />
+                <ProposalContentBlock
+                  icon={<IconClock size="20px" />}
+                  name="Timeline"
+                  onClick={addTimelineBlock}
+                />
+                <ProposalContentBlock
+                  disabled={
+                    !!proposal?.content.find(
+                      (block) => block.type === 'estimate'
+                    )
+                  }
+                  icon={<IconReceipt size="20px" />}
+                  name="Estimate"
+                  onClick={addEstimateBlock}
+                />
+              </Box>
+            </Collapse>
+            <Box className="absolute top-[4px] right-1 flex flex-col space-y-2">
+              {(hovered || snapshot.isDragging) && (
                 <>
-                  <UnstyledButton
-                    onClick={resetSelectedId}
-                    className="absolute top-[30px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-[8px] bg-white text-red-600 font-medium rounded-full text-sm border border-red-600 border-solid shadow-lg"
-                  >
-                    <IconX
+                  <Box {...provided.dragHandleProps}>
+                    <IconGripVertical className="text-gray-600" />
+                  </Box>
+                  <Box>
+                    <IconTrash
                       size={20}
-                      className="flex items-center justify-center"
+                      className="cursor-pointer ml-[2px] text-red-600"
+                      onClick={deleteBlock}
                     />
-                  </UnstyledButton>
+                  </Box>
                 </>
               )}
             </Box>
-          )}
-        </Box>
-        <Collapse in={openedCollapse} className="mb-[20px]">
-          <Box className="grid grid-cols-4 gap-4">
-            <ProposalContentBlock
-              icon={<IconLetterT size="20px" />}
-              name="Text"
-              onClick={addTextBlock}
+            <BubbleEditor
+              defaultContent={block.content as JSONContent[]}
+              block={block}
             />
-            <ProposalContentBlock
-              icon={<IconPhoto size="20px" />}
-              name="Image"
-              // onClick={addHeadingElement}
-            />
-            <ProposalContentBlock
-              icon={<IconClock size="20px" />}
-              name="Timeline"
-              onClick={addTimelineBlock}
-            />
-            <ProposalContentBlock
-              disabled={
-                !!proposal?.content.find((block) => block.type === 'estimate')
-              }
-              icon={<IconReceipt size="20px" />}
-              name="Estimate"
-              onClick={addEstimateBlock}
-            />
-          </Box>
-        </Collapse>
-        <Box className="absolute top-[4px] right-1 flex flex-col space-y-2">
-          {hovered && (
-            <>
-              <IconGripVertical className="text-gray-600 cursor-pointer" />
-              <IconTrash
-                size={20}
-                className="cursor-pointer ml-[2px] text-red-600"
-                onClick={deleteBlock}
-              />
-            </>
-          )}
-        </Box>
-        <BubbleEditor
-          defaultContent={block.content as JSONContent[]}
-          block={block}
-        />
-        {block?.type === 'estimate' && (
-          <>
-            <Box className="">
-              <Grid mt={5}>
-                <Grid.Col span={5}>
-                  <Text size="sm" className="font-medium">
-                    Description
-                  </Text>
-                </Grid.Col>
-                <Grid.Col span={3}>
-                  <Text size="sm" className="font-medium">
-                    Units/hrs
-                  </Text>
-                </Grid.Col>
-                <Grid.Col span={2}>
-                  <Text size="sm" className="font-medium">
-                    Rate
-                  </Text>
-                </Grid.Col>
-                <Grid.Col span={1}>
-                  <Text size="sm" className="font-medium">
-                    Subtotal
-                  </Text>
-                </Grid.Col>
-              </Grid>
-
-              {block?.items.map((item) => (
-                <Grid key={item?.id}>
-                  <Grid.Col span={5}>
-                    <Input
-                      id={`${item.id}--description`}
-                      name="description"
-                      defaultValue={item.description}
-                      size="xs"
-                      onChange={handleItemChange}
-                    />
-                  </Grid.Col>
-                  <Grid.Col span={3}>
-                    <Group spacing="xs" grow>
-                      <Input
-                        type="number"
-                        id={`${item.id}--units`}
-                        name="units"
-                        defaultValue={item.units}
-                        size="xs"
-                        onChange={handleItemChange}
-                        min={0}
-                      />
-                      <NativeSelect
-                        size="xs"
-                        id={`${item.id}--unitsType`}
-                        name={`${item.id}--unitsType`}
-                        onChange={handleSelectItemChange}
-                        defaultValue={item.unitsType}
-                        data={[
-                          { value: 'units', label: 'units' },
-                          { value: 'hrs', label: 'hrs' },
-                        ]}
-                      />
-                    </Group>
-                  </Grid.Col>
-                  <Grid.Col span={2}>
-                    <Input
-                      type="number"
-                      id={`${item.id}--rate`}
-                      name="rate"
-                      defaultValue={item.rate}
-                      size="xs"
-                      onChange={handleItemChange}
-                      min={0}
-                    />
-                  </Grid.Col>
-                  <Grid.Col span={1}>
-                    <Text
-                      size="sm"
-                      className="flex justify-end items-center h-full w-full"
-                    >
-                      {getProposalItemSubtotal(item)}
-                    </Text>
-                  </Grid.Col>
-                  <Grid.Col span={1}>
-                    <Box className="flex justify-end items-center h-full w-full">
-                      <ActionIcon
-                        color="red"
-                        onClick={() => handleDeleteItem(block, item.id)}
-                      >
-                        <IconTrash size={16} />
-                      </ActionIcon>
-                    </Box>
-                  </Grid.Col>
-                </Grid>
-              ))}
-              <Box mt={12}>
-                <Button
-                  variant="default"
-                  size="xs"
-                  leftIcon={<IconPlus size={14} />}
-                  onClick={handleAddItem}
-                >
-                  Add item
-                </Button>
-              </Box>
-            </Box>
-
-            <Divider className="my-3" />
-
-            <Grid>
-              <Grid.Col span={7}></Grid.Col>
-              <Grid.Col span={5}>
-                <Box>
-                  <Group direction="column" grow>
-                    <Group position="apart" align="center">
+            {block?.type === 'estimate' && (
+              <Box>
+                <Box className="">
+                  <Grid mt={5}>
+                    <Grid.Col span={5}>
+                      <Text size="sm" className="font-medium">
+                        Description
+                      </Text>
+                    </Grid.Col>
+                    <Grid.Col span={3}>
+                      <Text size="sm" className="font-medium">
+                        Units/hrs
+                      </Text>
+                    </Grid.Col>
+                    <Grid.Col span={2}>
+                      <Text size="sm" className="font-medium">
+                        Rate
+                      </Text>
+                    </Grid.Col>
+                    <Grid.Col span={1}>
                       <Text size="sm" className="font-medium">
                         Subtotal
                       </Text>
-                      <Text size="sm">
-                        {formatCurrency(getProposalSubtotal(block?.items))}
-                      </Text>
-                    </Group>
-                    <Group position="apart" align="center">
-                      <Text size="sm" className="font-medium">
-                        Discount
-                      </Text>
-                      <Input
-                        className="w-[85px]"
-                        placeholder="0"
-                        name="discount"
-                        defaultValue={block.discount}
-                        onChange={handleDiscountChange}
-                        type="number"
-                        size="xs"
-                        min={0}
-                      />
-                    </Group>
-                    <Divider className="mt-1" />
-                    <Group position="apart" align="center">
-                      <Text className="font-medium">Total</Text>
-                      <Text>
-                        {formatCurrency(getProposalTotalAmount(block) || 0)}
-                      </Text>
-                    </Group>
-                  </Group>
+                    </Grid.Col>
+                  </Grid>
+
+                  {block?.items.map((item) => (
+                    <Grid key={item?.id}>
+                      <Grid.Col span={5}>
+                        <Input
+                          id={`${item.id}--description`}
+                          name="description"
+                          defaultValue={item.description}
+                          size="xs"
+                          onChange={handleItemChange}
+                        />
+                      </Grid.Col>
+                      <Grid.Col span={3}>
+                        <Group spacing="xs" grow>
+                          <Input
+                            type="number"
+                            id={`${item.id}--units`}
+                            name="units"
+                            defaultValue={item.units}
+                            size="xs"
+                            onChange={handleItemChange}
+                            min={0}
+                          />
+                          <NativeSelect
+                            size="xs"
+                            id={`${item.id}--unitsType`}
+                            name={`${item.id}--unitsType`}
+                            onChange={handleSelectItemChange}
+                            defaultValue={item.unitsType}
+                            data={[
+                              { value: 'units', label: 'units' },
+                              { value: 'hrs', label: 'hrs' },
+                            ]}
+                          />
+                        </Group>
+                      </Grid.Col>
+                      <Grid.Col span={2}>
+                        <Input
+                          type="number"
+                          id={`${item.id}--rate`}
+                          name="rate"
+                          defaultValue={item.rate}
+                          size="xs"
+                          onChange={handleItemChange}
+                          min={0}
+                        />
+                      </Grid.Col>
+                      <Grid.Col span={1}>
+                        <Text
+                          size="sm"
+                          className="flex justify-end items-center h-full w-full"
+                        >
+                          {getProposalItemSubtotal(item)}
+                        </Text>
+                      </Grid.Col>
+                      <Grid.Col span={1}>
+                        <Box className="flex justify-end items-center h-full w-full">
+                          <ActionIcon
+                            color="red"
+                            onClick={() => handleDeleteItem(block, item.id)}
+                          >
+                            <IconTrash size={16} />
+                          </ActionIcon>
+                        </Box>
+                      </Grid.Col>
+                    </Grid>
+                  ))}
+                  <Box mt={12}>
+                    <Button
+                      variant="default"
+                      size="xs"
+                      leftIcon={<IconPlus size={14} />}
+                      onClick={handleAddItem}
+                    >
+                      Add item
+                    </Button>
+                  </Box>
                 </Box>
-              </Grid.Col>
-            </Grid>
-          </>
-        )}
-      </Box>
-    </Box>
+
+                <Divider className="my-3" />
+
+                <Grid>
+                  <Grid.Col span={7}></Grid.Col>
+                  <Grid.Col span={5}>
+                    <Box>
+                      <Group direction="column" grow>
+                        <Group position="apart" align="center">
+                          <Text size="sm" className="font-medium">
+                            Subtotal
+                          </Text>
+                          <Text size="sm">
+                            {formatCurrency(getProposalSubtotal(block?.items))}
+                          </Text>
+                        </Group>
+                        <Group position="apart" align="center">
+                          <Text size="sm" className="font-medium">
+                            Discount
+                          </Text>
+                          <Input
+                            className="w-[85px]"
+                            placeholder="0"
+                            name="discount"
+                            defaultValue={block.discount}
+                            onChange={handleDiscountChange}
+                            type="number"
+                            size="xs"
+                            min={0}
+                          />
+                        </Group>
+                        <Divider className="mt-1" />
+                        <Group position="apart" align="center">
+                          <Text className="font-medium">Total</Text>
+                          <Text>
+                            {formatCurrency(getProposalTotalAmount(block) || 0)}
+                          </Text>
+                        </Group>
+                      </Group>
+                    </Box>
+                  </Grid.Col>
+                </Grid>
+              </Box>
+            )}
+          </Box>
+        </Box>
+      )}
+    </Draggable>
   );
 }

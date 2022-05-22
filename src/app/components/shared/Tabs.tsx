@@ -5,7 +5,12 @@ interface Props extends TabsProps {
   height?: string;
 }
 
-export default function Tabs({ children, styles, height = '40px', ...otherProps }: Props) {
+export default function Tabs({
+  children,
+  styles,
+  height = '45px',
+  ...otherProps
+}: Props) {
   const isDarkMode = useIsDarkMode();
   const colors = useColors();
 
@@ -22,9 +27,14 @@ export default function Tabs({ children, styles, height = '40px', ...otherProps 
             marginRight: '20px',
           },
           tabActive: {
-            color: theme.colorScheme === 'dark' ? theme.colors.indigo[4] : theme.colors.indigo[6],
+            color:
+              theme.colorScheme === 'dark'
+                ? theme.colors.indigo[4]
+                : theme.colors.indigo[6],
             borderBottom: `2px solid ${
-              theme.colorScheme === 'dark' ? theme.colors.indigo[4] : theme.colors.indigo[6]
+              theme.colorScheme === 'dark'
+                ? theme.colors.indigo[4]
+                : theme.colors.indigo[6]
             }`,
             transition: 'all',
             transitionDuration: '150ms',
@@ -35,7 +45,9 @@ export default function Tabs({ children, styles, height = '40px', ...otherProps 
       >
         {children}
       </MantineTabs>
-      <Divider className={`-mt-[2px] border-t-2 ${isDarkMode && 'border-dark-400'}`} />
+      <Divider
+        className={`-mt-[2px] border-t-2 ${isDarkMode && 'border-dark-400'}`}
+      />
     </>
   );
 }

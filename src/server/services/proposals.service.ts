@@ -12,9 +12,11 @@ class ProposalsService {
     const data = await proposalsModel
       .find(query)
       .sort({ _id: -1 })
-      .populate('client', 'firstName lastName')
+      .populate('client')
       .populate('project', '_id projectName')
-      .select('_id title project client createdAt sentDate amount status')
+      .select(
+        '_id title project client createdAt sentDate amount status content isArchived client fromName fromCompany fromAddress'
+      )
       .lean()
       .exec();
 
@@ -62,7 +64,11 @@ class ProposalsService {
   async findOne(id: string, userId: string): Promise<Proposal> {
     const query = { _id: id, userId };
 
-    const data = await proposalsModel.findOne(query).exec();
+    const data = await proposalsModel
+      .findOne(query)
+      .populate('client')
+      .populate('project')
+      .exec();
 
     return data;
   }

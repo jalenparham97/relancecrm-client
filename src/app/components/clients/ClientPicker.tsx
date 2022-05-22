@@ -10,6 +10,7 @@ interface Props {
   client?: Client;
   isError?: boolean;
   errorMessage?: string;
+  noLabel?: boolean;
 }
 
 const AutoCompleteItem = forwardRef<HTMLDivElement, Client>(
@@ -38,6 +39,7 @@ export default function ClientPicker({
   client,
   isError = false,
   errorMessage = 'Client is required',
+  noLabel,
 }: Props) {
   const handleChange = (clientName: string) => {
     setClient(clients.find((client) => client.fullName === clientName));
@@ -45,7 +47,8 @@ export default function ClientPicker({
 
   return (
     <Autocomplete
-      label={label}
+      label={!noLabel && label}
+      placeholder="Pick a client"
       onChange={handleChange}
       defaultValue={client?.fullName}
       itemComponent={AutoCompleteItem}

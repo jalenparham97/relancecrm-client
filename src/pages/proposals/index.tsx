@@ -10,7 +10,8 @@ import {
 } from '@/app/api/proposals';
 import { formatProposals } from '@/app/utils';
 import { isEmpty } from 'lodash';
-import { FormStatus, Proposal } from '@/core/types';
+import { FormStatus, Proposal, ProposalStatus } from '@/core/types';
+import { useUser } from '@/app/api/auth';
 import PageLayout from '@/app/components/layouts/PageLayout';
 import Button from '@/app/components/shared/Button';
 import DataTable from '@/app/components/shared/DataTable';
@@ -20,8 +21,10 @@ import LoadingLoader from '@/app/components/shared/LoadingLoader';
 import EmptyState from '@/app/components/shared/EmptyState';
 import ProposalStatusBadge from '@/app/components/proposals/ProposalStatusBadge';
 import ProposalActionMenu from '@/app/components/proposals/ProposalActionMenu';
+import { DefaultProposal } from '@/app/store';
 
 export default function ProposalsPage() {
+  const user = useUser();
   const router = useRouter();
   const [openDeleteManyDialog, toggleOpenDeleteManyDialog] = useToggle(false);
   const { isLoading, data: proposals } = useProposals();
@@ -32,7 +35,12 @@ export default function ProposalsPage() {
 
   const onAddProposal = async () => {
     try {
-      const newProposal = await handleAddProposalSubmit.mutateAsync({});
+      const newProposal = await handleAddProposalSubmit.mutateAsync({
+        fromName: user.fullName,
+        fromCompany: user.businessInfo.businessName || '',
+        fromAddress: user.businessInfo.address || '',
+        ...DefaultProposal,
+      });
       router.push(`/proposals/${newProposal._id}/edit`);
       console.log({ newProposal });
     } catch (error) {
@@ -50,22 +58,22 @@ export default function ProposalsPage() {
     [proposals?.data]
   );
 
-  const isFormClosed = (row: any) => {
-    return (
-      row.original.settings?.limitResponses &&
-      row.original.responsesCount === row.original?.settings?.maxResponses
-    );
-  };
-
   const columns = useMemo(
     () => [
       {
         Header: 'Proposal Title',
         accessor: 'title',
         Cell: ({ value, row }) => (
-          <Link to={`/proposals/${row.original.id}/edit`}>
+          <Link
+            to={`/proposals/${row.original.id}/${
+              row.original.status === ProposalStatus.DRAFT &&
+              !row.original.isArchived
+                ? 'edit'
+                : 'details'
+            }`}
+          >
             <Box className="flex items-center space-x-2 hover:text-indigo-700">
-              <Text className="font-semibold">{value}</Text>
+              <Text className="text-sm font-semibold">{value}</Text>
             </Box>
           </Link>
         ),
@@ -91,7 +99,7 @@ export default function ProposalsPage() {
         accessor: 'status',
         Cell: ({ value, row }) => (
           <ProposalStatusBadge
-            status={isFormClosed(row) ? FormStatus.CLOSED : value}
+            status={row.original.isArchived ? ProposalStatus.ARCHIVED : value}
           />
         ),
       },

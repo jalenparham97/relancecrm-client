@@ -10,7 +10,12 @@ interface Props {
   [x: string]: any;
 }
 
-export default function NavTab({ to, label, exact = true, ...otherProps }: Props) {
+export default function NavTab({
+  to,
+  label,
+  exact = true,
+  ...otherProps
+}: Props) {
   const router = useRouter();
   const isDarkMode = useIsDarkMode();
   const colors = useColors();
@@ -25,11 +30,11 @@ export default function NavTab({ to, label, exact = true, ...otherProps }: Props
     <Link to={to}>
       <Box
         {...otherProps}
-        className={`mr-4 h-[40px] flex justify-center items-center transition-all`}
+        className={`mr-4 h-[45px] flex justify-center items-center transition-all`}
         sx={{ borderBottom: borderBottomStyle }}
       >
         <Text
-          className={`font-semibold transition-all duration-[150ms] ${
+          className={`font-semibold transition-all duration-[150ms] text-sm ${
             isRouteMatch && (isDarkMode ? 'text-indigo-400' : 'text-indigo-600')
           }`}
         >

@@ -41,7 +41,7 @@ export default function DeleteModal({
         <Text>Are you sure you want to delete this {title}?</Text>
 
         <Box mt={15}>
-          <Group spacing="sm" position="right">
+          <Group spacing="sm" position="apart" grow>
             <Button variant="default" onClick={onClose}>
               Cancel
             </Button>

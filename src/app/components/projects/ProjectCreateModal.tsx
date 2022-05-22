@@ -1,4 +1,12 @@
-import { Modal, Button, Group, ModalProps, Box, TextInput, Textarea } from '@mantine/core';
+import {
+  Modal,
+  Button,
+  Group,
+  ModalProps,
+  Box,
+  TextInput,
+  Textarea,
+} from '@mantine/core';
 import { useForm } from 'react-hook-form';
 import { FiCalendar } from 'react-icons/fi';
 import * as yup from 'yup';
@@ -49,7 +57,11 @@ export default function ProjectCreateModal({
       if (hideClientPicker) {
         await submit({ ...data, endDate: endDate?.toISOString() });
       } else {
-        await submit({ ...data, endDate: endDate?.toISOString(), client: client?._id });
+        await submit({
+          ...data,
+          endDate: endDate?.toISOString(),
+          client: client?._id,
+        });
       }
       if (!isSubmitting) {
         handleFormClose();
@@ -70,7 +82,12 @@ export default function ProjectCreateModal({
   const onSelectChange = useCallback(debounce(changeHandler, 3000), []);
 
   return (
-    <Modal opened={opened} onClose={handleFormClose} title="Create a new project" size="lg">
+    <Modal
+      opened={opened}
+      onClose={handleFormClose}
+      title="Create a new project"
+      size="lg"
+    >
       <form onSubmit={handleSubmit(handleFormSubmit)}>
         <Box className="flex flex-col space-y-3">
           <TextInput
@@ -96,7 +113,9 @@ export default function ProjectCreateModal({
             />
           </Box>
 
-          {!hideClientPicker && <ClientPicker clients={clients?.data} setClient={setClient} />}
+          {!hideClientPicker && (
+            <ClientPicker clients={clients?.data} setClient={setClient} />
+          )}
 
           <Box mt={20}>
             <Group spacing="sm" position="right">

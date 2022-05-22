@@ -14,12 +14,19 @@ export type BaseProposal = {
   isInvoiceCreated?: boolean;
   expirationDate?: string;
   status?: ProposalStatus;
+  isArchived?: boolean;
   fromCompany?: string;
   fromAddress?: string;
   fromName?: string;
+  toName?: string;
+  toCompany?: string;
+  toAddress?: string;
+  toEmail?: string;
   content?: ProposalContent[];
-  sentDate?: string;
   amount?: number;
+  sentDate?: string;
+  approvalDate?: string;
+  approver?: string;
   createdAt?: string;
   updatedAt?: string;
 };
@@ -55,6 +62,7 @@ export enum ProposalStatus {
   READ = 'read',
   DRAFT = 'draft',
   EXPIRED = 'expired',
+  ARCHIVED = 'archived',
 }
 
 export type Proposal = {

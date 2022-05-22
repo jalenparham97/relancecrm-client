@@ -6,7 +6,16 @@ import {
 import PageLayout from '@/app/components/layouts/PageLayout';
 import Button from '@/app/components/shared/Button';
 import DataTable from '@/app/components/shared/DataTable';
-import { Box, Container, Group, Loader, Paper, Title, Text, ActionIcon } from '@mantine/core';
+import {
+  Box,
+  Container,
+  Group,
+  Loader,
+  Paper,
+  Title,
+  Text,
+  ActionIcon,
+} from '@mantine/core';
 import { isEmpty } from 'lodash';
 import { useMemo, useState } from 'react';
 import { IconBriefcase, IconPlus } from '@tabler/icons';
@@ -44,10 +53,14 @@ export default function ProjectsPage() {
         Cell: ({ value, row }) => (
           <Link to={`/projects/${row.original.id}`}>
             <Box className="flex items-center space-x-2 hover:text-indigo-700">
-              <Avatar radius="xl" backgroundColor={row.original?.backgroundColor}>
+              <Avatar
+                radius="xl"
+                size={35}
+                backgroundColor={row.original?.backgroundColor}
+              >
                 {row.original.initials}
               </Avatar>
-              <Text className="font-semibold">{value}</Text>
+              <Text className="text-sm font-semibold">{value}</Text>
             </Box>
           </Link>
         ),
@@ -70,7 +83,10 @@ export default function ProjectsPage() {
         accessor: 'updatedAt',
         Cell: ({ row }) => (
           <Box className="flex items-center space-x-1">
-            <ProjectActionsMenu id={row.original.id} status={row.original.status} />
+            <ProjectActionsMenu
+              id={row.original.id}
+              status={row.original.status}
+            />
           </Box>
         ),
       },
@@ -109,13 +125,19 @@ export default function ProjectsPage() {
                 />
               )}
               {isEmpty(projects?.data) && (
-                <Paper withBorder className="p-0 border-gray-600 border-opacity-20 shadow-sm">
+                <Paper
+                  withBorder
+                  className="p-0 border-gray-600 border-opacity-20 shadow-sm"
+                >
                   <Box className="py-7">
                     <EmptyState
                       title="There are no projects yet"
                       icon={<IconBriefcase size="50px" />}
                       actionButton={
-                        <Button leftIcon={<IconPlus size={16} />} onClick={toggleOpen}>
+                        <Button
+                          leftIcon={<IconPlus size={16} />}
+                          onClick={toggleOpen}
+                        >
                           Add project
                         </Button>
                       }

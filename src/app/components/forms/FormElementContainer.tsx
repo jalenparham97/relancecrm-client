@@ -60,7 +60,7 @@ export default function FormElementContainer({
                   isSelected && 'border-opacity-50 shadow-lg'
                 }`}
               >
-                {hovered && (
+                {(hovered || snapshot.isDragging) && (
                   <Box
                     className="absolute -top-[2px] left-1/2"
                     {...provided.dragHandleProps}

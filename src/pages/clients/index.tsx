@@ -4,7 +4,15 @@ import {
   useClientDeleteMutation,
   useClients,
 } from '@/app/api/clients';
-import { Box, Container, Group, Paper, Title, Text, ActionIcon } from '@mantine/core';
+import {
+  Box,
+  Container,
+  Group,
+  Paper,
+  Title,
+  Text,
+  ActionIcon,
+} from '@mantine/core';
 import { useMemo, useState } from 'react';
 import { FiPlus, FiTrash2, FiEye, FiUsers } from 'react-icons/fi';
 import { IconUsers, IconPlus } from '@tabler/icons';
@@ -65,10 +73,14 @@ export default function ClientsPage() {
         Cell: ({ value, row }) => (
           <Link to={`/clients/${row.original.id}`}>
             <Box className="flex items-center space-x-2 hover:text-indigo-700">
-              <Avatar radius="xl" backgroundColor={row.original?.backgroundColor}>
+              <Avatar
+                radius="xl"
+                size={35}
+                backgroundColor={row.original?.backgroundColor}
+              >
                 {row.original.initials}
               </Avatar>
-              <Text className="font-semibold">{value}</Text>
+              <Text className="text-sm font-semibold">{value}</Text>
             </Box>
           </Link>
         ),
@@ -129,13 +141,19 @@ export default function ClientsPage() {
                 />
               )}
               {isEmpty(clients?.data) && (
-                <Paper withBorder className="p-0 border-gray-600 border-opacity-20 shadow-sm">
+                <Paper
+                  withBorder
+                  className="p-0 border-gray-600 border-opacity-20 shadow-sm"
+                >
                   <Box className="py-7">
                     <EmptyState
                       title="There are no clients yet"
                       icon={<IconUsers size="50px" />}
                       actionButton={
-                        <Button leftIcon={<IconPlus size={16} />} onClick={toggleOpen}>
+                        <Button
+                          leftIcon={<IconPlus size={16} />}
+                          onClick={toggleOpen}
+                        >
                           Add Client
                         </Button>
                       }

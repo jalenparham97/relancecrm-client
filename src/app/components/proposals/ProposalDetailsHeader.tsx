@@ -3,14 +3,17 @@ import { useRouter } from 'next/router';
 import { useToggle } from 'react-use';
 import { useRecoilValue } from 'recoil';
 import { isEqual } from 'lodash';
-import { ActionIcon, Box, Group, Header, Title } from '@mantine/core';
-import { FiArrowLeft, FiSave, FiSend, FiEye, FiEyeOff } from 'react-icons/fi';
+import { ActionIcon, Box, Group, Header, Title, Text } from '@mantine/core';
 import {
   IconCheck,
   IconSend,
   IconEye,
   IconEyeOff,
   IconArrowLeft,
+  IconEdit,
+  IconPencil,
+  IconArchiveOff,
+  IconArchive,
 } from '@tabler/icons';
 import { useIsDarkMode, useToasts, useDialog } from '@/app/hooks';
 import { useUser } from '@/app/api/auth';
@@ -22,12 +25,12 @@ import {
 import { CreateInvoice, Invoice, ProposalStatus } from '@/core/types';
 import { getInvoiceSubtotal, getInvoiceTotal } from '@/app/utils';
 import { createInvoiceState, proposalState } from '@/app/store';
-import Button from '@/app/components/shared/Button';
-// import InvoiceStatusBadge from './InvoiceStatusBadge';
-import UnsavedDataModal from '@/app/components/shared/UnsavedDataModal';
 import { useProposal, useProposalUpdateMutation } from '@/app/api/proposals';
+import Button from '@/app/components/shared/Button';
+import UnsavedDataModal from '@/app/components/shared/UnsavedDataModal';
 import ProposalApproveModal from './ProposalApproveModal';
-// import InvoiceSendModal from './InvoiceSendModal';
+import ProposalStatusBadge from './ProposalStatusBadge';
+import ArchiveModal from '../shared/ArchiveModal';
 
 interface Props {
   openPreview?: boolean;
@@ -35,7 +38,7 @@ interface Props {
   invoiceData?: Invoice;
 }
 
-export default function ProposalEditHeader({
+export default function ProposalDetailsHeader({
   openPreview,
   toggleOpenPreview,
   invoiceData,
@@ -44,11 +47,11 @@ export default function ProposalEditHeader({
   const toasts = useToasts();
   const router = useRouter();
   const isDarkMode = useIsDarkMode();
-  const proposal = useRecoilValue(proposalState);
-  const { data: proposalData } = useProposal(router.query.id as string);
+  const { data: proposal } = useProposal(router.query.id as string);
   const [openSendDialog, toggleOpenSendDialog] = useToggle(false);
   const [unsavedModal, openUnsavedModal, closeUnsavedModal] = useDialog();
   const [approveModal, openApproveModal, closeApproveModal] = useDialog();
+  const [archiveModal, openArchiveModal, closeArchiveModal] = useDialog();
   const [sendUserCopy, setSendUserCopy] = useState(false);
   const [message, setMessage] = useState('');
   const { send, isLoading, error, resetError } = useInvoiceSend();
@@ -67,6 +70,17 @@ export default function ProposalEditHeader({
         status: ProposalStatus.APPROVED,
       });
       router.push('/proposals');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleArchive = async () => {
+    try {
+      await handleUpdateProposal.mutateAsync({
+        isArchived: !proposal?.isArchived,
+      });
+      closeArchiveModal();
     } catch (error) {
       console.log(error);
     }
@@ -113,11 +127,7 @@ export default function ProposalEditHeader({
   // };
 
   const handleBack = () => {
-    if (isEqual(proposalData, proposal)) {
-      router.back();
-    } else {
-      openUnsavedModal();
-    }
+    router.back();
   };
 
   return (
@@ -131,40 +141,70 @@ export default function ProposalEditHeader({
       })}
     >
       <Box className="flex justify-between items-center h-full">
-        <Group align="center">
+        <Group align="center" spacing="lg">
           <ActionIcon size="lg" onClick={handleBack}>
             <IconArrowLeft size={20} />
           </ActionIcon>
-          <Title order={2}>Edit Proposal</Title>
-          {/* {invoice && <InvoiceStatusBadge status={invoice?.status} />} */}
+          <Box>
+            <Title order={4}>{proposal?.title}</Title>
+            <Text></Text>
+          </Box>
+          {proposal && (
+            <ProposalStatusBadge
+              status={
+                proposal?.isArchived
+                  ? ProposalStatus.ARCHIVED
+                  : proposal?.status
+              }
+            />
+          )}
         </Group>
-        <Group align="center">
-          <Button
-            variant={isDarkMode ? 'outline' : 'default'}
-            color="gray"
-            leftIcon={
-              openPreview ? <IconEyeOff size={16} /> : <IconEye size={16} />
-            }
-            onClick={toggleOpenPreview}
-          >
-            {openPreview ? 'Exit preview' : 'Preview'}
-          </Button>
-          <Button
-            variant="default"
-            color={isDarkMode ? 'gray' : 'dark'}
-            leftIcon={<IconCheck size={16} />}
-            // loading={handleUpdateInvoiceSubmit.isLoading}
-            onClick={openApproveModal}
-          >
-            Mark as approved
-          </Button>
-          <Button
-            leftIcon={<IconSend size={16} />}
-            onClick={toggleOpenSendDialog}
-          >
-            Send proposal
-          </Button>
-        </Group>
+        {proposal?.isArchived ? (
+          <Group align="center">
+            <Button
+              variant="default"
+              leftIcon={<IconArchiveOff size={16} />}
+              onClick={handleArchive}
+              loading={handleUpdateProposal.isLoading}
+            >
+              Unarchive
+            </Button>
+          </Group>
+        ) : (
+          <>
+            {proposal?.status === ProposalStatus.APPROVED ? (
+              <Group align="center">
+                {/* <Button color="green">Create an invoice</Button> */}
+                <Button
+                  leftIcon={<IconArchive size={16} />}
+                  variant="default"
+                  onClick={openArchiveModal}
+                >
+                  Archive
+                </Button>
+              </Group>
+            ) : (
+              <Group align="center">
+                <Button
+                  variant="default"
+                  leftIcon={<IconCheck size={16} />}
+                  onClick={openApproveModal}
+                >
+                  Mark as approved
+                </Button>
+                <Button
+                  to={`/proposals/${router.query.id}/edit`}
+                  variant="default"
+                  color="gray"
+                  leftIcon={<IconPencil size={16} />}
+                  onClick={toggleOpenPreview}
+                >
+                  Edit
+                </Button>
+              </Group>
+            )}
+          </>
+        )}
       </Box>
 
       <UnsavedDataModal opened={unsavedModal} onClose={closeUnsavedModal} />
@@ -173,6 +213,14 @@ export default function ProposalEditHeader({
         opened={approveModal}
         onClose={closeApproveModal}
         onSubmit={handleMarkApproved}
+        isLoading={handleUpdateProposal.isLoading}
+      />
+
+      <ArchiveModal
+        title="Proposal"
+        opened={archiveModal}
+        onClose={closeArchiveModal}
+        onSubmit={handleArchive}
         isLoading={handleUpdateProposal.isLoading}
       />
 

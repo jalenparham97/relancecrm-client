@@ -1,4 +1,8 @@
-import { MantineProvider, ColorSchemeProvider, ColorScheme } from '@mantine/core';
+import {
+  MantineProvider,
+  ColorSchemeProvider,
+  ColorScheme,
+} from '@mantine/core';
 import { useLocalStorageValue } from '@mantine/hooks';
 
 export function ThemeProvider({ children }) {
@@ -11,7 +15,10 @@ export function ThemeProvider({ children }) {
     setColorScheme(value || colorScheme === 'dark' ? 'light' : 'dark');
 
   return (
-    <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
+    <ColorSchemeProvider
+      colorScheme={colorScheme}
+      toggleColorScheme={toggleColorScheme}
+    >
       <MantineProvider
         withNormalizeCSS
         theme={{ colorScheme, primaryColor: 'indigo' }}
@@ -20,7 +27,10 @@ export function ThemeProvider({ children }) {
             root: { ':disabled': { pointerEvents: 'none' } },
           }),
           Tabs: (theme) => ({
-            tabLabel: { fontWeight: 'bold' },
+            tabLabel: {
+              fontWeight: 600,
+              fontSize: '14px',
+            },
             tabControl: { height: '50px' },
           }),
           Checkbox: (theme) => ({
@@ -33,6 +43,7 @@ export function ThemeProvider({ children }) {
           }),
           Modal: (theme) => ({
             title: { fontSize: '25px', fontWeight: 'bold' },
+            root: { zIndex: 9999 },
           }),
           Text: (theme) => ({
             dimmed: { color: theme.colorScheme === 'light' ? '' : '' },

@@ -16,11 +16,14 @@ import {
   IconBold,
   IconChevronDown,
   IconExternalLink,
+  IconH1,
+  IconH2,
   IconItalic,
   IconLink,
   IconList,
   IconListNumbers,
   IconPencil,
+  IconPhoto,
   IconQuote,
   IconStrikethrough,
   IconTrash,
@@ -31,6 +34,7 @@ import {
   EditorContent,
   BubbleMenu,
   JSONContent,
+  FloatingMenu,
 } from '@tiptap/react';
 import { ProposalContent } from '@/core/types';
 import { useRecoilState } from 'recoil';
@@ -39,6 +43,8 @@ import { useDialog } from '@/app/hooks';
 import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
 import TextAlign from '@tiptap/extension-text-align';
+import Image from '@tiptap/extension-image';
+import ImagePicker from './ImagePicker';
 
 interface Props {
   onContentUpdate?: (content: JSONContent | string) => void;
@@ -52,12 +58,14 @@ export default function BubbleEditor({
   block,
 }: Props) {
   const [linkModal, openLinkModal, closeLinkModal] = useDialog();
+  const [imagePickerModal, openImagePicker, closeImagePicker] = useDialog();
   const [proposal, setProposal] = useRecoilState(proposalState);
   const [textFormat, setTextFormat] = useState('paragraph');
   const [linkUrl, setLinkUrl] = useState('');
   const editor = useEditor({
     extensions: [
       StarterKit,
+      Image,
       Link.configure({
         openOnClick: false,
       }),
@@ -129,6 +137,10 @@ export default function BubbleEditor({
     closeLinkModal();
   };
 
+  const addImage = (url: string) => {
+    editor.chain().focus().setImage({ src: url }).run();
+  };
+
   const toggleAlignment = useCallback(
     (alignment: string) => {
       if (editor.isActive({ textAlign: alignment })) {
@@ -180,7 +192,7 @@ export default function BubbleEditor({
           editor={editor}
           tippyOptions={{ duration: 100, hideOnClick: true }}
           className={`bubble-menu flex justify-between p-[5px] bg-white border border-solid border-gray-300 shadow-xl rounded ${
-            isLinkActive ? 'w-[95px]' : 'w-[490px]'
+            isLinkActive ? 'w-[95px]' : 'w-[520px]'
           }`}
         >
           {isLinkActive && (
@@ -306,6 +318,16 @@ export default function BubbleEditor({
                 </ActionIcon>
                 <ActionIcon
                   onClick={() =>
+                    editor.chain().focus().toggleBlockquote().run()
+                  }
+                  variant={editor.isActive('blockquote') ? 'light' : 'default'}
+                  color="indigo"
+                  className="border border-solid border-gray-400"
+                >
+                  <IconQuote size={16} />
+                </ActionIcon>
+                <ActionIcon
+                  onClick={() =>
                     editor.chain().focus().toggleBulletList().run()
                   }
                   variant={editor.isActive('bulletList') ? 'light' : 'default'}
@@ -383,19 +405,73 @@ export default function BubbleEditor({
                   <IconLink size={16} />
                 </ActionIcon>
                 <ActionIcon
-                  onClick={() =>
-                    editor.chain().focus().toggleBlockquote().run()
-                  }
-                  variant={editor.isActive('blockquote') ? 'light' : 'default'}
+                  onClick={openImagePicker}
+                  variant="default"
                   color="indigo"
                   className="border border-solid border-gray-400"
                 >
-                  <IconQuote size={16} />
+                  <IconPhoto size={16} />
                 </ActionIcon>
               </Box>
             </>
           )}
         </BubbleMenu>
+      )}
+      {editor && (
+        <FloatingMenu
+          tippyOptions={{ duration: 100 }}
+          editor={editor}
+          className={`floating-menu flex space-x-1 p-[5px] bg-white border border-solid border-gray-300 shadow-xl rounded w-[156px]`}
+        >
+          <ActionIcon
+            onClick={() =>
+              editor.chain().focus().toggleHeading({ level: 1 }).run()
+            }
+            variant={
+              editor.isActive('heading', { level: 1 }) ? 'light' : 'default'
+            }
+            color="indigo"
+            className="border border-solid border-gray-400"
+          >
+            <IconH1 size={16} />
+          </ActionIcon>
+          <ActionIcon
+            onClick={() =>
+              editor.chain().focus().toggleHeading({ level: 2 }).run()
+            }
+            variant={
+              editor.isActive('heading', { level: 2 }) ? 'light' : 'default'
+            }
+            color="indigo"
+            className="border border-solid border-gray-400"
+          >
+            <IconH2 size={16} />
+          </ActionIcon>
+          <ActionIcon
+            onClick={() => editor.chain().focus().toggleBulletList().run()}
+            variant={editor.isActive('bulletList') ? 'light' : 'default'}
+            color="indigo"
+            className="border border-solid border-gray-400"
+          >
+            <IconList size={16} />
+          </ActionIcon>
+          <ActionIcon
+            onClick={() => editor.chain().focus().toggleOrderedList().run()}
+            variant={editor.isActive('orderedList') ? 'light' : 'default'}
+            color="indigo"
+            className="border border-solid border-gray-400"
+          >
+            <IconListNumbers size={16} />
+          </ActionIcon>
+          <ActionIcon
+            onClick={openImagePicker}
+            variant="default"
+            color="indigo"
+            className="border border-solid border-gray-400"
+          >
+            <IconPhoto size={16} />
+          </ActionIcon>
+        </FloatingMenu>
       )}
       <EditorContent editor={editor} />
 
@@ -421,6 +497,12 @@ export default function BubbleEditor({
           </Group>
         </Box>
       </Modal>
+
+      <ImagePicker
+        opened={imagePickerModal}
+        onClose={closeImagePicker}
+        submit={addImage}
+      />
     </>
   );
 }

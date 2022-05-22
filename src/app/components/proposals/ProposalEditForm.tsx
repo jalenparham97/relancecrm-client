@@ -6,27 +6,50 @@ import {
   Title,
   Tooltip,
   TextInput,
+  Text,
 } from '@mantine/core';
-import { JSONContent } from '@tiptap/react';
-import { Proposal } from '@/core/types';
+import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
+import { Client, Proposal, ProposalContent } from '@/core/types';
 import { useRecoilState } from 'recoil';
 import { proposalState } from '@/app/store';
 import { useDialog } from '@/app/hooks';
 import { useToggle } from 'react-use';
 import { useProposalUpdateMutation } from '@/app/api/proposals';
 import { IconDeviceFloppy, IconPhoto, IconX } from '@tabler/icons';
+import { isEmpty } from 'lodash';
+import { useClients } from '@/app/api/clients';
 import Button from '../shared/Button';
 import ProposalHeaderImagePicker from './ProposalHeaderImagePicker';
-import BubbleEditor from '../shared/BubbleEditor';
-import { useHover } from '@mantine/hooks';
 import ProposalBlock from './ProposalBlock';
+import ClientPicker from '../clients/ClientPicker';
+import Link from '../shared/Link';
+
+const reorder = (
+  list: ProposalContent[],
+  startIndex: number,
+  endIndex: number
+) => {
+  const result = Array.from(list);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+  return result;
+};
 
 export default function ProposalEditForm() {
   const [proposal, setProposal] = useRecoilState(proposalState);
   const [imagePickerOpen, openImagePicker, closeImagePicker] = useDialog();
   const [editMode, toggleEditMode] = useToggle(false);
+  const [client, setClient] = useState<Client>({});
+  const { data: clients } = useClients();
 
   const handleUpdateProposal = useProposalUpdateMutation(proposal?._id);
+
+  const handleChange = (
+    e: React.ChangeEvent<{ value: string; name: string }>
+  ) => {
+    const { name, value } = e.target;
+    setProposal((prevState) => ({ ...prevState, [name]: value }));
+  };
 
   const updateTitle = async () => {
     await handleUpdateProposal.mutateAsync({ title: proposal?.title });
@@ -41,6 +64,48 @@ export default function ProposalEditForm() {
     }));
   };
 
+  const resetClient = () => {
+    setClient({});
+    setProposal((prevState) => ({
+      ...prevState,
+      toName: '',
+      toEmail: '',
+      toCompany: '',
+      toAddress: '',
+      client: {},
+    }));
+  };
+
+  const handleClientChange = (client: Client) => {
+    if (client) {
+      setClient(client);
+      setProposal((prevState) => ({
+        ...prevState,
+        toName: client.fullName,
+        toEmail: client.email,
+        toCompany: client.company,
+        toAddress: client.address,
+        client,
+      }));
+    }
+  };
+
+  const onDragEnd = ({ source, destination }: DropResult) => {
+    // dropped outside the list
+    if (!destination) {
+      return;
+    }
+    const updatedContent = reorder(
+      proposal?.content,
+      source.index,
+      destination.index
+    );
+    setProposal((prevProposal) => ({
+      ...prevProposal,
+      content: updatedContent,
+    }));
+  };
+
   return (
     <Box>
       <Paper
@@ -51,7 +116,7 @@ export default function ProposalEditForm() {
         }}
       >
         <Box
-          className="flex justify-center items-center px-[80px] py-[150px]"
+          className="flex justify-center items-center px-[80px] py-[80px]"
           sx={{
             backgroundImage: `url("${proposal?.headerImgUrl}")`,
             backgroundPosition: 'center',
@@ -71,11 +136,12 @@ export default function ProposalEditForm() {
           {!editMode && (
             <Box
               className={`${
-                proposal?.headerImgUrl && ' bg-white px-8 py-3 rounded'
+                proposal?.headerImgUrl &&
+                ' bg-white px-8 py-3 rounded cursor-pointer'
               }`}
             >
               <Title
-                className={`text-center`}
+                className={`text-center cursor-pointer`}
                 order={2}
                 onClick={() => toggleEditMode(true)}
               >
@@ -89,6 +155,7 @@ export default function ProposalEditForm() {
               onChange={onProposalTitleChange}
               autoFocus
               className="w-96"
+              size="xl"
               rightSectionWidth={70}
               rightSection={
                 <Box className="flex">
@@ -120,20 +187,76 @@ export default function ProposalEditForm() {
         >
           <Box className="w-1/2 space-y-2">
             <Title order={5}>FROM:</Title>
-            <TextInput placeholder="Enter your name" />
-            <TextInput placeholder="Company name" />
-            <TextInput placeholder="Address" />
+            <TextInput
+              placeholder="Enter your name"
+              name="fromName"
+              value={proposal?.fromName || ''}
+              onChange={handleChange}
+            />
+            <TextInput
+              placeholder="Company name"
+              name="fromCompany"
+              value={proposal?.fromCompany || ''}
+              onChange={handleChange}
+            />
+            <TextInput
+              placeholder="Address"
+              name="fromAddress"
+              value={proposal?.fromAddress || ''}
+              onChange={handleChange}
+            />
           </Box>
           <Box className="w-1/2 space-y-2">
             <Title order={5}>TO:</Title>
-            <TextInput />
-            <TextInput placeholder="Company name" />
-            <TextInput placeholder="Address" />
+            {isEmpty(proposal?.toName) ? (
+              <ClientPicker
+                clients={clients?.data || []}
+                setClient={handleClientChange}
+                noLabel
+              />
+            ) : (
+              <Box>
+                <Box mt={-8}>
+                  <Text>{proposal?.toName}</Text>
+                  <Box mt={-2}>
+                    <Link size="sm" onClick={resetClient} underline>
+                      Choose a different client
+                    </Link>
+                  </Box>
+                </Box>
+              </Box>
+            )}
+            <TextInput
+              placeholder="Company name"
+              name="toCompany"
+              value={proposal?.toCompany}
+              onChange={handleChange}
+            />
+            <TextInput
+              placeholder="Address"
+              name="toAddress"
+              onChange={handleChange}
+              value={proposal?.toAddress}
+            />
           </Box>
         </Box>
-        {proposal?.content.map((block) => (
-          <ProposalBlock block={block} key={block.id} />
-        ))}
+
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="droppable">
+            {(provided, snapshot) => (
+              <Box
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+                className={`${snapshot.isDraggingOver && 'bg-indigo-500'}`}
+              >
+                {proposal?.content?.map((block, index: number) => (
+                  <ProposalBlock block={block} key={block.id} index={index} />
+                ))}
+                {provided.placeholder}
+              </Box>
+            )}
+          </Droppable>
+        </DragDropContext>
       </Paper>
 
       <ProposalHeaderImagePicker

@@ -62,7 +62,7 @@ export default function FormsPage() {
         Cell: ({ value, row }) => (
           <Link to={`/forms/${row.original.id}`}>
             <Box className="flex items-center space-x-2 hover:text-indigo-700">
-              <Text className="font-semibold">{value}</Text>
+              <Text className="text-sm font-semibold">{value}</Text>
             </Box>
           </Link>
         ),

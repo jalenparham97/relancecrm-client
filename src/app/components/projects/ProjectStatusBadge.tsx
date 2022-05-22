@@ -11,9 +11,5 @@ interface Props {
 }
 
 export default function ProjectStatusBadge({ status }: Props) {
-  return (
-    <Badge variant="filled" color={colors[status].color}>
-      {status}
-    </Badge>
-  );
+  return <Badge color={colors[status].color}>{status}</Badge>;
 }

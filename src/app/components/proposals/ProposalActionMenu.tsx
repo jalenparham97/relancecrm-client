@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { Divider, Menu } from '@mantine/core';
+import { Menu } from '@mantine/core';
 import { NextLink } from '@mantine/next';
 import {
   IconTrash,
@@ -10,6 +10,7 @@ import {
   IconThumbUp,
   IconBriefcase,
   IconDownload,
+  IconArchiveOff,
 } from '@tabler/icons';
 import {
   ProposalStatus,
@@ -23,10 +24,14 @@ import {
   useProposalUpdateStatusMutation,
 } from '@/app/api/proposals';
 import { useDialog } from '@/app/hooks';
-import { omitObjProperty } from '@/core/utils';
+import { formatCurrency, omitObjProperty } from '@/core/utils';
+import currency from 'currency.js';
 import DeleteModal from '@/app/components/shared/DeleteModal';
 import ProjectPickerModal from '../projects/ProjectPickerModal';
 import { isEmpty } from 'lodash';
+import ProposalApproveModal from './ProposalApproveModal';
+import ArchiveModal from '../shared/ArchiveModal';
+import { getFullName } from '@/app/utils';
 
 interface Props {
   id: string;
@@ -38,14 +43,16 @@ export default function ProposalActionMenu({ id, status, proposal }: Props) {
   const router = useRouter();
   const [deleteDialog, openDeleteDialog, closeDeleteDialog] = useDialog();
   const [projectDialog, openProjectDialog, closeProjectDialog] = useDialog();
+  const [approveModal, openApproveModal, closeApproveModal] = useDialog();
+  const [archiveModal, openArchiveModal, closeArchiveModal] = useDialog();
   const [project, setProject] = useState<Project>({});
 
   const handleDuplicateProposalSubmit = useProposalAddMutation();
   const handleUpdateProposal = useProposalUpdateStatusMutation(id);
   const handleDeleteProposal = useProposalDeleteMutation();
 
-  console.log({ proposal });
-  console.log(isEmpty(proposal?.project?.projectName));
+  const isApproved = proposal?.status === ProposalStatus.APPROVED;
+  const isArchived = proposal?.isArchived;
 
   const onDeleteForm = async () => {
     await handleDeleteProposal.mutateAsync(id);
@@ -61,7 +68,10 @@ export default function ProposalActionMenu({ id, status, proposal }: Props) {
         'createdAt',
         'updatedAt',
         'sentDate',
-        'amount',
+        'approvalDate',
+        'approver',
+        'isInvoiceCreated',
+        'expirationDate',
         'status',
       ];
       const duplicateProposal: CreateProposal = {
@@ -69,8 +79,16 @@ export default function ProposalActionMenu({ id, status, proposal }: Props) {
         title: `Copy ${proposal?.title}`,
         client: proposal?.client?._id,
         project: proposal?.project?._id,
+        content: proposal?.content,
+        toName: getFullName(proposal?.client) || '',
+        toEmail: proposal?.client?.email || '',
+        toAddress: proposal?.client?.address || '',
+        toCompany: proposal?.client?.company || '',
+        fromName: proposal?.fromName || '',
+        fromCompany: proposal?.fromCompany || '',
+        fromAddress: proposal?.fromAddress || '',
+        amount: currency(proposal?.amount).value,
       };
-      console.log(proposal);
       const newProposal = await handleDuplicateProposalSubmit.mutateAsync(
         duplicateProposal
       );
@@ -84,7 +102,21 @@ export default function ProposalActionMenu({ id, status, proposal }: Props) {
     try {
       await handleUpdateProposal.mutateAsync({
         status: ProposalStatus.APPROVED,
+        approvalDate: new Date().toISOString(),
+        approver: 'manual',
       });
+      closeApproveModal();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleArchiveStatus = async () => {
+    try {
+      await handleUpdateProposal.mutateAsync({
+        isArchived: !proposal?.isArchived,
+      });
+      closeArchiveModal();
     } catch (error) {
       console.log(error);
     }
@@ -102,41 +134,63 @@ export default function ProposalActionMenu({ id, status, proposal }: Props) {
   return (
     <>
       <Menu closeOnItemClick={false}>
-        <Menu.Item
-          component={NextLink}
-          href={`/proposals/${id}/edit`}
-          icon={<IconEdit size={16} />}
-        >
-          Edit
-        </Menu.Item>
-        <Menu.Item
-          icon={<IconCopy size={16} />}
-          onClick={handleDuplicateProposal}
-          disabled={handleDuplicateProposalSubmit.isLoading}
-        >
-          Duplicate
-        </Menu.Item>
-        <Divider />
-        <Menu.Item icon={<IconDownload size={16} />}>Download PDF</Menu.Item>
-        {proposal.status !== ProposalStatus.APPROVED && (
+        <>
+          {!isArchived && (
+            <>
+              {!isApproved && (
+                <Menu.Item
+                  component={NextLink}
+                  href={`/proposals/${id}/edit`}
+                  icon={<IconEdit size={16} />}
+                >
+                  Edit
+                </Menu.Item>
+              )}
+              <Menu.Item
+                icon={<IconCopy size={16} />}
+                onClick={handleDuplicateProposal}
+                disabled={handleDuplicateProposalSubmit.isLoading}
+              >
+                Duplicate
+              </Menu.Item>
+              <Menu.Item icon={<IconDownload size={16} />}>
+                Download PDF
+              </Menu.Item>
+              {!isApproved && (
+                <Menu.Item
+                  icon={<IconThumbUp size={16} />}
+                  onClick={openApproveModal}
+                >
+                  Mark as approved
+                </Menu.Item>
+              )}
+              {isEmpty(proposal?.project) && (
+                <Menu.Item
+                  icon={<IconBriefcase size={16} />}
+                  onClick={openProjectDialog}
+                >
+                  Add to a project
+                </Menu.Item>
+              )}
+
+              <Menu.Item
+                icon={<IconArchive size={16} />}
+                onClick={openArchiveModal}
+              >
+                Archive
+              </Menu.Item>
+            </>
+          )}
+        </>
+        {isArchived && (
           <Menu.Item
-            icon={<IconThumbUp size={16} />}
-            onClick={handleApproveStatus}
+            icon={<IconArchiveOff size={16} />}
+            onClick={handleArchiveStatus}
             disabled={handleUpdateProposal.isLoading}
           >
-            Mark as approved
+            Unarchive
           </Menu.Item>
         )}
-        {isEmpty(proposal?.project) && (
-          <Menu.Item
-            icon={<IconBriefcase size={16} />}
-            onClick={openProjectDialog}
-          >
-            Add to a project
-          </Menu.Item>
-        )}
-        <Divider />
-        <Menu.Item icon={<IconArchive size={16} />}>Archive</Menu.Item>
         <Menu.Item
           icon={<IconTrash size={16} />}
           color="red"
@@ -145,6 +199,21 @@ export default function ProposalActionMenu({ id, status, proposal }: Props) {
           Delete
         </Menu.Item>
       </Menu>
+
+      <ProposalApproveModal
+        opened={approveModal}
+        onClose={closeApproveModal}
+        onSubmit={handleApproveStatus}
+        isLoading={handleUpdateProposal.isLoading}
+      />
+
+      <ArchiveModal
+        title="Proposal"
+        opened={archiveModal}
+        onClose={closeArchiveModal}
+        onSubmit={handleArchiveStatus}
+        isLoading={handleUpdateProposal.isLoading}
+      />
 
       <ProjectPickerModal
         opened={projectDialog}

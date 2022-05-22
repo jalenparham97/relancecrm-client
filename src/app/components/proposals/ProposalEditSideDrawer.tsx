@@ -1,31 +1,27 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { Box, Title, Group } from '@mantine/core';
 import {
   IconLetterT,
-  IconPhoto,
   IconClock,
   IconReceipt,
   IconDeviceFloppy,
 } from '@tabler/icons';
-import { useDialog, useIsDarkMode } from '@/app/hooks';
 import {
-  Client,
   Project,
   ProposalContent,
   ProposalContentBlocksType,
 } from '@/core/types';
-import { SetterOrUpdater, useRecoilState } from 'recoil';
-import Button from '@/app/components/shared/Button';
-import Avatar from '@/app/components/shared/Avatar';
-import ProposalContentBlock from './ProposalContentBlock';
-import BrandColorPicker from '@/app/components/shared/BrandColorPicker';
+import { useRecoilState } from 'recoil';
 import { proposalState, selectedBlockState } from '@/app/store';
 import { nanoid } from 'nanoid';
 import { isEqual } from 'lodash';
 import { useProposal } from '@/app/api/proposals';
 import { estimateContent, textContent, timelineContent } from '@/app/utils';
 import { useToggle } from 'react-use';
+import Button from '@/app/components/shared/Button';
+import ProposalContentBlock from './ProposalContentBlock';
+import BrandColorPicker from '@/app/components/shared/BrandColorPicker';
 
 interface Props {
   updateProposalSubmit?: () => Promise<void>;
@@ -42,13 +38,15 @@ export default function ProposalEditSideDrawer({
   const [selectedId, setSelectedId] = useRecoilState(selectedBlockState);
   const [addingElement, toggleAddingElement] = useToggle(false);
 
-  // useEffect(() => {
-  //   window.scrollTo({
-  //     left: 0,
-  //     top: document.getElementById('proposal-edit-page').scrollHeight,
-  //     behavior: 'smooth',
-  //   });
-  // }, [addingElement]);
+  useEffect(() => {
+    if (addingElement) {
+      window.scrollTo({
+        left: 0,
+        top: document.getElementById('proposal-edit-page').scrollHeight,
+        behavior: 'smooth',
+      });
+    }
+  }, [addingElement]);
 
   const insertBlock = (
     content: ProposalContent[],
@@ -87,13 +85,6 @@ export default function ProposalEditSideDrawer({
         break;
     }
 
-    // const insertIndex = newContent.findIndex((el) => el.id === selectedId);
-
-    // if (selectedId) {
-    //   newContent.splice(insertIndex, 0, block);
-    // } else {
-    // }
-
     newContent.push(block);
     return newContent;
   };
@@ -104,9 +95,9 @@ export default function ProposalEditSideDrawer({
       content: insertBlock(prevProposal.content, 'text'),
     }));
     setSelectedId('');
-    // if (!selectedId) {
-    //   toggleAddingElement();
-    // }
+    if (!selectedId) {
+      toggleAddingElement();
+    }
   };
 
   const addTimelineBlock = () => {
@@ -114,18 +105,18 @@ export default function ProposalEditSideDrawer({
       ...prevProposal,
       content: insertBlock(prevProposal.content, 'timeline'),
     }));
-    // if (!selectedId) {
-    //   toggleAddingElement();
-    // }
+    if (!selectedId) {
+      toggleAddingElement();
+    }
   };
   const addEstimateBlock = () => {
     setProposal((prevProposal) => ({
       ...prevProposal,
       content: insertBlock(prevProposal.content, 'estimate'),
     }));
-    // if (!selectedId) {
-    //   toggleAddingElement();
-    // }
+    if (!selectedId) {
+      toggleAddingElement();
+    }
   };
 
   const setTextColor = (color: string) => {
@@ -170,18 +161,13 @@ export default function ProposalEditSideDrawer({
                   onClick={addTextBlock}
                 />
                 <ProposalContentBlock
-                  icon={<IconPhoto size="20px" />}
-                  name="Image"
-                  // onClick={addHeadingElement}
-                />
-                <ProposalContentBlock
                   icon={<IconClock size="20px" />}
                   name="Timeline"
                   onClick={addTimelineBlock}
                 />
                 <ProposalContentBlock
                   disabled={
-                    !!proposal?.content.find(
+                    !!proposal?.content?.find(
                       (block) => block.type === 'estimate'
                     )
                   }
