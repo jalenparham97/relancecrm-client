@@ -1,4 +1,4 @@
-import React from 'react';
+import { ModalProps } from '@mantine/core';
 
 interface Props extends ModalProps {
   loading?: boolean;
