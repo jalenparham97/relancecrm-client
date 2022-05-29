@@ -108,7 +108,7 @@ export default function FormPreview({ form, isPreview = false }: Props) {
   const isFormClosed =
     form?.settings?.isClosed ||
     (form?.settings?.limitResponses &&
-      form?.responsesCount === form?.settings?.maxResponses);
+      form?.responsesCount >= form?.settings?.maxResponses);
 
   return (
     <>

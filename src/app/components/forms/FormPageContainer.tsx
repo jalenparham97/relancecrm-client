@@ -15,7 +15,11 @@ interface Props {
   children?: React.ReactNode;
 }
 
-export default function FormPageContainer({ form, isLoading, children }: Props) {
+export default function FormPageContainer({
+  form,
+  isLoading,
+  children,
+}: Props) {
   const { query } = useRouter();
 
   return (
@@ -33,10 +37,13 @@ export default function FormPageContainer({ form, isLoading, children }: Props) 
           >
             Back to forms
           </Button>
-          <Box className="flex justify-between items-center mt-4">
+          <Box className="flex justify-between items-center mt-6">
             <Title order={1}>{form?.name}</Title>
             <Group spacing="xs">
-              <Button to={`/forms/${query.id}/edit`} leftIcon={<IconEdit size={16} />}>
+              <Button
+                to={`/forms/${query.id}/edit`}
+                leftIcon={<IconEdit size={16} />}
+              >
                 Edit
               </Button>
             </Group>

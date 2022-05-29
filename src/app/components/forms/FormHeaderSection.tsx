@@ -2,7 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { useToggle } from 'react-use';
 import { useHover, useInputState } from '@mantine/hooks';
 import { useDialog, useIsDarkMode, useToasts } from '@/app/hooks';
-import { ActionIcon, Box, Divider, Paper, TextInput, Title, Tooltip } from '@mantine/core';
+import {
+  ActionIcon,
+  Box,
+  Divider,
+  Paper,
+  TextInput,
+  Title,
+  Tooltip,
+} from '@mantine/core';
 import { IconDeviceFloppy, IconPhoto, IconX } from '@tabler/icons';
 import { useFormUpdateMutation } from '@/app/api/forms';
 import { useRecoilState } from 'recoil';
@@ -42,7 +50,9 @@ export default function FormHeaderSection({}: Props) {
     <Paper
       p={80}
       withBorder
-      className={`relative border-gray-300 shadow-sm border-t-8 ${isDarkMode && 'border-gray-800'}`}
+      className={`relative border-gray-300 shadow-sm border-t-8 ${
+        isDarkMode && 'border-gray-800'
+      }`}
       sx={{
         borderTopColor: `${form?.brandFillColor} !important`,
         backgroundImage: `url("${form?.headerImage?.url}")`,
@@ -65,8 +75,16 @@ export default function FormHeaderSection({}: Props) {
           {form?.headerImage?.url ? 'Change' : 'Add'} cover
         </Button>
         {!editMode && (
-          <Box className={`${form?.headerImage?.url && ' bg-white px-8 py-3 rounded'}`}>
-            <Title className={`text-center`} order={2} onClick={() => toggleEditMode(true)}>
+          <Box
+            className={`${
+              form?.headerImage?.url && ' bg-white px-8 py-3 rounded'
+            }`}
+          >
+            <Title
+              className={`text-center cursor-pointer`}
+              order={2}
+              onClick={() => toggleEditMode(true)}
+            >
               {form?.header}
             </Title>
           </Box>
@@ -77,6 +95,7 @@ export default function FormHeaderSection({}: Props) {
             onChange={onFormHeaderChange}
             autoFocus
             className="w-96"
+            size="lg"
             rightSectionWidth={70}
             rightSection={
               <Box className="flex">
@@ -89,7 +108,11 @@ export default function FormHeaderSection({}: Props) {
                     <IconDeviceFloppy size={16} />
                   </ActionIcon>
                 </Tooltip>
-                <ActionIcon variant="default" onClick={toggleEditMode} className="ml-1">
+                <ActionIcon
+                  variant="default"
+                  onClick={toggleEditMode}
+                  className="ml-1"
+                >
                   <IconX size={16} />
                 </ActionIcon>
               </Box>

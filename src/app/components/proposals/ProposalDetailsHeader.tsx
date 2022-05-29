@@ -31,6 +31,7 @@ import UnsavedDataModal from '@/app/components/shared/UnsavedDataModal';
 import ProposalApproveModal from './ProposalApproveModal';
 import ProposalStatusBadge from './ProposalStatusBadge';
 import ArchiveModal from '../shared/ArchiveModal';
+import ProposalSendModal from './ProposalSendModal';
 
 interface Props {
   openPreview?: boolean;
@@ -48,10 +49,10 @@ export default function ProposalDetailsHeader({
   const router = useRouter();
   const isDarkMode = useIsDarkMode();
   const { data: proposal } = useProposal(router.query.id as string);
-  const [openSendDialog, toggleOpenSendDialog] = useToggle(false);
   const [unsavedModal, openUnsavedModal, closeUnsavedModal] = useDialog();
   const [approveModal, openApproveModal, closeApproveModal] = useDialog();
   const [archiveModal, openArchiveModal, closeArchiveModal] = useDialog();
+  const [sendModal, openSendModal, closeSendModal] = useDialog();
   const [sendUserCopy, setSendUserCopy] = useState(false);
   const [message, setMessage] = useState('');
   const { send, isLoading, error, resetError } = useInvoiceSend();

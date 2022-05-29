@@ -35,5 +35,6 @@ export const config = {
     emailFrom: 'no-reply@relancecrm.com',
     invoiceTestTemplateId: 'd-cb5c1bca499649d3b6e8472282069b49',
     invoiceTemplateId: '3z0vklo6enxl7qrx',
+    proposalTemplateId: 'jpzkmgq7q9yl059v',
   },
 };

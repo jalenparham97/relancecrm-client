@@ -25,6 +25,8 @@ const schema = new mongoose.Schema<ProposalDocument>(
     expirationDate: { type: String, default: '' },
     approver: { type: String, default: '' },
     approvalDate: { type: String, default: '' },
+    decliner: { type: String, default: '' },
+    declineDate: { type: String, default: '' },
     isArchived: { type: Boolean, default: false },
     amount: { type: Number, default: 0 },
     isInvoiceAutoCreationEnabled: { type: Boolean, default: false },

@@ -155,7 +155,7 @@ export default function ProposalEditForm() {
               onChange={onProposalTitleChange}
               autoFocus
               className="w-96"
-              size="xl"
+              size="lg"
               rightSectionWidth={70}
               rightSection={
                 <Box className="flex">

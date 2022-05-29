@@ -1,6 +1,10 @@
 import { isEmpty } from 'lodash';
 import { config } from '@/core/config';
-import { mailer, EmailParams, Recipient } from '@/server/libs/email/email-manager';
+import {
+  mailer,
+  EmailParams,
+  Recipient,
+} from '@/server/libs/email/email-manager';
 import {
   CreateInvoice,
   Invoice,
@@ -10,14 +14,17 @@ import {
   ServiceResponse,
   User,
 } from '@/core/types';
-import { InvoiceTemplateData, MailOptions, Personalization, TemplateData } from '@/server/types';
+import { InvoiceTemplateData, Personalization } from '@/server/types';
 import { invoiceModel } from '@/server/models';
 import { formatCurrency, formatDate, omitObjProperty } from '@/core/utils';
 import { padInvoiceNumber } from '@/server/utils';
 import dayjs from 'dayjs';
 
 class InvoicesService {
-  async create(createInvoiceData: CreateInvoice, userId: string): Promise<Invoice> {
+  async create(
+    createInvoiceData: CreateInvoice,
+    userId: string
+  ): Promise<Invoice> {
     return await invoiceModel.create({ ...createInvoiceData, userId });
   }
 
@@ -54,7 +61,10 @@ class InvoicesService {
     return { total, data };
   }
 
-  async findAllClientInvoices(clientId: string, userId: string): Promise<ServiceResponse<Invoice>> {
+  async findAllClientInvoices(
+    clientId: string,
+    userId: string
+  ): Promise<ServiceResponse<Invoice>> {
     const query = { client: clientId, userId };
 
     const data = await invoiceModel
@@ -86,7 +96,11 @@ class InvoicesService {
     return await invoiceModel.findById(id).lean().exec();
   }
 
-  async update(id: string, userId: string, updateData: CreateInvoice): Promise<Invoice> {
+  async update(
+    id: string,
+    userId: string,
+    updateData: CreateInvoice
+  ): Promise<Invoice> {
     let updateObject: CreateInvoice;
 
     if (updateData.invoiceNumber) {
@@ -109,7 +123,11 @@ class InvoicesService {
 
   async removeInvoiceProject(id: string, userId: string) {
     return await invoiceModel
-      .findOneAndUpdate({ _id: id, userId }, { $unset: { project: '' } }, { new: true })
+      .findOneAndUpdate(
+        { _id: id, userId },
+        { $unset: { project: '' } },
+        { new: true }
+      )
       .lean()
       .exec();
   }
@@ -126,29 +144,36 @@ class InvoicesService {
     try {
       const { invoice } = invoiceEmailOptions;
       const email = this.createInvoiceEmail(invoiceEmailOptions, user);
-      await mailer.send(email);
+      await mailer.email.send(email);
       return await this.updateInvoiceStatus(invoice, user);
     } catch (error) {
       console.log(error);
     }
   }
 
-  async sendTestInvoiceEmail(invoiceEmailOptions: InvoiceEmailData, user: User) {
+  async sendTestInvoiceEmail(
+    invoiceEmailOptions: InvoiceEmailData,
+    user: User
+  ) {
     try {
       const isTest = true;
       const email = this.createInvoiceEmail(invoiceEmailOptions, user, isTest);
-      return await mailer.send(email);
+      return await mailer.email.send(email);
     } catch (error) {
       console.log(error);
     }
   }
 
-  private createInvoiceEmail(emailOptions: InvoiceEmailData, user: User, isTest: boolean = false) {
+  private createInvoiceEmail(
+    emailOptions: InvoiceEmailData,
+    user: User,
+    isTest: boolean = false
+  ) {
     const { invoice, sendUserCopy, message, recipients, from } = emailOptions;
 
     const isTestHeader = isTest ? 'Your test email:' : '';
 
-    const dynamicTemplateData: Personalization<TemplateData> = {
+    const dynamicTemplateData: Personalization<InvoiceTemplateData> = {
       email: isTest ? user.email : invoice.client?.email,
       data: {
         invoiceUrl: `${config.webAppURL}/invoices/${invoice._id}/pay`,
@@ -156,22 +181,26 @@ class InvoicesService {
         invoiceNumber: `${invoice.invoiceNumber}`,
         total: formatCurrency(invoice.total),
         dueDate: formatDate(invoice.dueOn),
-        message: message || 'Hi! Please find my invoice attached. Thanks for your business!',
+        message:
+          message ||
+          'Hi! Please find my invoice attached. Thanks for your business!',
       },
     };
 
     const email = new EmailParams();
 
-    email.setFrom(config.email.emailFrom);
+    email.setFrom({ email: config.email.emailFrom });
     email.setSubject(`${isTestHeader} ${invoice.fromName} sent you an invoice`);
     email.setTemplateId(config.email.invoiceTemplateId);
     email.setPersonalization([dynamicTemplateData]);
 
     if (isTest) {
-      email.setRecipients([new Recipient(user.email)]);
+      email.setTo([new Recipient(user.email)]);
     } else {
-      const ccRecipients = recipients.map((recipient) => new Recipient(recipient));
-      email.setRecipients([new Recipient(invoice.toEmail)]);
+      const ccRecipients = recipients.map(
+        (recipient) => new Recipient(recipient)
+      );
+      email.setTo([new Recipient(invoice.toEmail)]);
       email.setCc(!isEmpty(recipients) ? ccRecipients : []);
       email.setBcc(sendUserCopy ? [new Recipient(user.email)] : []);
     }

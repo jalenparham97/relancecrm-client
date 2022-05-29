@@ -30,7 +30,7 @@ export default function NavTab({
     <Link to={to}>
       <Box
         {...otherProps}
-        className={`mr-4 h-[45px] flex justify-center items-center transition-all`}
+        className={`mr-4 h-[40px] flex justify-center items-center transition-all`}
         sx={{ borderBottom: borderBottomStyle }}
       >
         <Text

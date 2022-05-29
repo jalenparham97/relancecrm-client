@@ -1,6 +1,14 @@
 import { useMutation, useQueryClient, useQuery } from 'react-query';
 import { proposalsService } from '@/app/services/proposals.service';
-import { CreateProposal, Proposal, ServiceResponse } from '@/core/types';
+import {
+  CreateProposal,
+  HttpStatus,
+  Proposal,
+  ProposalEmailData,
+  ServiceResponse,
+} from '@/core/types';
+import { useState } from 'react';
+import { useRouter } from 'next/router';
 
 const queryKey = 'proposals';
 const service = proposalsService;
@@ -32,6 +40,14 @@ export const useProposalsProject = (projectId: string) => {
 export const useProposal = (id: string) => {
   const fetchData = async () => {
     const data: Proposal = await service.get(id);
+    return data;
+  };
+  return useQuery<Proposal>(id, fetchData);
+};
+
+export const useProposalView = (id: string) => {
+  const fetchData = async () => {
+    const data: Proposal = await service.findProposalView(id);
     return data;
   };
   return useQuery<Proposal>(id, fetchData);
@@ -269,4 +285,56 @@ export const useProposalIdDeleteMutation = (id: string) => {
       queryClient.invalidateQueries(proposalQueryKey);
     },
   });
+};
+
+export const useProposalSendTest = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const resetError = () => {
+    setError(null);
+  };
+
+  const sendTestProposal = async (emailData: ProposalEmailData) => {
+    try {
+      setIsLoading(true);
+      const response = await service.sendTestProposalEmail(emailData);
+      if (response.status === HttpStatus.OK) {
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+      setError(error.message);
+    }
+  };
+
+  return { sendTestProposal, error, resetError, isLoading };
+};
+
+export const useProposalSend = () => {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const resetError = () => {
+    setError(null);
+  };
+
+  const sendProposal = async (emailData: ProposalEmailData) => {
+    try {
+      setIsLoading(true);
+      const response = await service.sendProposalEmail(emailData);
+      if (response.status === HttpStatus.OK) {
+        setIsLoading(false);
+        router.push('/proposals');
+      }
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+      setError(error.message);
+    }
+  };
+
+  return { sendProposal, error, resetError, isLoading };
 };

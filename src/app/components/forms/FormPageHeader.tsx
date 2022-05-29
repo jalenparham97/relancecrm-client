@@ -69,7 +69,11 @@ export default function FormPageHeader() {
           </ActionIcon>
 
           {!editMode && (
-            <Title order={2} onClick={() => toggleEditMode(true)}>
+            <Title
+              order={4}
+              onClick={() => toggleEditMode(true)}
+              className="cursor-pointer"
+            >
               {form?.name}
             </Title>
           )}

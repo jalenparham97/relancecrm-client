@@ -22,9 +22,10 @@ interface Props {
 export default function FormResponseCard({ response }: Props) {
   const colors = useColors();
   const [deleteModal, openDeleteModal, closeDeleteModal] = useDialog();
+  const [expandOpen, openExpand, closeExpand] = useDialog();
   const [selectedId, setSelectedId] = useState('');
 
-  const handleDeleteResponse = useResponseDeleteMutation();
+  const handleDeleteResponse = useResponseDeleteMutation(response?.formId);
 
   function openDeleteResponseModal() {
     setSelectedId(response._id);
@@ -50,13 +51,28 @@ export default function FormResponseCard({ response }: Props) {
         <Group spacing="xl">
           <Box>{formatDate(response.createdAt)}</Box>
           {typeof response.content[0].value === 'object' ? (
-            <Text>{response.content[0].value[0]}</Text>
+            <Text
+              className="cursor-pointer hover:underline"
+              onClick={openExpand}
+            >
+              {response.content[0].value[0]}
+            </Text>
           ) : (
-            <Text>{response.content[0].value}</Text>
+            <Text
+              className="cursor-pointer hover:underline"
+              onClick={openExpand}
+            >
+              {response.content[0].value}
+            </Text>
           )}
         </Group>
         <Group spacing="xs">
-          <ExpandActionButton response={response} />
+          <ExpandActionButton
+            response={response}
+            opened={expandOpen}
+            open={openExpand}
+            onClose={closeExpand}
+          />
           <ActionIcon variant="default" onClick={openDeleteResponseModal}>
             <IconTrash size={16} color={colors.red[5]} />
           </ActionIcon>
@@ -76,17 +92,23 @@ export default function FormResponseCard({ response }: Props) {
 
 interface ExpandActionButtonProps {
   response: FormResponse;
+  opened: boolean;
+  onClose: () => void;
+  open: () => void;
 }
 
-function ExpandActionButton({ response }: ExpandActionButtonProps) {
-  const [expandOpen, openExpand, closeExpand] = useDialog();
-
+function ExpandActionButton({
+  response,
+  opened,
+  open,
+  onClose,
+}: ExpandActionButtonProps) {
   return (
     <>
-      <ActionIcon variant="default" onClick={openExpand}>
+      <ActionIcon variant="default" onClick={open}>
         <IconArrowsDiagonal size={16} />
       </ActionIcon>
-      <Modal opened={expandOpen} onClose={closeExpand} title="Response">
+      <Modal opened={opened} onClose={onClose} title="Response">
         <Box className="space-y-4">
           {response.content.map((item) => {
             const valueArray =

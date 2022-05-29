@@ -14,6 +14,7 @@ import {
   Task,
   User,
 } from '@/core/types';
+import { config } from '@/core/config';
 
 class FormsService {
   async create(createData: Form, userId: string): Promise<Form> {
@@ -84,22 +85,26 @@ class FormsService {
     session.endSession();
 
     if (form?.settings?.sendEmailNotification) {
-      await this.sendNotificatioEmail(createData, user);
+      await this.sendNotificatioEmail(createData, user, form);
     }
     return responses[0] as FormResponse;
   }
 
-  async sendNotificatioEmail(response: FormResponse, user: User) {
+  async sendNotificatioEmail(response: FormResponse, user: User, form: Form) {
     try {
-      const email = this.createNotificationEmail(response, user);
-      return await mailer.send(email);
+      const email = this.createNotificationEmail(response, user, form);
+      return await mailer.email.send(email);
     } catch (error) {
       console.log(error);
     }
   }
 
-  private createNotificationEmail(response: FormResponse, user: User) {
-    const recipients = [new Recipient(user?.email, user?.fullName)];
+  private createNotificationEmail(
+    response: FormResponse,
+    user: User,
+    form: Form
+  ) {
+    const recipients = [new Recipient(user?.email)];
 
     const html = `
       <div>
@@ -118,9 +123,12 @@ class FormsService {
     `;
 
     const email = new EmailParams()
-      .setFrom('no-reply@relancecrm.com')
-      .setRecipients(recipients)
-      .setSubject(`New response for your form`)
+      .setFrom({
+        email: config.email.emailFrom,
+        name: `Relance <${config.email.emailFrom}>`,
+      })
+      .setTo(recipients)
+      .setSubject(`New response for ${form.name}`)
       .setHtml(html);
 
     return email;

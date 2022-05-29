@@ -8,7 +8,7 @@ interface Props extends TabsProps {
 export default function Tabs({
   children,
   styles,
-  height = '45px',
+  height = '40px',
   ...otherProps
 }: Props) {
   const isDarkMode = useIsDarkMode();

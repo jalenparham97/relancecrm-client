@@ -358,20 +358,22 @@ export default function ProposalBlock({ block, index }: Props) {
               </Box>
             </Collapse>
             <Box className="absolute top-[4px] right-1 flex flex-col space-y-2">
-              {(hovered || snapshot.isDragging) && (
-                <>
-                  <Box {...provided.dragHandleProps}>
-                    <IconGripVertical className="text-gray-600" />
-                  </Box>
-                  <Box>
-                    <IconTrash
-                      size={20}
-                      className="cursor-pointer ml-[2px] text-red-600"
-                      onClick={deleteBlock}
-                    />
-                  </Box>
-                </>
-              )}
+              <Box
+                className={`${
+                  hovered || snapshot.isDragging ? 'visible' : 'invisible'
+                }`}
+              >
+                <Box {...provided.dragHandleProps}>
+                  <IconGripVertical className="text-gray-600" />
+                </Box>
+                <Box>
+                  <IconTrash
+                    size={20}
+                    className="cursor-pointer ml-[2px] text-red-600"
+                    onClick={deleteBlock}
+                  />
+                </Box>
+              </Box>
             </Box>
             <BubbleEditor
               defaultContent={block.content as JSONContent[]}

@@ -58,3 +58,7 @@
 .ql-editor p {
   margin: 16px 0px;
 }
+
+.proposal-send-inputs-container .mantine-TextInput-icon {
+  width: auto;
+}

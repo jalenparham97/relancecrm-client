@@ -61,7 +61,7 @@ export default function ClientPageContainer({
           </Box>
         )}
         {!isLoading && (
-          <Box>
+          <>
             <Button
               className="hover:bg-transparent"
               variant="subtle"
@@ -72,7 +72,36 @@ export default function ClientPageContainer({
             >
               Back to clients
             </Button>
-            <Paper
+            <Group position="apart" className="mt-6">
+              <Group>
+                <Avatar
+                  radius="xl"
+                  size="lg"
+                  backgroundColor={client?.backgroundColor}
+                >
+                  {client?.initials}
+                </Avatar>
+                <Title order={2}>{client?.fullName}</Title>
+              </Group>
+              <Group>
+                <Menu placement="end">
+                  <Menu.Item
+                    icon={<FiEdit2 />}
+                    onClick={toggleOpenClientFormDialog}
+                  >
+                    Edit
+                  </Menu.Item>
+                  <Menu.Item
+                    color="red"
+                    icon={<FiTrash2 />}
+                    onClick={toggleOpenDeleteDialog}
+                  >
+                    Delete
+                  </Menu.Item>
+                </Menu>
+              </Group>
+            </Group>
+            {/* <Paper
               mt={15}
               p="xl"
               withBorder
@@ -170,22 +199,23 @@ export default function ClientPageContainer({
                   </Grid.Col>
                 </Grid>
               </Box>
-            </Paper>
+            </Paper> */}
 
-            <Paper
-              mt={20}
-              withBorder
-              className="border-gray-600 border-opacity-20 shadow-sm"
-            >
-              <NavTabs className="ml-[12px] px-2">
-                <NavTab to={`/clients/${query.id}`} label="Tasks" />
+            <Box className="mt-8">
+              <NavTabs className="">
+                <NavTab to={`/clients/${query.id}`} label="Overview" />
+                <NavTab to={`/clients/${query.id}/tasks`} label="Tasks" />
                 <NavTab to={`/clients/${query.id}/projects`} label="Projects" />
                 <NavTab to={`/clients/${query.id}/invoices`} label="Invoices" />
+                <NavTab
+                  to={`/clients/${query.id}/proposals`}
+                  label="Proposals"
+                />
               </NavTabs>
 
-              <Box className="p-5">{children}</Box>
-            </Paper>
-          </Box>
+              <Box className="pt-5">{children}</Box>
+            </Box>
+          </>
         )}
       </Container>
 

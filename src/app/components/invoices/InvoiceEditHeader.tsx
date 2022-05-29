@@ -7,7 +7,11 @@ import { ActionIcon, Box, Group, Header, Title } from '@mantine/core';
 import { FiArrowLeft, FiSave, FiSend, FiEye, FiEyeOff } from 'react-icons/fi';
 import { useIsDarkMode, useToasts, useDialog } from '@/app/hooks';
 import { useUser } from '@/app/api/auth';
-import { useInvoiceSend, useInvoiceSendTest, useInvoiceUpdateMutation } from '@/app/api/invoices';
+import {
+  useInvoiceSend,
+  useInvoiceSendTest,
+  useInvoiceUpdateMutation,
+} from '@/app/api/invoices';
 import { CreateInvoice, Invoice } from '@/core/types';
 import { getInvoiceSubtotal, getInvoiceTotal } from '@/app/utils';
 import { createInvoiceState } from '@/app/store';
@@ -22,7 +26,11 @@ interface Props {
   invoiceData?: Invoice;
 }
 
-export default function InvoiceEditHeader({ openPreview, toggleOpenPreview, invoiceData }: Props) {
+export default function InvoiceEditHeader({
+  openPreview,
+  toggleOpenPreview,
+  invoiceData,
+}: Props) {
   const user = useUser();
   const router = useRouter();
   const isDarkMode = useIsDarkMode();
@@ -61,7 +69,9 @@ export default function InvoiceEditHeader({ openPreview, toggleOpenPreview, invo
     return await sendTest(invoice);
   };
 
-  const handleUpdateInvoiceSubmit = useInvoiceUpdateMutation<CreateInvoice>(invoice?._id);
+  const handleUpdateInvoiceSubmit = useInvoiceUpdateMutation<CreateInvoice>(
+    invoice?._id
+  );
 
   const updateInvoice = async () => {
     try {
@@ -101,7 +111,7 @@ export default function InvoiceEditHeader({ openPreview, toggleOpenPreview, invo
           <ActionIcon size="lg" onClick={handleBack}>
             <FiArrowLeft size="20px" />
           </ActionIcon>
-          <Title order={2}>Edit Invoice</Title>
+          <Title order={4}>Edit Invoice</Title>
           {invoice && <InvoiceStatusBadge status={invoice?.status} />}
         </Group>
         <Group align="center">

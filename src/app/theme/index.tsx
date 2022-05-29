@@ -31,7 +31,6 @@ export function ThemeProvider({ children }) {
               fontWeight: 600,
               fontSize: '14px',
             },
-            tabControl: { height: '50px' },
           }),
           Checkbox: (theme) => ({
             input: { cursor: 'pointer' },
@@ -47,6 +46,13 @@ export function ThemeProvider({ children }) {
           }),
           Text: (theme) => ({
             dimmed: { color: theme.colorScheme === 'light' ? '' : '' },
+          }),
+          TextInput: (theme) => ({
+            input: {
+              ':disabled': {
+                opacity: '0.75',
+              },
+            },
           }),
         }}
       >

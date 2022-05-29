@@ -1,5 +1,10 @@
 import { Service } from './service';
-import { CreateProposal, Proposal, ServiceResponse } from '@/core/types';
+import {
+  CreateProposal,
+  Proposal,
+  ProposalEmailData,
+  ServiceResponse,
+} from '@/core/types';
 import { axios } from '@/app/libs/axios';
 
 class ProposalsService extends Service<Proposal> {
@@ -37,13 +42,18 @@ class ProposalsService extends Service<Proposal> {
     return data;
   }
 
-  // async sendProposalEmail(emailData: InvoiceEmailData) {
-  //   return await axios.post(`/${this.service}/send`, emailData);
-  // }
+  async findProposalView(id: string) {
+    const { data } = await axios.get<Proposal>(`/${this.service}/${id}/view`);
+    return data;
+  }
 
-  // async sendTestInvoiceEmail(invoice: Invoice) {
-  //   return await axios.post(`/${this.service}/send/test`, { invoice });
-  // }
+  async sendProposalEmail(emailData: ProposalEmailData) {
+    return await axios.post(`/${this.service}/send`, emailData);
+  }
+
+  async sendTestProposalEmail(emailData: ProposalEmailData) {
+    return await axios.post(`/${this.service}/send/test`, emailData);
+  }
 }
 
 export const proposalsService = new ProposalsService('proposals');

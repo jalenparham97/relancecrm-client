@@ -65,7 +65,7 @@ export default function ProposalPreview({ proposal }: Props) {
         </Box>
       </Box>
 
-      {proposal.content.map((block) => (
+      {proposal?.content?.map((block) => (
         <Box
           key={block.id}
           className={`px-[50px] py-[40px] border-transparent border-y-[1px] border-solid border-x-0  relative`}

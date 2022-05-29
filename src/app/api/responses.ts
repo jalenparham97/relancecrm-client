@@ -71,27 +71,28 @@ export const useResponseDeleteManyMutation = (ids: string[]) => {
   });
 };
 
-export const useResponseDeleteMutation = () => {
+export const useResponseDeleteMutation = (formId: string) => {
   const queryClient = useQueryClient();
+  const responsesQueryKey = `${queryKey}/${formId}`;
 
   return useMutation(async (id: string) => await service.remove(id), {
     onMutate: async () => {
-      await queryClient.cancelQueries(queryKey);
+      await queryClient.cancelQueries(responsesQueryKey);
       const previousQueryData =
-        queryClient.getQueryData<FormResponse[]>(queryKey);
+        queryClient.getQueryData<FormResponse[]>(responsesQueryKey);
       return { previousQueryData };
     },
     onError: (error, _, context) => {
       console.log(error);
       if (context?.previousQueryData) {
         queryClient.setQueryData<FormResponse[]>(
-          queryKey,
+          responsesQueryKey,
           context.previousQueryData
         );
       }
     },
     onSettled: () => {
-      queryClient.invalidateQueries(queryKey);
+      queryClient.invalidateQueries(responsesQueryKey);
     },
   });
 };

@@ -27,6 +27,8 @@ export type BaseProposal = {
   sentDate?: string;
   approvalDate?: string;
   approver?: string;
+  declineDate?: string;
+  decliner?: string;
   createdAt?: string;
   updatedAt?: string;
 };
@@ -74,3 +76,12 @@ export type CreateProposal = {
   client?: string;
   project?: string;
 } & BaseProposal;
+
+export type ProposalEmailData = {
+  from?: string;
+  contentSubject?: string;
+  subject?: string;
+  sendUserCopy?: boolean;
+  proposal: Proposal;
+  message?: string;
+};
