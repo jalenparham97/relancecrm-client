@@ -11,7 +11,7 @@ handler.use(requireAuth);
 
 handler.get(async (req, res) => {
   const tasks = await tasksService.findAllProjectTasks(
-    req.query.id as string,
+    req.user._id as string,
     req.query.projectId as string
   );
   return res.status(HttpStatus.OK).json(tasks);

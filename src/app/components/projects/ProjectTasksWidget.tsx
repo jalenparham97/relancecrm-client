@@ -5,7 +5,7 @@ import {
   useTasksProject,
 } from '@/app/api/tasks';
 import { Task } from '@/core/types';
-import { Box, Paper, Title, Group } from '@mantine/core';
+import { Box, Title, Group } from '@mantine/core';
 import { isEmpty } from 'lodash';
 import { FiPlus } from 'react-icons/fi';
 import { BsListCheck } from 'react-icons/bs';
@@ -23,7 +23,8 @@ interface Props {
 
 export default function ProjectTasksWidget({ id, ...otherProps }: Props) {
   const { isLoading, data: tasks } = useTasksProject(id);
-  const [taskCreateModal, openTaskCreateModal, closeTaskCreateModal] = useDialog();
+  const [taskCreateModal, openTaskCreateModal, closeTaskCreateModal] =
+    useDialog();
 
   const filterActiveTasks = ({ completed }: Task) => {
     return completed === false;
@@ -41,7 +42,7 @@ export default function ProjectTasksWidget({ id, ...otherProps }: Props) {
   const activeTasks = tasks?.data.filter(filterActiveTasks);
 
   return (
-    <Paper>
+    <Box>
       {isLoading && <LoadingLoader height="100%" />}
       {!isLoading && (
         <Box>
@@ -89,6 +90,6 @@ export default function ProjectTasksWidget({ id, ...otherProps }: Props) {
         submit={onTaskSubmit}
         hideProjectPicker
       />
-    </Paper>
+    </Box>
   );
 }

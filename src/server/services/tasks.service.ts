@@ -9,27 +9,45 @@ class TasksService {
   async findAll(userId: string): Promise<ServiceResponse<Task>> {
     const query = { userId };
 
-    const data = await taskModel.find(query).sort({ _id: -1 }).populate('project').exec();
+    const data = await taskModel
+      .find(query)
+      .sort({ _id: -1 })
+      .populate('project')
+      .exec();
 
     const total = await taskModel.count(query);
 
     return { total, data };
   }
 
-  async findAllClientTasks(userId: string, clientId: string): Promise<ServiceResponse<Task>> {
+  async findAllClientTasks(
+    userId: string,
+    clientId: string
+  ): Promise<ServiceResponse<Task>> {
     const query = { userId, clientId };
 
-    const data = await taskModel.find(query).sort({ createdAt: 'desc' }).populate('project').exec();
+    const data = await taskModel
+      .find(query)
+      .sort({ createdAt: 'desc' })
+      .populate('project')
+      .exec();
 
     const total = await taskModel.count(query);
 
     return { total, data };
   }
 
-  async findAllProjectTasks(userId: string, projectId: string): Promise<ServiceResponse<Task>> {
-    const query = { userId, projectId };
+  async findAllProjectTasks(
+    userId: string,
+    projectId: string
+  ): Promise<ServiceResponse<Task>> {
+    const query = { userId, project: projectId };
 
-    const data = await taskModel.find(query).sort({ createdAt: 'desc' }).populate('project').exec();
+    const data = await taskModel
+      .find(query)
+      .sort({ createdAt: 'desc' })
+      .populate('project')
+      .exec();
 
     const total = await taskModel.count(query);
 
@@ -45,7 +63,9 @@ class TasksService {
   }
 
   async update(id: string, userId: string, updateData: Task): Promise<Task> {
-    return await taskModel.findOneAndUpdate({ _id: id, userId }, updateData, { new: true }).exec();
+    return await taskModel
+      .findOneAndUpdate({ _id: id, userId }, updateData, { new: true })
+      .exec();
   }
 
   async removeMany(ids: string[]) {

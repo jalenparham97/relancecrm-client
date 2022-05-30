@@ -23,7 +23,11 @@ export default function InvoiceItem({ invoice, client }: Props) {
   };
 
   return (
-    <Paper p="md" withBorder className="border-gray-600 border-opacity-30">
+    <Paper
+      p="md"
+      withBorder
+      className="border-gray-600 border-opacity-30 shadow-sm"
+    >
       <Group position="apart">
         <Link
           to={`/invoices/${invoice._id}/${

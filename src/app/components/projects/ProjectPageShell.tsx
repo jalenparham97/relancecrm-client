@@ -4,13 +4,10 @@ import {
   Box,
   Container,
   Loader,
-  Paper,
   Group,
   Title,
   Text,
   Menu,
-  Divider,
-  Grid,
 } from '@mantine/core';
 import { FiArrowLeft, FiEdit2, FiTrash2, FiCheck, FiZap } from 'react-icons/fi';
 import {
@@ -23,11 +20,9 @@ import { isEmpty } from 'lodash';
 import PageLayout from '@/app/components/layouts/PageLayout';
 import Button from '@/app/components/shared/Button';
 import Avatar from '@/app/components/shared/Avatar';
-import TabPanel from '@/app/components/shared/TabPanel';
 import DeleteModal from '@/app/components/shared/DeleteModal';
 import ProjectStatusBadge from '@/app/components/projects/ProjectStatusBadge';
 import ProjectEditModal from '@/app/components/projects/ProjectEditModal';
-import Tabs from '@/app/components/shared/Tabs';
 import NavTab from '../shared/NavTab';
 import NavTabs from '../shared/NavTabs';
 import Link from '../shared/Link';
@@ -90,12 +85,8 @@ export default function ProjectPageShell({
             >
               Back to projects
             </Button>
-            <Paper
-              p="xl"
-              withBorder
-              className="mt-4 border-gray-600 border-opacity-20 shadow-sm"
-            >
-              <Group position="apart">
+            <Group position="apart" className="mt-6">
+              <Box>
                 <Group spacing={20}>
                   <Avatar
                     radius="xl"
@@ -107,115 +98,62 @@ export default function ProjectPageShell({
                   <Title order={2}>{project?.projectName}</Title>
                   <ProjectStatusBadge status={project?.status} />
                 </Group>
-                <Group>
-                  <Menu placement="end" closeOnItemClick={false}>
+              </Box>
+              <Group spacing="xl">
+                <Menu placement="end" closeOnItemClick={false}>
+                  <Menu.Item
+                    icon={<FiEdit2 />}
+                    onClick={toggleOpenProjectEditDialog}
+                  >
+                    Edit
+                  </Menu.Item>
+                  {project?.status === ProjectStatus.ACTIVE && (
                     <Menu.Item
-                      icon={<FiEdit2 />}
-                      onClick={toggleOpenProjectEditDialog}
+                      component="button"
+                      icon={<FiCheck />}
+                      disabled={handleUpdateProjectSubmit.isLoading}
+                      onClick={onMarkAsDone}
                     >
-                      Edit
+                      Mark as done
                     </Menu.Item>
-                    {project?.status === ProjectStatus.ACTIVE && (
-                      <Menu.Item
-                        component="button"
-                        icon={<FiCheck />}
-                        disabled={handleUpdateProjectSubmit.isLoading}
-                        onClick={onMarkAsDone}
-                      >
-                        Mark as done
-                      </Menu.Item>
-                    )}
-                    {project?.status === ProjectStatus.DONE && (
-                      <Menu.Item
-                        component="button"
-                        icon={<FiZap />}
-                        disabled={handleUpdateProjectSubmit.isLoading}
-                        onClick={onMarkAsActive}
-                      >
-                        Mark as active
-                      </Menu.Item>
-                    )}
+                  )}
+                  {project?.status === ProjectStatus.DONE && (
                     <Menu.Item
-                      color="red"
-                      icon={<FiTrash2 />}
-                      onClick={toggleOpenDeleteDialog}
+                      component="button"
+                      icon={<FiZap />}
+                      disabled={handleUpdateProjectSubmit.isLoading}
+                      onClick={onMarkAsActive}
                     >
-                      Delete
+                      Mark as active
                     </Menu.Item>
-                  </Menu>
-                </Group>
+                  )}
+                  <Menu.Item
+                    color="red"
+                    icon={<FiTrash2 />}
+                    onClick={toggleOpenDeleteDialog}
+                  >
+                    Delete
+                  </Menu.Item>
+                </Menu>
               </Group>
+            </Group>
 
-              <Box className="mt-5">
-                <Text>{project?.description}</Text>
-              </Box>
-
-              <Divider className="mt-4" />
-
-              <Box className="mt-4">
-                <Grid justify="space-between" align="center">
-                  <Grid.Col span={6}>
-                    {project.endDate && (
-                      <Box>
-                        <Text className="font-semibold">Project dates:</Text>
-                        <Text>
-                          {formatDate(project?.createdAt)} -{' '}
-                          {formatDate(project?.endDate)}
-                        </Text>
-                      </Box>
-                    )}
-                    {!project.endDate && (
-                      <Button
-                        variant="default"
-                        onClick={toggleOpenProjectEditDialog}
-                      >
-                        Add end date
-                      </Button>
-                    )}
-                  </Grid.Col>
-                  <Grid.Col span={6}>
-                    {!isEmpty(project?.client) && (
-                      <Group direction="column" position="right" spacing={0}>
-                        <Link to={`/clients/${project.client._id}`}>
-                          <Avatar
-                            backgroundColor={project.client.backgroundColor}
-                            radius="xl"
-                          >
-                            {project.client.initials}
-                          </Avatar>
-                        </Link>
-                      </Group>
-                    )}
-                    {isEmpty(project?.client) && (
-                      <Group direction="column" position="right" spacing={0}>
-                        <Button
-                          variant="default"
-                          onClick={toggleOpenProjectEditDialog}
-                        >
-                          Add client
-                        </Button>
-                      </Group>
-                    )}
-                  </Grid.Col>
-                </Grid>
-              </Box>
-            </Paper>
-
-            <Paper
-              mt={20}
-              withBorder
-              className="border-gray-600 border-opacity-20 shadow-sm"
-            >
-              <NavTabs className="ml-[12px] px-2">
-                <NavTab to={`/projects/${query.id}`} label="Tasks" />
+            <Box className="mt-8">
+              <NavTabs>
+                <NavTab to={`/projects/${query.id}`} label="Overview" />
+                <NavTab to={`/projects/${query.id}/tasks`} label="Tasks" />
                 <NavTab
                   to={`/projects/${query.id}/invoices`}
                   label="Invoices"
                 />
+                <NavTab
+                  to={`/projects/${query.id}/proposals`}
+                  label="Proposals"
+                />
               </NavTabs>
 
-              <Box className="p-5">{children}</Box>
-            </Paper>
+              <Box className="pt-4">{children}</Box>
+            </Box>
           </Box>
         )}
       </Container>

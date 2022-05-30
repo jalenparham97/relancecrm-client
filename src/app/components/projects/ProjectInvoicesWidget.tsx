@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { isEmpty } from 'lodash';
 import { nanoid } from 'nanoid';
-import { Box, Paper, Title, Group } from '@mantine/core';
+import { Box, Title, Group } from '@mantine/core';
 import { FiPlus } from 'react-icons/fi';
 import { IoReceiptOutline } from 'react-icons/io5';
 import { useUser } from '@/app/api/auth';
@@ -68,7 +68,7 @@ export default function ProjectInvoicesWidget({ id, project }: Props) {
   };
 
   return (
-    <Paper>
+    <Box>
       {isLoading && <LoadingLoader height="100%" />}
       {!isLoading && (
         <Box>
@@ -112,6 +112,6 @@ export default function ProjectInvoicesWidget({ id, project }: Props) {
           )}
         </Box>
       )}
-    </Paper>
+    </Box>
   );
 }
