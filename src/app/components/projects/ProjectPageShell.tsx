@@ -152,7 +152,7 @@ export default function ProjectPageShell({
                 />
               </NavTabs>
 
-              <Box className="pt-4">{children}</Box>
+              <Box className="pt-5">{children}</Box>
             </Box>
           </Box>
         )}
