@@ -1,5 +1,12 @@
 import { useState } from 'react';
-import { Box, Container, Paper, Group, Title, Tabs as MantineTabs } from '@mantine/core';
+import {
+  Box,
+  Container,
+  Paper,
+  Group,
+  Title,
+  Tabs as MantineTabs,
+} from '@mantine/core';
 import {
   useTasks,
   useTaskAddMutation,
@@ -20,7 +27,8 @@ import LoadingLoader from '@/app/components/shared/LoadingLoader';
 import EmptyState from '@/app/components/shared/EmptyState';
 
 export default function TasksPage() {
-  const [openTaskCreateModal, toggleTaskCreateModal, closeTaskCreateDialog] = useDialog();
+  const [openTaskCreateModal, toggleTaskCreateModal, closeTaskCreateDialog] =
+    useDialog();
   const [searchInput, setSearchInput] = useState('');
   const [activeTab, setActiveTab] = useState(0);
   const { isLoading, data: tasks } = useTasks();
@@ -30,11 +38,17 @@ export default function TasksPage() {
   };
 
   const filterActiveTasks = ({ completed, content }) => {
-    return completed === false && content.toLowerCase().match(searchInput.toLowerCase());
+    return (
+      completed === false &&
+      content.toLowerCase().match(searchInput.toLowerCase())
+    );
   };
 
   const filterCompletedTasks = ({ completed, content }) => {
-    return completed === true && content.toLowerCase().match(searchInput.toLowerCase());
+    return (
+      completed === true &&
+      content.toLowerCase().match(searchInput.toLowerCase())
+    );
   };
 
   const handleTaskSubmit = useTaskAddMutation();
@@ -55,45 +69,47 @@ export default function TasksPage() {
                   searchValue={searchInput}
                   onSearchChange={handleSearchChange}
                 />
-                <Button leftIcon={<IconPlus size={16} />} onClick={toggleTaskCreateModal}>
+                <Button
+                  leftIcon={<IconPlus size={16} />}
+                  onClick={toggleTaskCreateModal}
+                >
                   Add Task
                 </Button>
               </Group>
             </Box>
 
-            <Paper withBorder className="mt-4 p-0 border-gray-600 border-opacity-20 shadow-sm">
-              <Tabs
-                active={activeTab}
-                onTabChange={setActiveTab}
-                styles={{
-                  root: { marginLeft: '20px' },
-                }}
-              >
+            <Box className="mt-8">
+              <Tabs active={activeTab} onTabChange={setActiveTab}>
                 <MantineTabs.Tab label="Active" />
                 <MantineTabs.Tab label="Completed" />
               </Tabs>
 
-              <Box sx={{ padding: '10px 20px' }}>
+              <Box>
                 <TabPanel index={0} activeIndex={activeTab}>
                   {!isEmpty(tasks?.data?.filter(filterActiveTasks)) &&
-                    tasks?.data?.filter(filterActiveTasks).map((task, index) => (
-                      <Box key={task?._id}>
-                        <TaskItem
-                          task={task}
-                          index={index}
-                          onUpdate={handleUpdateTask.mutateAsync}
-                          onDelete={handelDeleteTask.mutateAsync}
-                          loading={handelDeleteTask.isLoading}
-                        />
-                      </Box>
-                    ))}
+                    tasks?.data
+                      ?.filter(filterActiveTasks)
+                      .map((task, index) => (
+                        <Box key={task?._id}>
+                          <TaskItem
+                            task={task}
+                            index={index}
+                            onUpdate={handleUpdateTask.mutateAsync}
+                            onDelete={handelDeleteTask.mutateAsync}
+                            loading={handelDeleteTask.isLoading}
+                          />
+                        </Box>
+                      ))}
                   {isEmpty(tasks?.data?.filter(filterActiveTasks)) && (
                     <Box className="py-4">
                       <EmptyState
                         title="There are no active tasks yet"
                         icon={<IconListCheck size="50px" />}
                         actionButton={
-                          <Button leftIcon={<IconPlus size={16} />} onClick={toggleTaskCreateModal}>
+                          <Button
+                            leftIcon={<IconPlus size={16} />}
+                            onClick={toggleTaskCreateModal}
+                          >
                             Add Task
                           </Button>
                         }
@@ -103,17 +119,19 @@ export default function TasksPage() {
                 </TabPanel>
                 <TabPanel index={1} activeIndex={activeTab}>
                   {!isEmpty(tasks?.data.filter(filterCompletedTasks)) &&
-                    tasks?.data.filter(filterCompletedTasks).map((task, index) => (
-                      <Box key={task._id}>
-                        <TaskItem
-                          task={task}
-                          index={index}
-                          onUpdate={handleUpdateTask.mutateAsync}
-                          onDelete={handelDeleteTask.mutateAsync}
-                          loading={handelDeleteTask.isLoading}
-                        />
-                      </Box>
-                    ))}
+                    tasks?.data
+                      .filter(filterCompletedTasks)
+                      .map((task, index) => (
+                        <Box key={task._id}>
+                          <TaskItem
+                            task={task}
+                            index={index}
+                            onUpdate={handleUpdateTask.mutateAsync}
+                            onDelete={handelDeleteTask.mutateAsync}
+                            loading={handelDeleteTask.isLoading}
+                          />
+                        </Box>
+                      ))}
                   {isEmpty(tasks?.data.filter(filterCompletedTasks)) && (
                     <Box className="py-4">
                       <EmptyState
@@ -124,7 +142,7 @@ export default function TasksPage() {
                   )}
                 </TabPanel>
               </Box>
-            </Paper>
+            </Box>
           </Container>
         )}
 

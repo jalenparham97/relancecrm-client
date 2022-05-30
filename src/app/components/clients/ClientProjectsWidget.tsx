@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { isEmpty } from 'lodash';
-import { Box, Paper, Title, Group } from '@mantine/core';
+import { Box, Title, Group } from '@mantine/core';
 import { FiBriefcase, FiPlus } from 'react-icons/fi';
 import { useProjectsClient, useProjectIdAddMutation } from '@/app/api/projects';
 import { Client, CreateProject } from '@/core/types';
@@ -29,7 +29,7 @@ export default function ClientProjectsWidget({ id, client }: Props) {
   };
 
   return (
-    <Paper>
+    <Box>
       {isLoading && <LoadingLoader height="100%" />}
       {!isLoading && (
         <Box>
@@ -72,6 +72,6 @@ export default function ClientProjectsWidget({ id, client }: Props) {
         onClose={closeProjectModal}
         submit={onProjectSubmit}
       />
-    </Paper>
+    </Box>
   );
 }

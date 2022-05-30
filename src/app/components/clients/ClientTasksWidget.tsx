@@ -1,4 +1,4 @@
-import { Box, Divider, Paper, Title, Group, ActionIcon } from '@mantine/core';
+import { Box, Title, Group } from '@mantine/core';
 import {
   useTaskIdAddMutation,
   useTaskIdDeleteMutation,
@@ -23,7 +23,8 @@ interface Props {
 
 export default function ClientTasksWidget({ id, ...otherProps }: Props) {
   const { isLoading, data: tasks } = useTasksClient(id);
-  const [taskCreateModal, openTaskCreateModal, closeTaskCreateModal] = useDialog();
+  const [taskCreateModal, openTaskCreateModal, closeTaskCreateModal] =
+    useDialog();
 
   const filterActiveTasks = ({ completed }: Task) => {
     return completed === false;
@@ -40,7 +41,7 @@ export default function ClientTasksWidget({ id, ...otherProps }: Props) {
   const activeTasks = tasks?.data.filter(filterActiveTasks);
 
   return (
-    <Paper>
+    <Box>
       {isLoading && <LoadingLoader height="100%" />}
       {!isLoading && (
         <Box>
@@ -88,6 +89,6 @@ export default function ClientTasksWidget({ id, ...otherProps }: Props) {
         submit={onTaskSubmit}
         hideProjectPicker
       />
-    </Paper>
+    </Box>
   );
 }
