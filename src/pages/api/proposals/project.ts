@@ -11,8 +11,8 @@ handler.use(requireAuth);
 
 handler.get(async (req, res) => {
   const data = await proposalsService.findAllProjectProposals(
-    req.query.projectId as string,
-    req.user._id
+    req.user._id,
+    req.query.projectId as string
   );
   return res.status(HttpStatus.OK).json(data);
 });

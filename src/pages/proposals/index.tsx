@@ -12,6 +12,7 @@ import { formatProposals } from '@/app/utils';
 import { isEmpty } from 'lodash';
 import { FormStatus, Proposal, ProposalStatus } from '@/core/types';
 import { useUser } from '@/app/api/auth';
+import { DefaultProposal } from '@/app/store';
 import PageLayout from '@/app/components/layouts/PageLayout';
 import Button from '@/app/components/shared/Button';
 import DataTable from '@/app/components/shared/DataTable';
@@ -21,7 +22,6 @@ import LoadingLoader from '@/app/components/shared/LoadingLoader';
 import EmptyState from '@/app/components/shared/EmptyState';
 import ProposalStatusBadge from '@/app/components/proposals/ProposalStatusBadge';
 import ProposalActionMenu from '@/app/components/proposals/ProposalActionMenu';
-import { DefaultProposal } from '@/app/store';
 
 export default function ProposalsPage() {
   const user = useUser();
@@ -36,10 +36,10 @@ export default function ProposalsPage() {
   const onAddProposal = async () => {
     try {
       const newProposal = await handleAddProposalSubmit.mutateAsync({
+        ...DefaultProposal,
         fromName: user.fullName,
         fromCompany: user.businessInfo.businessName || '',
         fromAddress: user.businessInfo.address || '',
-        ...DefaultProposal,
       });
       router.push(`/proposals/${newProposal._id}/edit`);
       console.log({ newProposal });

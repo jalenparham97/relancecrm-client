@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import { useProject } from '@/app/api/projects';
 import ProjectPageShell from '@/app/components/projects/ProjectPageShell';
+import ProjectProposalsWidget from '@/app/components/projects/ProjectProposalsWidget';
 
 export default function ProjectProposalsPage() {
   const router = useRouter();
@@ -9,7 +10,7 @@ export default function ProjectProposalsPage() {
 
   return (
     <ProjectPageShell project={project} isLoading={isLoading}>
-      {/* <ProjectTasksWidget id={query.id as string} /> */}
+      <ProjectProposalsWidget id={query.id as string} project={project} />
     </ProjectPageShell>
   );
 }
